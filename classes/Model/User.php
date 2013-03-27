@@ -16,27 +16,12 @@ class Model_User extends Model
         if ( $type == 'default' )
         {
             $token = Encrypt::instance()->encode($user->email . '|' . $user->created);
-            $subject = 'Qwizzle Registration';
+            $subject = 'Registration';
             $to      = $user->email;
             $headers = 'MIME-Version: 1.0' . "\r\n";
             $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-            $headers .= 'From: noreply@qwizzle.us' . "\r\n";
-            $message = View::factory('private/account/emails/register')->bind('token', $token);
-
-            if ( mail($to, $subject, $message, $headers) )
-                return true;
-            else
-                return false;
-        }
-        else if ( $type == 'agent_prospect' )
-        {
-            $token = Encrypt::instance()->encode($user->email.'|'.$user->created);
-            $subject = 'Qwizzle Registration';
-            $to      = $user->email;
-            $headers = 'MIME-Version: 1.0' . "\r\n";
-            $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-            $headers .= 'From: noreply@qwizzle.us' . "\r\n";
-            $message = View::factory('private/account/emails/agent_prospect')->bind('token', $token);
+            $headers .= 'From: test@localhost' . "\r\n";
+            $message = Theme::view('default/emails/login/register')->bind('token', $token);
 
             if ( mail($to, $subject, $message, $headers) )
                 return true;

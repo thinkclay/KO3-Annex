@@ -1,9 +1,0 @@
-[submodule "submodules/Auth/A1"]
-	path = submodules/Auth/A1
-	url = git://github.com/Wouterrr/A1.git
-[submodule "submodules/Auth/A2"]
-	path = submodules/Auth/A2
-	url = git://github.com/Wouterrr/A2.git
-[submodule "submodules/Auth/Acl"]
-	path = submodules/Auth/Acl
-	url = git://github.com/Wouterrr/ACL.git

@@ -2,19 +2,21 @@
 <div class="row-fluid">
     <h1>Register</h1>
 
-    <form method="post" action="/login/register">
-        <label>Username</label>
-        <input type="text" name="username" />
+    <form method="post" action="/account/register">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" value="<?= $username; ?>" />
 
-        <label>Password</label>
-        <input type="password" name="password" />
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" value="<?= $password; ?>" />
 
-        <label>Password</label>
-        <input type="password" name="password_confirm" />
+        <label for="password_confirm">Confirm Password</label>
+        <input type="password" name="password_confirm" id="password_confirm" value="<?= $password_confirm; ?>" />
 
-        <label>Email</label>
-        <input type="email" name="email" />
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" value="<?= $email; ?>" />
 
-        <input type="submit" />
+        <br />
+
+        <button type="submit" class="btn">Submit</button>
     </form>
 </div>

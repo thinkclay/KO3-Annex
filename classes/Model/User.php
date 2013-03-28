@@ -32,7 +32,7 @@ class Model_User extends Model
 
     public static function create(array $post = array(), $role = null)
     {
-        $errors = array();
+        $errors = [];
 
         // initial validation
         $post = Validation::factory($post)

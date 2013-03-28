@@ -23,16 +23,16 @@ Route::set('account', 'account(/<action>(/<id>))')
 Route::set('styles', 'styles(/<module>(/<file>))', array('file' => '.+'))
     ->defaults(array(
         'directory'     => 'public',
-        'controller'    => 'annex',
-        'action'        => 'styles',
+        'controller'    => 'styles',
+        'action'        => 'index',
         'file'          => NULL,
     ));
 
 Route::set('scripts', 'scripts(/<module>(/<file>))', array('file' => '.+'))
     ->defaults(array(
         'directory'     => 'public',
-        'controller'    => 'annex',
-        'action'        => 'scripts',
+        'controller'    => 'scripts',
+        'action'        => 'index',
         'file'          => NULL,
     ));
 

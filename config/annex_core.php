@@ -1,13 +1,13 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-return array(
-	
+return [
+
 	// ideally will eventually support orm/jelly/mango/sprig, but for now just mango
-	'driver'	=> 'mango', 
-	
+	'driver'	=> 'mango',
+
 	// Required Modules
-	'requires'	=> array(
+	'requires'	=> [
 		'less'	=> '1.0.0'
-	)
-	
-);
+	]
+
+];

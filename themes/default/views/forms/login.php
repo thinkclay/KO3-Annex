@@ -1,12 +1,14 @@
 <br />
 <div class="row-fluid">
 	<form method="post">
-		<label>Username</label>
-		<input type="text" name="username" />
+		<label for="username">Username</label>
+		<input type="text" name="username" id="username" value="<?= $username; ?>" />
 
-		<label>Password</label>
-		<input type="text" name="password" />
+		<label for="password">Password</label>
+		<input type="password" name="password" id="password" value="<?= $password; ?>" />
 
-		<input type="submit" />
+        <br />
+
+		<button type="submit" class="btn">Login</button>
 	</form>
 </div>

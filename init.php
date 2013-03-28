@@ -4,11 +4,11 @@ define('ANXROOT', MODPATH.'annex'.DIRECTORY_SEPARATOR);
 define('ANXMODS', ANXROOT.'submodules'.DIRECTORY_SEPARATOR);
 
 // Annex Control Panel
-Route::set('annex', 'annex(/<action>(/<id>))')
+Route::set('annex', 'annex(/<controller>(/<action>(/<model>(/<id>))))')
     ->defaults(array(
         'directory'     => 'private',
         'controller'    => 'annex',
-        'action'        => 'test',
+        'action'        => 'index',
     ));
 
 // Annex Login

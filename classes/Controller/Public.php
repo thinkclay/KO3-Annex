@@ -11,7 +11,7 @@ abstract class Controller_Public extends Controller_Template
 {
 	public $template = '../themes/default/views/wrapper';
 
-	public static $user = false;
+	public static $user = FALSE;
 
 	/**
      * Before Other Functions

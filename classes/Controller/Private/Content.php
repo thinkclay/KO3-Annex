@@ -7,11 +7,17 @@
  * @category    Private
  * @author      Clay McIlrath
  */
-class Controller_Private_Annex extends Controller_Private
+class Controller_Private_Content extends Controller_Private
 {
+    private $_model = FALSE;
+    private $_id = FALSE;
+
     public function before()
     {
         parent::before();
+
+        $this->_model = 'Model_Content_'.ucfirst(Request::$current->param('model'));
+        $this->_id = Request::$current->param('id');
 
         $this->template->styles = [
             "http://twitter.github.com/bootstrap/assets/css/bootstrap.css" => "all",
@@ -24,9 +30,18 @@ class Controller_Private_Annex extends Controller_Private
 
     public function action_index()
     {
-        $status = Annex::render('annex/modules/status');
+        Model_Content::overview();
+    }
 
-        $this->template->main->content = View::factory('annex/index')
-            ->bind('content', $status);
+    public function action_create()
+    {
+        if ( $model = $this->_model )
+        {
+            $model::create();
+        }
+        else
+        {
+            echo 'put some kind of quick select here for picking a content type to create';
+        }
     }
 }

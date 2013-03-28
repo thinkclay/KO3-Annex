@@ -13,6 +13,13 @@ abstract class Controller_Private extends Controller_Template
 
     public static $user = false;
 
+    /**
+     * Before Other Functions
+     *
+     * We setup our global or wrapper functions for the private namespace (meaning anything behind a login)
+     * we check for a user, make sure that user has permissions and then set some default styles, themes,
+     * and views for the page
+     */
     public function before()
     {
         parent::before();
@@ -42,14 +49,9 @@ abstract class Controller_Private extends Controller_Template
             // Load our default wrappers to the view, but do it on before so that the controller->action can override
             $this->template->bind_global('user', self::$user);
             $this->template->id = $controller;
-            $this->template->header = Theme::view('default/views/container/header');
-            $this->template->main = Theme::view('default/views/container/main');
-            $this->template->footer = Theme::view('default/views/container/footer');
+            $this->template->header = Theme::view('views/container/header');
+            $this->template->main = Theme::view('views/container/main');
+            $this->template->footer = Theme::view('views/container/footer');
         }
-    }
-
-    public function after()
-    {
-        parent::after();
     }
 }

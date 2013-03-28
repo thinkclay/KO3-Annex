@@ -13,6 +13,13 @@ abstract class Controller_Public extends Controller_Template
 
 	public static $user = false;
 
+	/**
+     * Before Other Functions
+     *
+     * We setup our global or wrapper functions for the public namespace (meaning anything not behind a login)
+     * we still check for a user so that any account / user info that may be useful on the page is passed
+     * to views globally, and then we set some default view wrappers
+     */
 	public function before()
 	{
 	    parent::before();
@@ -24,14 +31,9 @@ abstract class Controller_Public extends Controller_Template
 			// Load our default wrappers to the view, but do it on before so that the controller->action can override
             $this->template->styles = [];
 			$this->template->bind_global('user', self::$user);
-			$this->template->header = Theme::view('default/views/container/header');
-			$this->template->main = Theme::view('default/views/container/main');
-			$this->template->footer = Theme::view('default/views/container/footer');
+			$this->template->header = Theme::view('views/container/header');
+			$this->template->main = Theme::view('views/container/main');
+			$this->template->footer = Theme::view('views/container/footer');
 		}
-	}
-
-	public function after()
-	{
-		parent::after();
 	}
 }

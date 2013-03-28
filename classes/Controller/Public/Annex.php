@@ -23,6 +23,11 @@ class Controller_Public_Annex extends Controller_Public
         $this->template->head = '<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->';
     }
 
+    /**
+     * Register Action
+     *
+     * @todo use a form generator built from the user model instead of hard coding fields
+     */
     public function action_register()
     {
         $role = Request::$current->param('id');
@@ -56,7 +61,7 @@ class Controller_Public_Annex extends Controller_Public
             }
         }
 
-        $this->template->main->content = Theme::view('default/views/forms/register')
+        $this->template->main->content = Theme::view('views/forms/register')
             ->bind('username', $username)
             ->bind('password', $password)
             ->bind('password_confirm', $password_confirm)
@@ -108,15 +113,15 @@ class Controller_Public_Annex extends Controller_Public
             }
         }
 
-        $this->template->main->content = Theme::view('default/views/forms/login')
+        $this->template->main->content = Theme::view('views/forms/login')
             ->bind('username', $username)
             ->bind('password', $password);
     }
 
     /**
-     * Function for user logout
+     * Logout Action
      *
-     * @return  void
+     * @todo if we end up implementing local storage sync, this would be a good spot to purge that cache
      */
     public function action_logout()
     {

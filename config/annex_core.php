@@ -2,8 +2,8 @@
 
 return [
 
-	// ideally will eventually support orm/jelly/mango/sprig, but for now just mango
-	'driver'	=> 'mango',
+	// ideally will eventually support orm/jelly/mango/sprig, but for now just brass and mango
+	'driver'	=> 'brass',
 
 	// Required Modules
 	'requires'	=> [

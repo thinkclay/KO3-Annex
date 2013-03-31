@@ -11,12 +11,12 @@ return [
 	 *
 	 * array(CLASS_NAME,array $arguments)
 	 */
-	'lib' => array(
-		'class'  => 'Authenticate', // (or AUTH)
-		'params' => array(
+	'lib' => [
+		'class'  => 'Authenticate', // (or Kohana's Auth)
+		'params' => [
 			'name' => 'authenticate'
-		)
-	),
+		]
+	],
 
 	/**
 	 * Throws an exception when authorization fails.
@@ -32,11 +32,10 @@ return [
 	 * The ACL Roles (String IDs are fine, use of ACL_Role_Interface objects also possible)
 	 * Use: ROLE => PARENT(S) (make sure parent is defined as role itself before you use it as a parent)
 	 */
-	'roles' => array
-	(
+	'roles' => [
 		// ADD YOUR OWN ROLES HERE
 		'user'	=>	'guest'
-	),
+	],
 
 	/*
 	 * The name of the guest role
@@ -48,11 +47,10 @@ return [
 	 * The ACL Resources (String IDs are fine, use of ACL_Resource_Interface objects also possible)
 	 * Use: ROLE => PARENT (make sure parent is defined as resource itself before you use it as a parent)
 	 */
-	'resources' => array
-	(
+	'resources' => [
 		// ADD YOUR OWN RESOURCES HERE
 		//'blog'	=>	NULL
-	),
+	],
 
 	/*
 	 * The ACL Rules (Again, string IDs are fine, use of ACL_Role/Resource_Interface objects also possible)
@@ -63,10 +61,8 @@ return [
 			array(CLASS_NAME,$argument) // (only assertion objects that support (at most) 1 argument are supported
 			                            //  if you need to give your assertion object several arguments, use an array)
 	 */
-	'rules' => array
-	(
-		'allow' => array
-		(
+	'rules' => [
+		'allow' => [
 			/*
 			 * ADD YOUR OWN ALLOW RULES HERE
 			 *
@@ -84,10 +80,7 @@ return [
 				'privilege' => array('delete','edit')
 			)
 			 */
-		),
-		'deny' => array
-		(
-			// ADD YOUR OWN DENY RULES HERE
-		)
-	)
+		],
+		'deny' => []
+	]
 ];

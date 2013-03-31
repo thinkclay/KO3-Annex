@@ -1,11 +1,11 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-return array(
+return [
 
 	// default message
-	'default' => array(
+	'default' => [
 		'default' => 'You are not authorized to perform this action'
-	)
+	]
 
 	/**
 	// example
@@ -15,4 +15,4 @@ return array(
 		'create'   => 'you are not authorized to create a blog'
 	),
 	**/
-);
+];

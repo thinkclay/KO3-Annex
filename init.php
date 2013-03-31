@@ -44,6 +44,7 @@ Route::set('scripts', 'scripts(/<module>(/<file>))', array('file' => '.+'))
  */
 $annex_modules = array(
     'auth'  => ANXMODS.'Auth',  // Custom authentication framework
+    'brass' => ANXMODS.'Brass', // ORM Layer for MongoDb
     'less'  => ANXMODS.'Less',  // Less Compiler Module
     'annex' => MODPATH.'annex', // Annex Extension Loader
 );

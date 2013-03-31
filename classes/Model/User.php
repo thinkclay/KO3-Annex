@@ -6,7 +6,7 @@ class Model_User extends Model
     /**
      * Sends an email to the user email provided with a link back to account/complete_registration/$token
      *
-     * @param   MangoObject Mango user object
+     * @param   BrassObject Brass user object
      * @param   Role Type
      * @return  void
      * @author  Winter King
@@ -21,7 +21,7 @@ class Model_User extends Model
             $headers = 'MIME-Version: 1.0' . "\r\n";
             $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
             $headers .= 'From: test@localhost' . "\r\n";
-            $message = Theme::view('default/emails/login/register')->bind('token', $token);
+            $message = Theme::view('emails/login/register')->bind('token', $token);
 
             if ( mail($to, $subject, $message, $headers) )
                 return true;
@@ -40,9 +40,9 @@ class Model_User extends Model
             ->rule('username', 'required')
             ->rule('password', 'required')
             ->rule('password_confirm', 'required')
-            ->rule('password_confirm', 'matches', array(':validation', 'password', 'password_confirm'));
+            ->rule('password_confirm', 'matches', [':validation', 'password', 'password_confirm']);
 
-        $user = Mango::factory('Mango_User');
+        $user = Brass::factory('Brass_User');
 
                 if ($post->check())
                 {
@@ -74,7 +74,7 @@ class Model_User extends Model
                     {
                         $user->check($post->as_array());
                     }
-                    catch(Mango_Validation_Exception $e)
+                    catch(Brass_Validation_Exception $e)
                     {
                         $errors = $e->array->errors('account/user');
                     }

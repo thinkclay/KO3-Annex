@@ -5,7 +5,8 @@
  * To be extended and completed to user's needs
  * (see a2acldemo/classes/model/user.php for an example implementation)
  */
-abstract class Model_A1_User_ORM extends ORM {
+abstract class Model_Authenticate_User_ORM extends ORM
+{
 
 	// Authenticate config file name
 	protected $_config = 'authenticate';

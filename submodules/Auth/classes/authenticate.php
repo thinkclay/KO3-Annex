@@ -14,7 +14,6 @@ abstract class Authenticate
     protected $_name;
     protected $_config;
     protected $_sess;
-
     protected $_user;
 
     /**
@@ -29,7 +28,7 @@ abstract class Authenticate
         if ( ! isset($_instances[$_name]) )
         {
             $_config = Kohana::$config->load($_name);
-            $_driver = isset($_config['driver']) ? $_config['driver'] : 'Mango';
+            $_driver = isset($_config['driver']) ? $_config['driver'] : 'Brass';
             $_class  = 'Authenticate_'.ucfirst($_driver);
 
             $_instances[$_name] = new $_class($_name, $_config);

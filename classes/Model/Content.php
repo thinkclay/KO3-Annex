@@ -7,8 +7,27 @@ abstract class Model_Content extends Model
         echo 'this will return a list of content types';
     }
 
-    public static function create()
+    public static function __callStatic($name, $arguments)
     {
-        echo 'this will allow you to create content';
+        // we'll always pass an array to simulate named parameters
+        $arguments = $arguments[0];
+
+        var_dump($name);
+        echo '<hr />';
+        var_dump($arguments);
+
+        if ( assert(isset($arguments['model'])) )
+        {
+            $model = ucfirst($arguments['model']);
+            $driver = ucfirst(Kohana::$config->load('annex_core.driver'));
+            $content = "Model_{$driver}_{$model}";
+
+            if ( assert(class_exists($content)) )
+            {
+                $content = new $content;
+                var_dump($content);
+            }
+        }
+
     }
 }

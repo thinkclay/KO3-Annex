@@ -16,9 +16,6 @@ class Controller_Private_Content extends Controller_Private
     {
         parent::before();
 
-        $this->_model = 'Model_Content_'.ucfirst(Request::$current->param('model'));
-        $this->_id = Request::$current->param('id');
-
         $this->template->styles = [
             "http://twitter.github.com/bootstrap/assets/css/bootstrap.css" => "all",
             "http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" => "screen"
@@ -33,15 +30,16 @@ class Controller_Private_Content extends Controller_Private
         Model_Content::overview();
     }
 
-    public function action_create()
+    public function action_list()
     {
-        if ( $model = $this->_model )
+        $model = Request::$current->param('model');
+        $driver = ucfirst(Kohana::$config->load('annex_core.driver'));
+
+        if ( $model AND $driver )
         {
-            $model::create();
+            // load all users from the database and list them here in a table
+            var_dump( Brass::factory('Brass_User')->load()->as_array() );
         }
-        else
-        {
-            echo 'put some kind of quick select here for picking a content type to create';
-        }
+
     }
 }

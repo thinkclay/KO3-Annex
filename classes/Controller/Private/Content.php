@@ -17,8 +17,8 @@ class Controller_Private_Content extends Controller_Private
         parent::before();
 
         $this->template->styles = [
-            "http://twitter.github.com/bootstrap/assets/css/bootstrap.css" => "all",
-            "http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" => "screen"
+            "/styles/annex/bootstrap.css" => "all",
+            "/styles/annex/bootstrap.css-responsive.css" => "screen"
         ];
         $this->template->scripts = [];
 
@@ -51,9 +51,9 @@ class Controller_Private_Content extends Controller_Private
         if ( $model AND $driver )
         {
             // load all users from the database and list them here in a table
-            $form_data = Brass::factory('Brass_User')->as_form();
             $this->template->main->content = Theme::factory('views/forms/form')
-                ->bind('elements', $form_data);
+                ->set('elements', Brass::factory('Brass_User')->as_form())
+                ->set('method', 'POST');
         }
     }
 }

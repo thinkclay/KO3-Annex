@@ -383,10 +383,6 @@ class Annex_Theme
         return Theme::capture($this->_file, $this->_data);
     }
 
-
-
-
-
     /**
      * Theme functions for HTML.
      *

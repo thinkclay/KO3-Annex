@@ -23,7 +23,7 @@ class Controller_Public_Styles extends Controller_Public
         $module = $this->request->param('module');
         $file = $this->request->param('file');
 
-        if ( ! $path = Kohana::$config->load($module.'_annex.theme.styles'))
+        if ( ! $path = Kohana::$config->load($module.'_annex.theme.styles') )
         {
             $path = Kohana::$config->load('theme_'.$module.'_annex.theme.styles');
         }

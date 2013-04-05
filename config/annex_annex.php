@@ -30,7 +30,7 @@ return [
 
     // Themeing Settings
     'theme' => [
-        'name'      => '',
+        'name'      => 'default',
         'settings'  => [
             'media' => 'builder'
         ],

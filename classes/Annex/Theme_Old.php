@@ -2,9 +2,6 @@
 
 class Annex_Theme
 {
-    // Array of global variables
-    protected static $_global_data = [];
-
     /**
      * Sets the view filename.
      *

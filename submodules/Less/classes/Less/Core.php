@@ -2,7 +2,7 @@
 
 /**
  * Less - A module wrapper for the Less CSS Compiler
- * 
+ *
  * @package		Annex
  * @category	Less
  * @author		Clay McIlrath
@@ -11,7 +11,7 @@ class Less_Core
 {
 	// Default less files extension
 	public static $ext = '.less';
-	
+
 	/**
 	 * Get the link tag of less paths
 	 *
@@ -22,9 +22,9 @@ class Less_Core
 	public static function compile($array = '', $media = 'screen')
 	{
 		$array = (array) $array;
-		
+
 		// return comment if array is empty
-		if (empty($array)) 
+		if (empty($array))
 			return self::_html_comment('no less files');
 
 		$stylesheets = array();
@@ -39,7 +39,7 @@ class Less_Core
 			}
 			elseif (file_exists($file.self::$ext))
 			{
-				array_push($stylesheets, $file.self::$ext);				
+				array_push($stylesheets, $file.self::$ext);
 			}
 			else
 			{
@@ -48,7 +48,7 @@ class Less_Core
 		}
 
 		// all stylesheets are invalid
-		if ( ! count($stylesheets)) 
+		if ( ! count($stylesheets))
 			return self::_html_comment('all less files are invalid');
 
 		// get less config
@@ -156,7 +156,8 @@ class Less_Core
 	{
 		// create data holder
 		$data = '';
-		
+		$filename = realpath(DOCROOT.'../'.$filename);
+
 		touch($filename);
 
 		ob_start();
@@ -204,12 +205,12 @@ class Less_Core
 	{
 		$last_modified = 0;
 
-		foreach ($files as $file) 
+		foreach ($files as $file)
 		{
 			$modified = filemtime($file);
-			
+
 			if ($modified !== false AND $modified > $last_modified)
-			{ 
+			{
 				$last_modified = $modified;
 			}
 		}

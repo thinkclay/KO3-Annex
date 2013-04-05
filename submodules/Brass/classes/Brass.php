@@ -476,10 +476,10 @@ abstract class Brass implements Brass_Interface
 				}
 
 				// don't update value if the value did not change
-				$same_clean  = isset($this->_clean[$name]) && $this->_clean[$name] === Brass::normalize($value);
-				$same_object = ! $same_clean && isset($this->_object[$name]) && Brass::normalize($this->_object[$name]) === Brass::normalize($value);
+				$same_clean  = isset($this->_clean[$name]) AND $this->_clean[$name] === Brass::normalize($value);
+				$same_object = ! $same_clean AND isset($this->_object[$name]) AND Brass::normalize($this->_object[$name]) === Brass::normalize($value);
 
-				if ( $same_clean || $same_object)
+				if ( $same_clean || $same_object )
 				{
 					return FALSE;
 				}
@@ -1061,27 +1061,42 @@ abstract class Brass implements Brass_Interface
 		}
 
 		// Update/remove relations
-		foreach ( $this->_relations as $name => $relation)
+		foreach ( $this->_relations as $name => $relation )
 		{
-			switch ( $relation['type'])
+			switch ( $relation['type'] )
 			{
 				case 'has_one':
 					$this->__get($name)->delete($safe);
-				break;
+					break;
+
 				case 'has_many':
-					foreach ( $this->__get($name) as $hm)
+					foreach ( $this->__get($name) as $hm )
 					{
 						$hm->delete($safe);
 					}
-				break;
+					break;
+
 				case 'has_and_belongs_to_many':
 					$set = $this->__get($name . '_ids')->as_array();
 
-					if ( ! empty($set))
+					if ( ! empty($set) )
 					{
-						$this->db()->update( $name, array('_id' => array('$in' => $set)), array('$pull' => array($relation['related_relation'] . '_ids' => $this->_id)), array('multiple' => TRUE));
+						$this->db()->update(
+							$name,
+							[
+								'_id' => ['$in' => $set]
+							],
+							[
+								'$pull' => [
+									$relation['related_relation'].'_ids' => $this->_id
+								]
+							],
+							[
+								'multiple' => TRUE
+							]
+						);
 					}
-				break;
+					break;
 			}
 		}
 
@@ -1091,10 +1106,15 @@ abstract class Brass implements Brass_Interface
 		{
 			$this->db()->remove($this->_collection, array('_id'=> $this->_id), $options);
 		}
-		catch ( MongoCursorException $e)
+		catch (MongoCursorException $e)
 		{
-			throw new Brass_Exception('Unable to remove :model, database returned error :error',
-				array(':model' => $this->_model, ':error' => $e->getMessage()));
+			throw new Brass_Exception(
+				'Unable to remove :model, database returned error :error',
+				[
+					':model' => $this->_model,
+					':error' => $e->getMessage()
+				]
+			);
 		}
 
 		return $this;
@@ -1116,15 +1136,15 @@ abstract class Brass implements Brass_Interface
 	public function pre_filter()
 	{
 		// call pre_filter() on embedded objects
-		foreach ( $this->_fields as $field_name => $field_data)
+		foreach ( $this->_fields as $field_name => $field_data )
 		{
-			if ( $field_data['type'] === 'has_one' && $this->__isset($field_name))
+			if ( $field_data['type'] === 'has_one' AND $this->__isset($field_name) )
 			{
 				$this->__get($field_name)->pre_filter();
 			}
-			else if ( $field_data['type'] === 'has_many' && $this->__isset($field_name))
+			else if ( $field_data['type'] === 'has_many' AND $this->__isset($field_name) )
 			{
-				foreach ( $this->__get($field_name) as $f)
+				foreach ( $this->__get($field_name) as $f )
 				{
 					$f->pre_filter();
 				}
@@ -1144,7 +1164,7 @@ abstract class Brass implements Brass_Interface
 	 */
 	public function check(array $data = NULL, $subject = 0)
 	{
-		if ( $data !== NULL)
+		if ( $data !== NULL )
 		{
 			// create a new object with data, and validate
 			Brass::factory($this->_model, $data)->check(NULL, $subject);
@@ -1152,11 +1172,11 @@ abstract class Brass implements Brass_Interface
 			return $this;
 		}
 
-		$local = array();
+		$local = [];
 
-		foreach ( $this->_fields as $field_name => $field_data)
+		foreach ( $this->_fields as $field_name => $field_data )
 		{
-			if ( ! in_array($field_data['type'], array('has_one','has_many')) || $this->__isset($field_name))
+			if ( ! in_array($field_data['type'], ['has_one', 'has_many']) OR $this->__isset($field_name) )
 			{
 				// Don't check if regular fields are set, to include default values
 				// Do check if embedded objects are set, they don't have default values and we cannot instantiate extended models
@@ -1164,20 +1184,19 @@ abstract class Brass implements Brass_Interface
 			}
 		}
 
-		if ( $subject !== Brass::CHECK_ONLY || count($local))
+		if ( $subject !== Brass::CHECK_ONLY OR count($local) )
 		{
 			// validate local data
-			$array = Validation::factory($local)
-				->bind(':model', $this);
+			$array = Validation::factory($local)->bind(':model', $this);
 
 			// add validation rules
 			$array = $this->_check($array);
 
 			if ( $subject === Brass::CHECK_ONLY)
 			{
-				foreach ( $this->_fields as $field_name => $field_data)
+				foreach ( $this->_fields as $field_name => $field_data )
 				{
-					if ( ! $this->__isset($field_name))
+					if ( ! $this->__isset($field_name) )
 					{
 						// do not validate this field
 						unset($array[$field_name]);
@@ -1185,32 +1204,32 @@ abstract class Brass implements Brass_Interface
 				}
 			}
 
-			if ( ! $array->check())
+			if ( ! $array->check() )
 			{
-				throw new Brass_Validation_Exception($this->_model,$array);
+				throw new Brass_Validation_Exception($this->_model, $array);
 			}
 		}
 
-		if ( $subject !== Brass::CHECK_LOCAL)
+		if ( $subject !== Brass::CHECK_LOCAL )
 		{
 			// validate embedded documents
-			foreach ( $this->_fields as $field_name => $field_data)
+			foreach ( $this->_fields as $field_name => $field_data )
 			{
-				if ( $this->__isset($field_name) && in_array($field_data['type'], array('has_one','has_many')))
+				if ( $this->__isset($field_name) AND in_array($field_data['type'], ['has_one','has_many']) )
 				{
-					if ( $field_data['type'] === 'has_one')
+					if ( $field_data['type'] === 'has_one' )
 					{
 						$this->__get($field_name)->check(NULL, $subject);
 					}
 					else
 					{
-						foreach ( $this->__get($field_name) as $seq => $hm)
+						foreach ( $this->__get($field_name) as $seq => $hm )
 						{
 							try
 							{
 								$hm->check(NULL, $subject);
 							}
-							catch ( Brass_Validation_Exception $e)
+							catch (Brass_Validation_Exception $e)
 							{
 								// add sequence number of failed object to exception
 								$e->seq = $seq;
@@ -1233,37 +1252,37 @@ abstract class Brass implements Brass_Interface
 	 */
 	protected function _check(Validation $data)
 	{
-		foreach ($this->_fields as $name => $field)
+		foreach ( $this->_fields as $name => $field )
 		{
 			if ( $field['type'] === 'email')
 			{
 				$data->rule($name, 'email');
 			}
 
-			if ( Arr::get($field,'required'))
+			if ( Arr::get($field,'required') )
 			{
 				$data->rule($name, 'required');
 			}
 
-			if ( Arr::get($field,'unique'))
+			if ( Arr::get($field,'unique') )
 			{
-				$data->rule($name, array(':model','_is_unique'),array(':validation', $name));
+				$data->rule($name, [':model', '_is_unique'], [':validation', $name] );
 			}
 
-			foreach ( array('min_value','max_value','min_length','max_length') as $rule)
+			foreach ( ['min_value', 'max_value', 'min_length', 'max_length'] as $rule )
 			{
-				if ( Arr::get($field, $rule) !== NULL)
+				if ( Arr::get($field, $rule) !== NULL )
 				{
 					$data->rule($name, $rule, array(':value', $field[$rule]));
 				}
 			}
 
-			if ( isset($field['rules']))
+			if ( isset($field['rules']) )
 			{
 				$data->rules($name, $field['rules']);
 			}
 
-			if ( isset($field['label']))
+			if ( isset($field['label']) )
 			{
 				$data->label($name, $field['label']);
 			}
@@ -1285,34 +1304,36 @@ abstract class Brass implements Brass_Interface
 		// Load field data
 		$field = $this->_fields[$name];
 
-		if ( ! $clean)
+		if ( ! $clean )
 		{
 			// Apply filters
 			$value = $this->run_filters($name, $value);
 
 			// Empty string
-			if ( is_string($value) && $value === '')
+			if ( is_string($value) AND $value === '' )
 			{
 				$value = NULL;
 			}
 		}
 
-		if ( $value !== NULL || $clean === TRUE)
+		if ( $value !== NULL OR $clean === TRUE )
 		{
-			switch ( $field['type'])
+			switch ( $field['type'] )
 			{
 				case 'MongoId':
-					if ( $value !== NULL AND ! $value instanceof MongoId)
+					if ( $value !== NULL AND ! $value instanceof MongoId )
 					{
 						$value = new MongoId($value);
 					}
 				break;
+
 				case 'date':
-					if ( ! $value instanceof MongoDate)
+					if ( ! $value instanceof MongoDate )
 					{
 						$value = new MongoDate( is_int($value) ? $value : strtotime($value));
 					}
 				break;
+
 				case 'enum':
 					if ( $clean)
 					{
@@ -1323,8 +1344,9 @@ abstract class Brass implements Brass_Interface
 						$value = ($key = array_search($value,$field['values'])) !== FALSE ? $key : NULL;
 					}
 				break;
+
 				case 'int':
-					if ((float) $value > PHP_INT_MAX)
+					if ( (float) $value > PHP_INT_MAX )
 					{
 						// This number cannot be represented by a PHP integer, so we convert it to a float
 						$value = (float) $value;
@@ -1334,51 +1356,55 @@ abstract class Brass implements Brass_Interface
 						$value = (int) $value;
 					}
 				break;
+
 				case 'float':
 					$value = (float) $value;
 				break;
+
 				case 'timestamp':
-					if ( ! is_int($value))
+					if ( ! is_int($value) )
 					{
-						$value = ctype_digit($value)
-							? (int) $value
-							: strtotime($value);
+						$value = ctype_digit($value) ? (int) $value : strtotime($value);
 					}
 				break;
+
 				case 'boolean':
 					$value = (bool) $value;
 				break;
+
 				case 'email':
-					if ( ! $clean)
+					if ( ! $clean )
 					{
-						$value = strtolower(trim((string) $value));
+						$value = strtolower(trim( (string) $value));
 					}
 				break;
+
 				case 'string':
 					$value = trim((string) $value);
 
-					if ( ! $clean && strlen($value))
+					if ( ! $clean && strlen($value) )
 					{
 						$max_size = Arr::get($field, 'max_size', Brass::MAX_SIZE_STRING);
 
-						if ( UTF8::strlen($value) > $max_size)
+						if ( UTF8::strlen($value) > $max_size )
 						{
 							$value = UTF8::substr($value, 0, $max_size);
 						}
 
-						if ( Arr::get($field, 'xss_clean') && ! empty($value))
+						if ( Arr::get($field, 'xss_clean') AND ! empty($value) )
 						{
 							$value = Security::xss_clean($value);
 						}
 					}
 				break;
+
 				case 'has_one':
-					if ( is_array($value))
+					if ( is_array($value) )
 					{
 						$value = Brass::factory($field['model'], $value, $clean ? Brass::CLEAN : Brass::CHANGE);
 					}
 
-					if ( ! $value instanceof Brass)
+					if ( ! $value instanceof Brass )
 					{
 						$value = NULL;
 					}
@@ -1387,31 +1413,34 @@ abstract class Brass implements Brass_Interface
 						$value->set_parent($this);
 					}
 				break;
+
 				case 'has_many':
 					$value = new Brass_Set($value, $field['model'], Arr::get($field, 'duplicates', FALSE), $clean);
 
-					foreach ( $value as $model)
+					foreach ( $value as $model )
 					{
 						$model->set_parent($this);
 					}
 				break;
+
 				case 'counter':
 					$value = new Brass_Counter($value);
 				break;
+
 				case 'array':
 					$value = new Brass_Array($value, Arr::get($field, 'type_hint'), $clean);
 				break;
+
 				case 'set':
 					$value = new Brass_Set($value, Arr::get($field, 'type_hint'), Arr::get($field, 'duplicates', TRUE), $clean);
 				break;
+
 				case 'mixed':
-					$value = ! is_object($value)
-						? $value
-						: NULL;
+					$value = ! is_object($value) ? $value : NULL;
 				break;
 			}
 
-			if ( ! $clean && is_string($value) && $value === '')
+			if ( ! $clean && is_string($value) AND $value === '' )
 			{
 				$value = NULL;
 			}
@@ -1434,19 +1463,18 @@ abstract class Brass implements Brass_Interface
 	 */
 	protected function run_filters($name, $value)
 	{
-		if ( ! isset($this->_fields[$name]['filters']))
+		if ( ! isset($this->_fields[$name]['filters']) )
 		{
 			return $value;
 		}
 
 		// Bind the field name and model so they can be used in the filter method
-		$_bound = array
-		(
+		$_bound = [
 			':field' => $name,
 			':model' => $this,
-		);
+		];
 
-		foreach ($this->_fields[$name]['filters'] as $array)
+		foreach ( $this->_fields[$name]['filters'] as $array )
 		{
 			// Value needs to be bound inside the loop so we are always using the
 			// version that was modified by the filters that already ran
@@ -1454,23 +1482,22 @@ abstract class Brass implements Brass_Interface
 
 			// Filters are defined as array($filter, $params)
 			$filter = $array[0];
-			$params = Arr::get($array, 1, array(':value'));
+			$params = Arr::get($array, 1, [':value']);
 
-			foreach ($params as $key => $param)
+			foreach ( $params as $key => $param )
 			{
-				if (is_string($param) AND array_key_exists($param, $_bound))
+				if ( is_string($param) AND array_key_exists($param, $_bound) )
 				{
 					// Replace with bound value
 					$params[$key] = $_bound[$param];
 				}
 			}
 
-			if (is_array($filter))
+			if ( is_array($filter) )
 			{
 				// callback
-
 				// Allows filters: array(':model', 'some_rule');
-				if (is_string($filter[0]) AND array_key_exists($filter[0], $_bound))
+				if ( is_string($filter[0]) AND array_key_exists($filter[0], $_bound) )
 				{
 					// Replace with bound value
 					$filter[0] = $_bound[$filter[0]];
@@ -1478,12 +1505,12 @@ abstract class Brass implements Brass_Interface
 
 				$value = call_user_func_array($filter, $params);
 			}
-			elseif ( ! is_string($filter))
+			elseif ( ! is_string($filter) )
 			{
 				// This is a lambda
 				$value = call_user_func_array($filter, $params);
 			}
-			elseif (strpos($filter, '::') === FALSE)
+			elseif ( strpos($filter, '::') === FALSE )
 			{
 				// Use a function call
 				$function = new ReflectionFunction($filter);
@@ -1516,7 +1543,7 @@ abstract class Brass implements Brass_Interface
 	 */
 	public function has(Brass $model, $name = NULL)
 	{
-		if ( $name === NULL)
+		if ( $name === NULL )
 		{
 			$name = (string) $model;
 		}
@@ -1535,7 +1562,7 @@ abstract class Brass implements Brass_Interface
 	 */
 	public function add(Brass $model, $name = NULL)
 	{
-		if ( $name === NULL)
+		if ( $name === NULL )
 		{
 			$name = (string) $model;
 		}
@@ -1554,7 +1581,7 @@ abstract class Brass implements Brass_Interface
 	 */
 	public function remove(Brass $model, $name = NULL)
 	{
-		if ( $name === NULL)
+		if ( $name === NULL )
 		{
 			$name = (string) $model;
 		}
@@ -1571,13 +1598,13 @@ abstract class Brass implements Brass_Interface
 	 */
 	public function has_in_relation(Brass $model, $relation)
 	{
-		if ( isset($this->_relations[$relation]) && $this->_relations[$relation]['type'] === 'has_and_belongs_to_many')
+		if ( isset($this->_relations[$relation]) AND $this->_relations[$relation]['type'] === 'has_and_belongs_to_many' )
 		{
 			// related HABTM
 			$field = $relation . '_ids';
 			$value = $model->_id;
 		}
-		elseif ( isset($this->_fields[$relation]) && $this->_fields[$relation]['type'] === 'has_many' )
+		elseif ( isset($this->_fields[$relation]) AND $this->_fields[$relation]['type'] === 'has_many' )
 		{
 			// embedded Has Many
 			$field = $relation;
@@ -1585,8 +1612,10 @@ abstract class Brass implements Brass_Interface
 		}
 		else
 		{
-			throw new Brass_Exception('model :model has no relation with model :related',
-				array(':model' => $this->_model, ':related' => $relation));
+			throw new Brass_Exception(
+				'model :model has no relation with model :related',
+				[':model' => $this->_model, ':related' => $relation]
+			);
 		}
 
 		return isset($field)
@@ -1605,16 +1634,16 @@ abstract class Brass implements Brass_Interface
 	 */
 	public function add_to_relation(Brass $model, $relation, $returned = FALSE)
 	{
-		if ( $this->has_in_relation($model,$relation))
+		if ( $this->has_in_relation($model,$relation) )
 		{
 			// already added
 			return TRUE;
 		}
 
-		if ( isset($this->_relations[$relation]) && $this->_relations[$relation]['type'] === 'has_and_belongs_to_many')
+		if ( isset($this->_relations[$relation]) AND $this->_relations[$relation]['type'] === 'has_and_belongs_to_many')
 		{
 			// related HABTM
-			if ( ! $model->loaded() || ! $this->loaded() )
+			if ( ! $model->loaded() OR ! $this->loaded() )
 			{
 				return FALSE;
 			}
@@ -1622,10 +1651,9 @@ abstract class Brass implements Brass_Interface
 			$field = $relation . '_ids';
 
 			// try to push
-			if ( $this->__get($field)->push($model->_id))
+			if ( $this->__get($field)->push($model->_id) )
 			{
 				// push succeed
-
 				// column has to be reloaded
 				unset($this->_related[$relation]);
 
@@ -1645,7 +1673,10 @@ abstract class Brass implements Brass_Interface
 		}
 		else
 		{
-			throw new Brass_Exception('there is no :relation specified', array(':relation' => $relation));
+			throw new Brass_Exception(
+				'there is no :relation specified',
+				[':relation' => $relation]
+			);
 		}
 
 		return FALSE;
@@ -1662,48 +1693,48 @@ abstract class Brass implements Brass_Interface
 	 */
 	public function remove_from_relation(Brass $model, $relation, $returned = FALSE)
 	{
-		if ( ! $this->has_in_relation($model,$relation))
+		if ( ! $this->has_in_relation($model, $relation) )
 		{
 			// already removed
 			return TRUE;
 		}
 
-		if ( isset($this->_relations[$relation]) && $this->_relations[$relation]['type'] === 'has_and_belongs_to_many')
+		if ( isset($this->_relations[$relation]) AND $this->_relations[$relation]['type'] === 'has_and_belongs_to_many' )
 		{
 			// related HABTM
-			if ( ! $model->loaded() || ! $this->loaded())
-			{
+			if ( ! $model->loaded() OR ! $this->loaded() )
 				return FALSE;
-			}
 
 			$field = $relation . '_ids';
 
 			// try to pull
-			if ( $this->__get($field)->pull($model->_id))
+			if ( $this->__get($field)->pull($model->_id) )
 			{
 				// pull succeed
-
 				// column has to be reloaded
 				unset($this->_related[$relation]);
 
 				if ( ! $returned )
 				{
 					// remove relation from related model as well
-					$model->remove_from_relation($this,$this->_relations[$relation]['related_relation'],TRUE);
+					$model->remove_from_relation($this, $this->_relations[$relation]['related_relation'], TRUE);
 				}
 			}
 
 			// model has been removed or was already removed
 			return TRUE;
 		}
-		elseif ( isset($this->_fields[$relation]) && $this->_fields[$relation]['type'] === 'has_many' )
+		elseif ( isset($this->_fields[$relation]) AND $this->_fields[$relation]['type'] === 'has_many' )
 		{
 			// embedded Has_Many
 			return $this->__get($relation)->pull($model);
 		}
 		else
 		{
-			throw new Brass_Exception('there is no :relation specified', array(':relation' => $relation));
+			throw new Brass_Exception(
+				'there is no :relation specified',
+				[':relation' => $relation]
+			);
 		}
 
 		return FALSE;
@@ -1716,13 +1747,11 @@ abstract class Brass implements Brass_Interface
 	 */
 	public function _is_unique(Validation $array, $field)
 	{
-		if ( $this->loaded() AND ! $this->is_changed($field))
-		{
-			// This value is unchanged
+		// This value is unchanged
+		if ( $this->loaded() AND ! $this->is_changed($field) )
 			return TRUE;
-		}
 
-		return $this->db()->find_one( $this->_collection, array($field => $array[$field]), array('_id'=>TRUE)) === NULL;
+		return $this->db()->find_one($this->_collection, [$field => $array[$field]], ['_id'=>TRUE]) === NULL;
 	}
 
 	/**
@@ -1736,19 +1765,27 @@ abstract class Brass implements Brass_Interface
 	 */
 	public static function normalize($value, $clean = FALSE)
 	{
-		if ( $value instanceof Brass_Interface)
-		{
+		if ( $value instanceof Brass_Interface )
 			return $value->as_array( $clean );
-		}
-		elseif ( $value instanceof MongoId)
-		{
-			return $clean
-				? $value
-				: (string) $value;
-		}
+		elseif ( $value instanceof MongoId )
+			return $clean ? $value : (string) $value;
 		else
-		{
 			return $value;
+	}
+
+	public function as_form()
+	{
+		$form = [];
+
+		foreach ( $this->_fields as $field_name => $field_data )
+		{
+			if ( preg_match('/^_/', $field_name) )
+				break;
+
+			$form[] = Form::label($field_name, $field_name);
+			$form[] = Form::input($field_name, '', ['placeholder' => $field_name]);
 		}
+
+		return $form;
 	}
 }

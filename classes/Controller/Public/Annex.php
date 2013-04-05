@@ -61,7 +61,7 @@ class Controller_Public_Annex extends Controller_Public
             }
         }
 
-        $this->template->main->content = Theme::view('views/forms/register')
+        $this->template->main->content = Theme::factory('views/forms/register')
             ->bind('username', $username)
             ->bind('password', $password)
             ->bind('password_confirm', $password_confirm)

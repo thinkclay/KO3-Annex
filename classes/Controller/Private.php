@@ -9,9 +9,9 @@
  */
 abstract class Controller_Private extends Controller_Template
 {
-    public $template = '../themes/default/views/wrapper';
+    public $template = NULL;
 
-    public static $user = false;
+    public static $user = FALSE;
 
     /**
      * Before Other Functions
@@ -22,6 +22,10 @@ abstract class Controller_Private extends Controller_Template
      */
     public function before()
     {
+        // Set the default theme before we our Template Controller kicks in
+        $theme = Kohana::$config->load('annex_annex.theme.name');
+        $this->template = '../themes/'.($theme ? $theme : 'default').'/views/wrapper';
+
         parent::before();
 
         static::$user = Authorize::instance('private')->get_user();
@@ -49,9 +53,9 @@ abstract class Controller_Private extends Controller_Template
             // Load our default wrappers to the view, but do it on before so that the controller->action can override
             $this->template->bind_global('user', self::$user);
             $this->template->id = $controller;
-            $this->template->header = Theme::view('views/container/header');
-            $this->template->main = Theme::view('views/container/main');
-            $this->template->footer = Theme::view('views/container/footer');
+            $this->template->header = Theme::factory('views/container/header');
+            $this->template->main = Theme::factory('views/container/main');
+            $this->template->footer = Theme::factory('views/container/footer');
         }
     }
 }

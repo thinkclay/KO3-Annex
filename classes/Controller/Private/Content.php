@@ -40,6 +40,20 @@ class Controller_Private_Content extends Controller_Private
             // load all users from the database and list them here in a table
             var_dump( Brass::factory('Brass_User')->load()->as_array() );
         }
+    }
 
+
+    public function action_create()
+    {
+        $model = Request::$current->param('model');
+        $driver = ucfirst(Kohana::$config->load('annex_core.driver'));
+
+        if ( $model AND $driver )
+        {
+            // load all users from the database and list them here in a table
+            $form_data = Brass::factory('Brass_User')->as_form();
+            $this->template->main->content = Theme::factory('views/forms/form')
+                ->bind('elements', $form_data);
+        }
     }
 }

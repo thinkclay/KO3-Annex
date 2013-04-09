@@ -25,7 +25,7 @@ class Controller_Public_Styles extends Controller_Public
 
         if ( ! $path = Kohana::$config->load($module.'_annex.theme.styles') )
         {
-            $path = Kohana::$config->load('theme_'.$module.'_annex.theme.styles');
+            $path = Kohana::$config->load('theme_'.$module.'_annex.styles');
         }
 
         // Find the file extension

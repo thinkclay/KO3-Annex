@@ -1782,6 +1782,8 @@ abstract class Brass implements Brass_Interface
 			if ( preg_match('/^_/', $field_name) )
 				break;
 
+			var_dump($field_data);
+
 			$form[] = Form::label($field_name, $field_name);
 			$form[] = Form::input($field_name, '', ['placeholder' => $field_name]);
 		}

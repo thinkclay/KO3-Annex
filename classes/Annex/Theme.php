@@ -8,7 +8,6 @@
  * @category    Base
  * @author      Jiran Dowlati
  */
-
 class Annex_Theme
 {
     // View file name
@@ -49,13 +48,13 @@ class Annex_Theme
             static::$_theme_name = $theme;
         }
 
-        if ( $file !== NULL)
+        if ( $file !== NULL )
         {
             // Sets file name
             $this->set_filename($theme, $file);
         }
 
-        if ($data !== NULL)
+        if ($data !== NULL )
         {
             // Add values to the current data array
             $this->_data = $data + $this->_data;
@@ -290,21 +289,40 @@ class Annex_Theme
      */
     public function set_filename($theme, $file)
     {
-        if( $path = Kohana::find_file('themes', $theme . '/' . $file) )
+        if ( $path = Kohana::find_file('themes', $theme . '/' . $file) )
         {
             $this->_ext = $this->get_extension($path);
             $this->_file = $path;
+
+            return $path;
         }
-        elseif( $path = Kohana::find_file('themes', 'default/' . $file) )
+        elseif ( $path = Kohana::find_file('themes', 'default/' . $file) )
         {
             $this->_ext = $this->get_extension($path);
             $this->_file = $path;
+
+            return $path;
         }
         else
         {
             echo "Couldn't set file beacuse file could not be found in any folders";
         }
+    }
 
+    /**
+     * If we find the wrapper file for the user's theme we will use return that file path for the Public or Private wrappers
+     *
+     * @return  string  the relative file path to the theme wrapper
+     *
+     * @todo    this currently only works within annex folder and we want it to work for the app path as well
+     */
+    public function get_theme_wrapper()
+    {
+
+        if ( Kohana::find_file('themes', static::$_theme_name.'/views/wrapper') )
+            return '../themes/'.static::$_theme_name.'/views/wrapper';
+        else
+            return '../themes/default/views/wrapper';
     }
 
     /**
@@ -313,7 +331,7 @@ class Annex_Theme
      *
      *  Theme::capture($this->_file, $this->_data);
      *
-     * @param   string view filename, array view data
+     * @param   string  view filename, array view data
      * @return  the output of the file passed.
      */
     /**
@@ -410,8 +428,4 @@ class Annex_Theme
         $this->bind('styles', $styles);
 
     }
-
-
 }
-
-?>

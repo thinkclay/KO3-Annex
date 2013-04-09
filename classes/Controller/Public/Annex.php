@@ -14,8 +14,8 @@ class Controller_Public_Annex extends Controller_Public
         parent::before();
 
         $this->template->styles = [
-            "http://twitter.github.com/bootstrap/assets/css/bootstrap.css" => "all",
-            "http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" => "screen"
+            "/styles/annex/bootstrap.css" => "all",
+            "/styles/annex/bootstrap-responsive.css" => "screen"
         ];
         $this->template->scripts = [
         ];
@@ -113,7 +113,7 @@ class Controller_Public_Annex extends Controller_Public
             }
         }
 
-        $this->template->main->content = Theme::view('views/forms/login')
+        $this->template->main->content = Theme::factory('views/forms/login')
             ->bind('username', $username)
             ->bind('password', $password);
     }

@@ -42,11 +42,27 @@ Route::set('scripts', 'scripts(/<module>(/<file>))', array('file' => '.+'))
  *
  * We want to extend and append to the bootstrap modules
  */
-$annex_modules = array(
+$annex_modules = [
     'auth'  => ANXMODS.'Auth',  // Custom authentication framework
     'brass' => ANXMODS.'Brass', // ORM Layer for MongoDb
     'less'  => ANXMODS.'Less',  // Less Compiler Module
     'annex' => MODPATH.'annex', // Annex Extension Loader
-);
+];
 
-Annex::factory(Kohana::$_modules, $annex_modules);
+/**
+ * Get our themes as modules
+ *
+ * Themes in the application path will override themes in modules path if they have the same name.
+ * These themes will behave like modules calling the init file and gathering assets the same
+ */
+$theme_check = array_merge(glob(MODPATH.'*/*themes/*'), glob(APPPATH.'*themes/*'));
+$themes = [];
+
+foreach ( $theme_check as $theme )
+{
+    preg_match('/(?<=themes\/).*/i', $theme, $theme_name);
+    $theme_name = strtolower($theme_name[0]);
+    $themes[$theme_name] = $theme;
+}
+
+Annex::factory(Kohana::$_modules, $annex_modules, $themes);

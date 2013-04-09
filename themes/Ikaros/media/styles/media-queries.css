@@ -1,0 +1,467 @@
+/*-----------------------------------------------------------------------------------*/
+/*	MEDIA QUERIES
+/*-----------------------------------------------------------------------------------*/
+/* iPad Landscape */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) { 
+	
+	.zetaSlider:hover .zetaControls {
+		opacity: 0; 
+		filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+		-MS-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	}
+
+}
+
+/* Tablet Portrait size to standard 960 (devices and browsers) */
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+
+	.header {
+		width: 740px;
+	}
+	
+	.wrapper, 
+	.footer,
+	.site-generator {
+		width: 720px;
+	}
+	
+	.menu ul li a {
+		padding: 35px 18px 30px;
+	}
+	
+	 .banner, .bannercontainer {
+		width:720px;
+		height:360px;
+	}
+	
+	.items li {
+		width: 232px;
+		height: auto;
+	}
+	
+	.items li a .caption {
+		padding: 25px 20px 0;
+	}
+	
+	.latest-blog li {
+		width: 345px;
+		margin: 0 30px 30px 0;
+	}
+	
+	.tparrows {
+		display: none;
+	}
+	
+	.posts-grid {
+		margin-bottom: 24px;
+		margin-right: -24px;
+	} 
+	
+	.posts-grid .post {
+		margin: 0 24px 24px 0;
+		width: 348px;
+		height: auto;
+	} 
+	
+	.post-container {
+		width: 480px;
+	}
+	
+	.sidebar {
+		width: 210px;
+	}
+	
+	.post-container .related ul {
+		width: 488px;
+		margin-right: -8px;
+	}
+	
+	.post-container .related ul li {
+		margin-right: 8px;
+	}
+	
+	.post-container .related ul li img{
+		width: 114px;
+		height: auto;
+	}
+	
+	.zetaHolder {
+		height:400px;
+	}
+
+	.zetaEmpty div {
+		height:400px;
+	}
+
+	.zetaSlider:hover .zetaControls {
+		opacity: 0; 
+		filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+		-MS-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	}
+
+}/* END Smaller than standard 960 (devices and browsers) */
+
+/* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+	
+	.header,
+	.wrapper, 
+	.footer,
+	.site-generator {
+		width: 440px;
+	}
+	
+	.logo {
+		float: none;
+		text-align: center;
+		margin: 0;
+		padding: 25px 0;
+	}
+	
+	.logo img {
+		display: inline;
+	}
+
+	.menu {
+		float: none;
+		text-transform: none;
+		background: none;
+		padding: 0;
+	}
+	
+	.menu ul#tiny {
+		display: none;
+	}
+	
+	.selectnav {
+		display: block;
+	}
+	
+	.tparrows {
+		display: none;
+	}
+	
+	 .banner, .bannercontainer {
+		 width:440px;
+		 height:230px;
+	}
+	
+	 .tp-bullets.simplebullets .bullet {
+		 width:15px;
+		 height:15px;
+		 -webkit-border-radius: 15px;
+		 border-radius: 15px;
+		 margin:5px;
+	}
+	
+	.tab { 
+		display: block;
+		top: 0;
+	}
+	
+	.latest-blog li {
+	    width: 440px;
+	}
+
+	#testimonials-container .tab {
+		display: inline-block;
+		*display:inline; 
+		width: 13px;
+		height: 13px;
+		border-radius: 13px;
+		margin: 0 3px;
+	}
+
+	.one-half, .one-third, .two-third, .three-fourth, .one-fourth, .one-fifth, .one-sixth {
+		margin: 0;
+		width: 100%;
+		margin-bottom: 20px;
+		float: none;
+	}
+	
+	.footer .one-half, .footer .one-third, .footer .two-third, .footer .three-fourth, .footer .one-fourth, .footer .one-fifth, .footer .one-sixth {
+		margin-bottom: 40px;
+	}
+	
+	.footer .last {
+		margin-bottom: 0;
+	}
+	
+	.pricing.three .plan,
+	.pricing.four .plan {width:47%; float: left; margin-left: 2%; margin-bottom: 10px;}
+
+	.items li {
+		width: 214px;
+		height: auto;
+	}
+	
+	.items li a .caption {
+		padding: 25px 20px 0;
+	}
+	
+	.filter li {
+		background: none;
+		padding: 5px 10px 5px 10px;
+	}
+	
+	.item-info .portfolio-meta {
+		background: transparent url(../images/line.png) repeat-x center top;
+		padding-top: 25px;
+	}
+	
+	.post-container {
+		width: 440px;
+		float: none;
+	}
+	
+	.sidebar {
+		width: 440px;
+		float: none;
+		padding: 0;
+		margin: 0;
+		background: none;
+	}
+	
+	.post-container .related ul {
+		width: 448px;
+		margin-right: -8px;
+	}
+	
+	.post-container .related ul li {
+		margin-right: 8px;
+	}
+	
+	.post-container .related ul li img{
+		width: 104px;
+		height: auto;
+	}
+	
+	.posts-grid {
+		margin-bottom: 20px;
+		margin-right: -20px;
+	} 
+	
+	.posts-grid .post {
+		margin: 0 20px 20px 0;
+		width: 210px;
+		height: auto;
+	} 
+	
+	.fancybox-title {
+		display: none;
+	}
+	
+	.zetaHolder {
+		height:200px;
+	}
+
+	.zetaEmpty div {
+		height:200px;
+	}
+
+	.zetaSlider:hover .zetaControls {
+		opacity: 0; 
+		filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+		-MS-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	}
+	
+	.zetaWarning {
+	    display:none !important;
+	}
+
+}/* END Mobile Landscape Size to Tablet Portrait (devices and browsers) */
+
+/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
+@media only screen and (max-width: 479px) {
+
+	
+	.header,
+	.wrapper, 
+	.footer,
+	.site-generator {
+		width: 280px;
+	}
+	
+	.logo {
+		float: none;
+		text-align: center;
+		margin: 0;
+		padding: 25px 0;
+	}
+	
+	.logo img {
+		display: inline;
+	}
+
+	.menu {
+		float: none;
+		text-transform: none;
+		background: none;
+		padding: 0;
+	}
+	
+	.menu ul#tiny {
+		display: none;
+	}
+	
+	.selectnav {
+		display: block;
+	}
+	
+	 .banner, .bannercontainer {
+		width:310px;
+		height:170px;
+	}
+	
+	.latest-blog li {
+	    width: 280px;
+	}
+	
+	.tparrows {
+		display: none;
+	}
+
+	.tab { 
+		display: block;
+		top: 0;
+	}
+	
+	#testimonials-container .tab {
+		display: inline-block;
+		*display:inline; 
+		width: 13px;
+		height: 13px;
+		border-radius: 13px;
+		margin: 0 3px;
+	}
+
+	.one-half, .one-third, .two-third, .three-fourth, .one-fourth, .one-fifth, .one-sixth {
+		margin: 0;
+		width: 100%;
+		margin-bottom: 20px;
+		float: none;
+	}
+	
+	.footer .one-half, .footer .one-third, .footer .two-third, .footer .three-fourth, .footer .one-fourth, .footer .one-fifth, .footer .one-sixth {
+		margin-bottom: 40px;
+	}
+	
+	.footer .last {
+		margin-bottom: 0;
+	}
+	
+	.pricing.three .plan,
+	.pricing.four .plan {width:100%; float: none; margin-left: 0; margin-bottom: 10px;}
+	
+	.post-container {
+		width: 280px;
+		float: none;
+	}
+	
+	.sidebar {
+		width: 280px;
+		float: none;
+		padding: 0;
+		margin: 0;
+		background: none;
+	}
+	
+	.post-container .related ul {
+		width: 288px;
+		margin-right: -8px;
+	}
+	
+	.post-container .related ul li {
+		margin-right: 8px;
+		margin-bottom: 8px;
+	}
+	
+	.post-container .related ul li img{
+		width: 136px;
+		height: auto;
+	}
+	
+	#comments .user {
+		display: none;
+	}
+	
+	#comments ul.children {
+		padding:0 0 0 20px;
+	}
+	
+	.posts-grid {
+		margin-bottom: 20px;
+		margin-right: 0;
+	} 
+	
+	.posts-grid .post {
+		margin: 0 0 20px 0;
+		width: 280px;
+		height: auto;
+	} 
+	
+	.fancybox-title {
+		display: none;
+	}
+	
+	.items li {
+		width: 134px;
+		height: auto;
+	}
+	
+	.items li a .caption {
+		opacity: 0;
+	}
+	
+	.filter li {
+		background: none;
+		padding: 5px 10px 5px 10px;
+	}
+	
+	.item-info .portfolio-meta {
+		background: transparent url(../images/line.png) repeat-x center top;
+		padding-top: 25px;
+	}
+	
+	.copyright {
+		float: none;
+		max-width: 100%;
+		text-align: center;
+		margin-bottom: 20px;
+	}
+	
+	.social {
+		float: none;
+		max-width: 100%;
+		text-align: center;
+	}
+	
+	.social li {
+		float: none;
+		display: inline-block;
+		margin: 0 2px;
+	}
+	
+	.social li a {
+		display: inline-block;
+	}
+	
+	.zetaHolder {
+		height:200px;
+	}
+
+	.zetaEmpty div {
+		height:200px;
+	}
+
+	.zetaSlider:hover .zetaControls {
+		opacity: 0; 
+		filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+		-MS-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	}
+	
+	.zetaWarning {
+	    display:none !important;
+	}
+
+}/* END Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */

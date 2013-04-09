@@ -1,18 +1,20 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
- * Annex - Public Script Controller
+ * Annex - Public Images Controller
  *
- * Manage script loading
+ * Manages stylesheet loading
  *
  * @package     Annex
  * @category    Public
  * @author      Clay McIlrath
  */
-class Controller_Public_Scripts extends Controller_Public
+class Controller_Public_Images extends Controller_Public
 {
     /**
-     * Scripts - Renders Javascript Paths
+     * Styles - Renders CSS and LESS stylesheet
+     *
+     * @usage   /styles/annex/global.less which is /styles/<module>/<file>
      */
     public function action_index()
     {
@@ -21,9 +23,9 @@ class Controller_Public_Scripts extends Controller_Public
         $module = $this->request->param('module');
         $file = $this->request->param('file');
 
-        if ( ! $path = Kohana::$config->load($module.'_annex.theme.scripts') )
+        if ( ! $path = Kohana::$config->load($module.'_annex.theme.images') )
         {
-            $path = Kohana::$config->load('theme_'.$module.'_annex.scripts');
+            $path = Kohana::$config->load('theme_'.$module.'_annex.images');
         }
 
         // Find the file extension
@@ -33,7 +35,7 @@ class Controller_Public_Scripts extends Controller_Public
         // Get the server path to the file
         $file = Kohana::find_file($path, $file['filename'], $ext);
 
-        if ($file)
+        if ( $file )
         {
             // Check if the browser sent an "if-none-match: <etag>" header, and tell if the file hasn't changed
             Controller::check_cache(sha1($this->request->uri()).filemtime($file), $this->request);

@@ -34,6 +34,8 @@ return [
         'settings'  => [
             'media' => 'builder'
         ],
+        'public'    => TRUE, // Should this be used for the public site?
+        'private'   => TRUE, // Should this be used for the public site?
         'compress'  => TRUE,
         'path'      => 'public/cache/', // relative path to a writable folder to store compiled / compressed css
         'styles'    => 'themes/default/media/styles',

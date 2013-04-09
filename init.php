@@ -36,6 +36,14 @@ Route::set('scripts', 'scripts(/<module>(/<file>))', array('file' => '.+'))
         'file'          => NULL,
     ));
 
+Route::set('images', 'images(/<module>(/<file>))', array('file' => '.+'))
+    ->defaults(array(
+        'directory'     => 'public',
+        'controller'    => 'images',
+        'action'        => 'index',
+        'file'          => NULL,
+    ));
+
 
 /**
  * Enable modules. Modules are referenced by a relative or absolute path.

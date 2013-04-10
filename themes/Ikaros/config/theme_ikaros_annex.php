@@ -15,8 +15,10 @@ return [
         '0.0.2' => ['update' => 'authenticate, acl, and admin panel']
     ],
 
-    'settings'  => [
-        'media' => 'builder'
+    'settings' => [
+        'media'     => 'builder',
+        'etags'     => TRUE,
+        'expires'   => '2 weeks',
     ],
     'compress'  => TRUE,
     'path'      => 'public/cache/', // relative path to a writable folder to store compiled / compressed css

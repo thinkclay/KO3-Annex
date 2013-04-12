@@ -12,11 +12,25 @@ Route::set('annex', 'annex(/<controller>(/<action>(/<model>(/<id>))))')
     ));
 
 // Annex Login
-Route::set('account', 'account(/<action>(/<id>))')
+Route::set('account login', 'account/login')
     ->defaults(array(
         'directory'     => 'public',
         'controller'    => 'annex',
         'action'        => 'login',
+    ));
+
+Route::set('account logout', 'account/logout')
+    ->defaults(array(
+        'directory'     => 'public',
+        'controller'    => 'annex',
+        'action'        => 'logout',
+    ));
+
+Route::set('account register', 'account/register')
+    ->defaults(array(
+        'directory'     => 'public',
+        'controller'    => 'annex',
+        'action'        => 'register',
     ));
 
 // Static file serving

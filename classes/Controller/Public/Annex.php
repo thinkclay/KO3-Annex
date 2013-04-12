@@ -14,8 +14,8 @@ class Controller_Public_Annex extends Controller_Public
         parent::before();
 
         $this->template->styles = [
-            "/styles/annex/bootstrap.css" => "all",
-            "/styles/annex/bootstrap-responsive.css" => "screen"
+            "/styles/default/bootstrap.css" => "all",
+            "/styles/default/bootstrap-responsive.css" => "screen"
         ];
         $this->template->scripts = [
         ];

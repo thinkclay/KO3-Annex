@@ -21,8 +21,8 @@ return [
         'expires'   => '2 weeks',
     ],
     'compress'  => TRUE,
-    'path'      => 'public/cache/', // relative path to a writable folder to store compiled / compressed css
-    'styles'    => 'themes/ikaros/media/styles',
+    'cache'      => 'cache/', // relative path from DOCROOT with a writable folder to store compiled / compressed css
+    'styles'    => 'media/styles',
     'scripts'   => 'themes/ikaros/media/scripts',
     'images'    => 'themes/ikaros/media/images',
     'views'     => 'themes/ikaros/views/'

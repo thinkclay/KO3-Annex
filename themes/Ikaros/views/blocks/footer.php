@@ -1,24 +1,3 @@
-
-
-
-
-
-
-
-
-  <hr />
-
-
-
-
-
-
-
-
-<!-- Begin Footer -->
-<div class="footer-wrapper">
-  <div class="footer-light"></div>
-  <div class="footer">
     <div class="one-fourth">
       <h3>Popular Posts</h3>
       <ul class="post-list">
@@ -79,26 +58,3 @@
       <!-- End Form -->
     </div>
     <div class="clear"></div>
-  </div>
-</div>
-<!-- End Footer -->
-<!-- Begin Site Generator -->
-<div class="site-generator-wrapper">
-  <div class="site-generator">
-    <div class="copyright">
-      <p>© 2012 Ikaros. Theme by elemis</p>
-    </div>
-    <ul class="social">
-      <li><a class="rss" href="#"></a></li>
-      <li><a class="facebook" href="#"></a></li>
-      <li><a class="twitter" href="#"></a></li>
-      <li><a class="dribbble" href="#"></a></li>
-      <li><a class="pinterest" href="#"></a></li>
-      <li><a class="linkedin" href="#"></a></li>
-    </ul>
-    <div class="clear"></div>
-  </div>
-</div>
-<!-- End Site Generator -->
-
-<script type="text/javascript" src="style/js/scripts.js"></script>

@@ -19,7 +19,7 @@ return [
         'media' => 'builder'
     ],
     'compress'  => TRUE,
-    'path'      => 'public/cache/', // relative path to a writable folder to store compiled / compressed css
+    'cache'      => 'cache/', // relative path from DOCROOT with a writable folder to store compiled / compressed css
     'styles'    => 'themes/default/media/styles',
     'scripts'   => 'themes/default/media/scripts',
     'views'     => 'themes/default/views/'

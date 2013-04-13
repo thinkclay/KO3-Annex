@@ -3,229 +3,261 @@
 /**
  * Less - A module wrapper for the Less CSS Compiler
  *
- * @package		Annex
- * @category	Less
- * @author		Clay McIlrath
+ * @package     Annex
+ * @category    Less
+ * @author      Clay McIlrath
  */
 class Less_Core
 {
-	// Default less files extension
-	public static $ext = '.less';
+    // Default less files extension
+    public static $ext = '.less';
 
-	/**
-	 * Get the link tag of less paths
-	 *
-	 * @param	mixed	$array	css paths or single path
-	 * @param	string	$media	value of media css type
-	 * @return	string	link tag pointing to the css paths
-	 */
-	public static function compile($array = '', $media = 'screen')
-	{
-		$array = (array) $array;
+    public static function factory($filename, $format = 'cache')
+    {
+        return self::_get_filename($filename, Theme::get_setting('cache'));
+    }
 
-		// return comment if array is empty
-		if (empty($array))
-			return self::_html_comment('no less files');
+    /**
+     * Get the link tag of less paths
+     *
+     * @param   mixed   $array  css paths or single path
+     * @param   string  $media  value of media css type
+     * @return  string  link tag pointing to the css paths
+     */
+    public static function compile($array = '', $media = 'screen')
+    {
+        $array = (array) $array;
 
-		$stylesheets = array();
-		$assets = array();
+        // return comment if array is empty
+        if ( empty($array) )
+            throw new Annex_Exception('less compile was called without a file');
 
-		// validate
-		foreach ($array as $file)
-		{
-			if (file_exists($file))
-			{
-				array_push($stylesheets, $file);
-			}
-			elseif (file_exists($file.self::$ext))
-			{
-				array_push($stylesheets, $file.self::$ext);
-			}
-			else
-			{
-				array_push($assets, self::_html_comment('could not find '.Debug::path($file).self::$ext));
-			}
-		}
+        $stylesheets = [];
+        $assets = [];
 
-		// all stylesheets are invalid
-		if ( ! count($stylesheets))
-			return self::_html_comment('all less files are invalid');
+        // validate
+        foreach ( $array as $file )
+        {
+            if ( file_exists($file) )
+            {
+                array_push($stylesheets, $file);
+            }
+            else if ( file_exists($file.self::$ext) )
+            {
+                array_push($stylesheets, $file.self::$ext);
+            }
+            else
+            {
+                array_push($assets, self::_html_comment('could not find '.Debug::path($file).self::$ext));
+            }
+        }
 
-		// get less config
-		$config = Kohana::$config->load('annex_annex.theme');
+        // all stylesheets are invalid
+        if ( ! count($stylesheets) )
+            return self::_html_comment('all less files are invalid');
 
-		// if compression is allowed
-		if ($config['compress'])
-			return html::style(self::_combine($stylesheets), array('media' => $media));
+        // if compression is allowed
+        if ( Theme::get_setting('compress') )
+            return html::style(self::_combine($stylesheets), ['media' => $media]);
 
-		// if no compression
-		foreach ($stylesheets as $file)
-		{
-			$filename = self::_get_filename($file, $config['path']);
-			array_push($assets, html::style($filename, array('media' => $media)));
-		}
+        // if no compression
+        foreach ( $stylesheets as $file )
+        {
+            $filename = self::_get_filename($file, Theme::get_setting('cache'));
+            array_push($assets, html::style($filename, ['media' => $media]));
+        }
 
-		return implode("\n", $assets);
-	}
+        return implode("\n", $assets);
+    }
 
-	/**
-	 * Compress the css file
-	 *
-	 * @param	string	$data	css string to compress
-	 * @return	string	compressed css string
-	 */
-	private static function _compress($data)
-	{
-		$data = preg_replace('~/\*[^*]*\*+([^/][^*]*\*+)*/~', '', $data);
-		$data = preg_replace('~\s+~', ' ', $data);
-		$data = preg_replace('~ *+([{}+>:;,]) *~', '$1', trim($data));
-		$data = str_replace(';}', '}', $data);
-		$data = preg_replace('~[^{}]++\{\}~', '', $data);
+    /**
+     * Check if the asset exists already, if not generate an asset
+     *
+     * @param   string  $file   filename of the css file
+     * @param   string  $path   path to the css file
+     * @return  string  path to the asset file
+     */
+    public static function get_file($file, $path)
+    {
 
-		return $data;
-	}
+        // get the filename
+        $filename = preg_replace('/^.+\//', '', $file);
 
-	/**
-	 * Check if the asset exists already, if not generate an asset
-	 *
-	 * @param	string	$file	filename of the css file
-	 * @param	string	$path	path to the css file
-	 * @return	string	path to the asset file
-	 */
-	protected static function _get_filename($file, $path)
-	{
-		// get the filename
-		$filename = preg_replace('/^.+\//', '', $file);
+        // get the last modified date
+        $last_modified = self::_get_last_modified(array($file));
 
-		// get the last modified date
-		$last_modified = self::_get_last_modified(array($file));
+        // compose the expected filename to store in /media/css
+        $compiled = $filename.'-'.$last_modified.'.css';
 
-		// compose the expected filename to store in /media/css
-		$compiled = $filename.'-'.$last_modified.'.css';
+        // compose the expected file path
+        $filename = Theme::get_setting('cache').$compiled;
 
-		// compose the expected file path
-		$filename = $path.$compiled;
+        // if the file exists no need to generate
+        if ( ! file_exists($filename) )
+        {
+            touch($filename, filemtime($file) - 3600);
 
-		// if the file exists no need to generate
-		if ( ! file_exists($filename))
-		{
-			touch($filename, filemtime($file) - 3600);
+            lessc::ccompile($file, $filename);
+        }
 
-			lessc::ccompile($file, $filename);
-		}
+        return $filename;
+    }
 
-		return $filename;
-	}
+    /**
+     * Compress the css file
+     *
+     * @param   string  $data   css string to compress
+     * @return  string  compressed css string
+     */
+    private static function _compress($data)
+    {
+        $data = preg_replace('~/\*[^*]*\*+([^/][^*]*\*+)*/~', '', $data);
+        $data = preg_replace('~\s+~', ' ', $data);
+        $data = preg_replace('~ *+([{}+>:;,]) *~', '$1', trim($data));
+        $data = str_replace(';}', '}', $data);
+        $data = preg_replace('~[^{}]++\{\}~', '', $data);
 
-	/**
-	 * Combine the files
-	 *
-	 * @param	array	$files	array of asset files
-	 * @return	string	path to the asset file
-	 */
-	protected static function _combine($files)
-	{
-		// get assets' css config
-		$config = Kohana::$config->load('annex_annex.theme');
+        return $data;
+    }
 
-		// get the most recent modified time of any of the files
-		$last_modified = self::_get_last_modified($files);
+    /**
+     * Check if the asset exists already, if not generate an asset
+     *
+     * @param   string  $file   filename of the css file
+     * @param   string  $path   path to the css file
+     * @return  string  path to the asset file
+     */
+    protected static function _get_filename($file, $path)
+    {
+        // get the filename
+        $filename = preg_replace('/^.+\//', '', $file);
 
-		// compose the asset filename
-		$compiled = md5(implode('|', $files)).'-'.$last_modified.'.css';
+        // get the last modified date
+        $last_modified = self::_get_last_modified(array($file));
 
-		// compose the path to the asset file
-		$filename = $config['path'].$compiled;
+        // compose the expected filename to store in /media/css
+        $compiled = $filename.'-'.$last_modified.'.css';
 
-		// if the file exists no need to generate
-		if ( ! file_exists($filename))
-		{
-			self::_generate_assets($filename, $files);
-		}
+        // compose the expected file path
+        $filename = $path.$compiled;
 
-		return $filename;
-	}
+        // if the file exists no need to generate
+        if ( ! file_exists($filename) )
+        {
+            touch($filename, filemtime($file) - 3600);
 
-	/**
-	 * Generate an asset file
-	 *
-	 * @param	string	$filename	filename of the asset file
-	 * @param	array	$files	array of source files
-	 */
-	protected static function _generate_assets($filename, $files)
-	{
-		// create data holder
-		$data = '';
-		$filename = realpath(DOCROOT.'../'.$filename);
+            lessc::ccompile($file, $filename);
+        }
 
-		touch($filename);
+        return $filename;
+    }
 
-		ob_start();
+    /**
+     * Combine the files
+     *
+     * @param   array   $files  array of asset files
+     * @return  string  path to the asset file
+     */
+    protected static function _combine($files)
+    {
+        // get the most recent modified time of any of the files
+        $last_modified = self::_get_last_modified($files);
 
-		foreach($files as $file)
-		{
-			$data .= file_get_contents($file);
-		}
+        // compose the asset filename
+        $compiled = md5(implode('|', $files)).'-'.$last_modified.'.css';
 
-		echo $data;
+        // compose the path to the asset file
+        if ( ! $cache = realpath(DOCROOT.Theme::get_setting('cache')) )
+            throw new Annex_Exception('the cache path '.DOCROOT.$cache.' could not be found');
 
-		file_put_contents($filename, ob_get_clean(), LOCK_EX);
+        $filename = $cache.'/'.$compiled;
 
-		self::_compile($filename);
-	}
+        // if the file exists no need to generate
+        if ( ! file_exists($filename) )
+        {
+            self::_generate_assets($filename, $files);
+        }
 
-	/**
-	 * Compiles the file from less to css format
-	 *
-	 * @param	string	$filename	path to the file to compile
-	 */
-	public static function _compile($filename)
-	{
-		$less = new lessc($filename);
+        return $filename;
+    }
 
-		try
-		{
-			$compiled = $less->parse();
-			$compressed = self::_compress($compiled);
-			file_put_contents($filename, $compressed);
-		}
-		catch (LessException $ex)
-		{
-			exit($ex->getMessage());
-		}
-	}
+    /**
+     * Generate an asset file
+     *
+     * @param   string  $filename   filename of the asset file
+     * @param   array   $files  array of source files
+     */
+    protected static function _generate_assets($filename, $files)
+    {
+        // create data holder
+        $data = '';
 
-	/**
-	 * Get the most recent modified date of files
-	 *
-	 * @param	array	$files	array of asset files
-	 * @return	string	path to the asset file
-	 */
-	protected static function _get_last_modified($files)
-	{
-		$last_modified = 0;
+        touch($filename);
 
-		foreach ($files as $file)
-		{
-			$modified = filemtime($file);
+        ob_start();
 
-			if ($modified !== false AND $modified > $last_modified)
-			{
-				$last_modified = $modified;
-			}
-		}
+        foreach ( $files as $file )
+        {
+            $data .= file_get_contents($file);
+        }
 
-		return $last_modified;
-	}
+        file_put_contents($filename, ob_get_clean(), LOCK_EX);
 
-	/**
-	 * Format string to HTML comment format
-	 *
-	 * @param	string	$string	string to format
-	 * @return	string	HTML comment
-	 */
-	protected static function _html_comment($string = '')
-	{
-		return '<!-- '.$string.' -->';
-	}
+        self::_compile($filename);
+    }
+
+    /**
+     * Compiles the file from less to css format
+     *
+     * @param   string  $filename   path to the file to compile
+     */
+    public static function _compile($filename)
+    {
+        $less = new lessc($filename);
+
+        try
+        {
+            $compiled = $less->parse();
+            $compressed = self::_compress($compiled);
+            file_put_contents($filename, $compressed);
+        }
+        catch (LessException $ex)
+        {
+            exit($ex->getMessage());
+        }
+    }
+
+    /**
+     * Get the most recent modified date of files
+     *
+     * @param   array   $files  array of asset files
+     * @return  string  path to the asset file
+     */
+    protected static function _get_last_modified($files)
+    {
+        $last_modified = 0;
+
+        foreach ($files as $file)
+        {
+            $modified = filemtime($file);
+
+            if ($modified !== false AND $modified > $last_modified)
+            {
+                $last_modified = $modified;
+            }
+        }
+
+        return $last_modified;
+    }
+
+    /**
+     * Format string to HTML comment format
+     *
+     * @param   string  $string string to format
+     * @return  string  HTML comment
+     */
+    protected static function _html_comment($string = '')
+    {
+        return '<!-- '.$string.' -->';
+    }
 }

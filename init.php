@@ -34,7 +34,7 @@ Route::set('account register', 'account/register')
     ));
 
 // Static file serving
-Route::set('styles', 'styles(/<module>(/<file>))', array('file' => '.+'))
+Route::set('styles', 'styles/<file>', ['file' => '.+'])
     ->defaults(array(
         'directory'     => 'public',
         'controller'    => 'styles',
@@ -42,7 +42,7 @@ Route::set('styles', 'styles(/<module>(/<file>))', array('file' => '.+'))
         'file'          => NULL,
     ));
 
-Route::set('scripts', 'scripts(/<module>(/<file>))', array('file' => '.+'))
+Route::set('scripts', 'scripts(/<module>(/<file>))', ['file' => '.+'])
     ->defaults(array(
         'directory'     => 'public',
         'controller'    => 'scripts',
@@ -50,7 +50,7 @@ Route::set('scripts', 'scripts(/<module>(/<file>))', array('file' => '.+'))
         'file'          => NULL,
     ));
 
-Route::set('images', 'images(/<module>(/<file>))', array('file' => '.+'))
+Route::set('images', 'images(/<module>(/<file>))', ['file' => '.+'])
     ->defaults(array(
         'directory'     => 'public',
         'controller'    => 'images',

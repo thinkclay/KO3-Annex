@@ -51,6 +51,14 @@ abstract class Controller_Private extends Controller_Template
         if ( $this->auto_render )
         {
             // Load our default wrappers to the view, but do it on before so that the controller->action can override
+            $this->template->styles = [];
+            $this->template->scripts = [];
+
+            if ( static::$user->role == 'admin' )
+            {
+                array_push($this->template->styles, Theme::style('admin.less'));
+            }
+
             $this->template->bind_global('user', self::$user);
             $this->template->id = $controller;
             $this->template->header = Theme::factory('views/container/header');

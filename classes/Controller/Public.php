@@ -33,10 +33,27 @@ abstract class Controller_Public extends Controller_Template
         {
             // Load our default wrappers to the view, but do it on before so that the controller->action can override
             $this->template->styles = [];
+            $this->template->scripts = [];
+            $this->template->js_vars = [
+                'controller' => strtolower(Request::$current->controller()),
+                'action' => strtolower(Request::$current->action())
+            ];
+
             $this->template->bind_global('user', self::$user);
             $this->template->header = Theme::factory('views/container/header');
             $this->template->main = Theme::factory('views/container/main');
             $this->template->footer = Theme::factory('views/container/footer');
         }
+    }
+
+    public function after()
+    {
+        if ( static::$user AND static::$user->role == 'admin' )
+        {
+            $this->template->styles[Theme::style('admin.less')] = 'all';
+            $this->template->scripts[] = '/scripts/default/cms.js';
+        }
+
+        parent::after();
     }
 }

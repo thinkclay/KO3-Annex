@@ -56,4 +56,63 @@ class Controller_Private_Content extends Controller_Private
                 ->set('method', 'POST');
         }
     }
+
+    public function action_update()
+    {
+        $model = Request::$current->param('model');
+        $post = Request::$current->post();
+
+        // $post['controller'] = 'site';
+        // $post['action'] = 'index';
+        // $post['ajax'] = true;
+        // $post['path'] = 'cms_global.footer.copyright';
+        // $post['data'] = 'something cool';
+
+        if ( $post['ajax'] )
+        {
+            $this->auto_render = FALSE;
+            $struct = [];
+
+            Arr::from_dots($struct, $post['path'], $post['data']);
+
+            if ( isset($struct['cms_global']) )
+            {
+                $post['global'] = 'true';
+                $post['cms_global'] = $struct['cms_global'];
+                unset($post['controller']);
+                unset($post['action']);
+
+                $params = ['global' => 'true'];
+                $existing = BrassDB::instance()->find_one('brass_pages', $params);
+            }
+            else
+            {
+                $post['cms'] = $struct['cms'];
+
+                $params = ['controller' => $post['controller'], 'action' => $post['action']];
+                $existing = BrassDB::instance()->find_one('brass_pages', $params);
+            }
+
+            if ( $existing )
+            {
+                $db = Brass::factory('brass_page', $params)->db();
+                $updated = $db->update('brass_pages', $params, ['$set' => [$post['path'] => $post['data']]]);
+            }
+            else
+            {
+                unset($post['path']);
+                unset($post['ajax']);
+                unset($post['data']);
+
+                $doc = Brass::factory('brass_page');
+                $doc->values($post);
+                $created = $doc->create();
+            }
+
+            if ( isset($updated) OR isset($created) )
+                echo json_encode(['status' => 'success']);
+            else
+                echo json_encode(['status' => 'failed']);
+        }
+    }
 }

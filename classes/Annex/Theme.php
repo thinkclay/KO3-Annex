@@ -16,6 +16,8 @@ class Annex_Theme
     // Data to be passed to the view
     protected $_data = [];
 
+    protected $_engine;
+
     // Array of global variables
     protected static $_global_data = [];
 
@@ -40,7 +42,7 @@ class Annex_Theme
      * @return  void
      * @uses    Theme::set_filename
      */
-    public function __construct($file = NULL, array $data = NULL)
+    public function __construct($file = NULL, array $data = NULL, $engine = NULL)
     {
         // Set theme to whatever config file has for theme name.
         if ( $theme = Kohana::$config->load('annex_annex.theme.name') )
@@ -54,10 +56,15 @@ class Annex_Theme
             $this->set_filename($theme, $file);
         }
 
-        if ($data !== NULL )
+        if ( $data !== NULL )
         {
             // Add values to the current data array
             $this->_data = $data + $this->_data;
+        }
+
+        if ( $engine !== NULL )
+        {
+            $this->_engine = $engine;
         }
     }
 
@@ -158,15 +165,15 @@ class Annex_Theme
      * Returns a new Theme object. If you do not define the "file" parameter,
      * you must call [Theme::set_filename].
      *
-     *     $view = Theme::factor($file);
+     *     $view = Theme::factory($file);
      *
      * @param   string  view filename
      * @param   array   array of values
      * @return  Theme
      */
-    public static function factory($file = NULL, array $data = NULL)
+    public static function factory($file = NULL, array $data = NULL, $engine = NULL)
     {
-        return new Theme($file, $data);
+        return new Theme($file, $data, $engine);
     }
 
     /**
@@ -305,7 +312,7 @@ class Annex_Theme
         }
         else
         {
-            echo "Couldn't set file beacuse file could not be found in any folders";
+            throw new Annex_Exception("Couldn't set file {$file} beacuse file could not be found in the {$theme} or default theme folders");
         }
     }
 
@@ -325,15 +332,13 @@ class Annex_Theme
             return '../themes/default/views/wrapper';
     }
 
-    /**
-     * Capture is protected function that essentially extracts all of the data array into variables. It also outputs the buffer
-     * and try to render the files we are asking it to.
-     *
-     *  Theme::capture($this->_file, $this->_data);
-     *
-     * @param   string  view filename, array view data
-     * @return  the output of the file passed.
-     */
+    public static function get_setting($setting_name)
+    {
+        $config = Kohana::$config->load('theme_'.static::$_theme_name.'_annex');
+
+        return $config->$setting_name;
+    }
+
     /**
      * Captures the output that is generated when a view is included.
      * The view data will be extracted to make local variables. This method
@@ -345,7 +350,7 @@ class Annex_Theme
      * @param   array   variables
      * @return  string
      */
-    protected static function capture($view_file, array $view_data)
+    protected static function capture($view_file, array $view_data, $engine)
     {
         // Extract all data into variables, EXTR_SKIP mean it won't override existing variables.
         extract($view_data, EXTR_SKIP);
@@ -361,7 +366,6 @@ class Annex_Theme
 
         try
         {
-            // Load the view
             include $view_file;
         }
         catch (Exception $e)
@@ -388,7 +392,7 @@ class Annex_Theme
      */
     public function render($file = NULL)
     {
-        if($file !== NULL)
+        if ( $file !== NULL )
         {
             $this->set_filename($file);
         }
@@ -398,34 +402,32 @@ class Annex_Theme
             echo 'You must set the file to use within your view before rendering';
         }
 
-        return Theme::capture($this->_file, $this->_data);
-    }
+        $processed_file = Theme::capture($this->_file, $this->_data, $this->_engine);
 
-    /**
-     * Theme functions for HTML.
-     *
-     * @package     Annex
-     * @category    Base
-     * @author      Jiran Dowlati
-     */
-    public function scripts($type = 'raw_js', array $files)
-    {
-        if ( $type == 'jquery' )
+        if ( $this->_engine == 'brass' )
         {
-            $jquery = 'http://code.jquery.com/jquery.js';
-            $this->bind('jquery', $jquery);
-            $this->bind('files', $files);
+            $cms = Model_Brass_Page::cms();
+            $m = new Mustache_Engine;
+            return $m->render($processed_file, $cms);
         }
         else
         {
-            $this->bind('files', $files);
+            // Include the view as a PHP file
+            return $processed_file;
         }
-
     }
 
-    public function styles(array $styles)
+    public static function style($filename)
     {
-        $this->bind('styles', $styles);
+        $path = Theme::get_setting('styles');
+        $file = pathinfo($filename);
 
+        // Get the server path to the file
+        if ( ! $file_loaded = Kohana::find_file('themes/'.Theme::$_theme_name, $path.'/'.$file['filename'], $file['extension']) )
+        {
+            $file_loaded = Kohana::find_file('themes/default', $path.'/'.$file['filename'], $file['extension']);
+        }
+
+        return Less::factory($file_loaded);
     }
 }

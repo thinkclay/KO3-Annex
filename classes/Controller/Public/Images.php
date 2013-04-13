@@ -3,7 +3,7 @@
 /**
  * Annex - Public Images Controller
  *
- * Manages stylesheet loading
+ * Manages image loading
  *
  * @package     Annex
  * @category    Public
@@ -11,11 +11,6 @@
  */
 class Controller_Public_Images extends Controller_Public
 {
-    /**
-     * Styles - Renders CSS and LESS stylesheet
-     *
-     * @usage   /styles/annex/global.less which is /styles/<module>/<file>
-     */
     public function action_index()
     {
         $this->auto_render = FALSE;
@@ -29,23 +24,23 @@ class Controller_Public_Images extends Controller_Public
         }
 
         // Find the file extension
-        $ext = pathinfo($file, PATHINFO_EXTENSION);
         $file = pathinfo($file);
+        $path .= '/'.$file['dirname'];
 
         // Get the server path to the file
-        $file = Kohana::find_file($path, $file['filename'], $ext);
+        $loaded_file = Kohana::find_file($path, $file['filename'], $file['extension']);
 
         if ( $file )
         {
             // Check if the browser sent an "if-none-match: <etag>" header, and tell if the file hasn't changed
-            Controller::check_cache(sha1($this->request->uri()).filemtime($file), $this->request);
+            Controller::check_cache(sha1($this->request->uri()).filemtime($loaded_file), $this->request);
 
             // Send the file content as the response
-            $this->response->body(file_get_contents($file));
+            $this->response->body(file_get_contents($loaded_file));
 
             // Set the proper headers to allow caching
-            $this->response->headers('content-type',  File::mime_by_ext($ext));
-            $this->response->headers('last-modified', date('r', filemtime($file)));
+            $this->response->headers('content-type',  File::mime_by_ext($file['extension']));
+            $this->response->headers('last-modified', date('r', filemtime($loaded_file)));
         }
         else
         {

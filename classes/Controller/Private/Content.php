@@ -57,6 +57,12 @@ class Controller_Private_Content extends Controller_Private
         }
     }
 
+    /**
+     * Update Content
+     *
+     * If this is called dynamically with ajax and post vars, I kick in some CMS functionality
+     * first i lookup the document to update it or I create a new document
+     */
     public function action_update()
     {
         $model = Request::$current->param('model');
@@ -75,6 +81,7 @@ class Controller_Private_Content extends Controller_Private
 
             Arr::from_dots($struct, $post['path'], $post['data']);
 
+            // If this is a global content item
             if ( isset($struct['cms_global']) )
             {
                 $post['global'] = 'true';
@@ -85,6 +92,8 @@ class Controller_Private_Content extends Controller_Private
                 $params = ['global' => 'true'];
                 $existing = BrassDB::instance()->find_one('brass_pages', $params);
             }
+            // Must be local to a controller and action
+            // in the future this may use ID's too
             else
             {
                 $post['cms'] = $struct['cms'];
@@ -93,11 +102,13 @@ class Controller_Private_Content extends Controller_Private
                 $existing = BrassDB::instance()->find_one('brass_pages', $params);
             }
 
+            // If we found a document, lets update it
             if ( $existing )
             {
                 $db = Brass::factory('brass_page', $params)->db();
                 $updated = $db->update('brass_pages', $params, ['$set' => [$post['path'] => $post['data']]]);
             }
+            // Otherwise we need to create it
             else
             {
                 unset($post['path']);
@@ -110,9 +121,9 @@ class Controller_Private_Content extends Controller_Private
             }
 
             if ( isset($updated) OR isset($created) )
-                echo json_encode(['status' => 'success']);
+                return json_encode(['status' => 'success']);
             else
-                echo json_encode(['status' => 'failed']);
+                return json_encode(['status' => 'failed']);
         }
     }
 }

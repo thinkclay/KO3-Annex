@@ -8,7 +8,7 @@
     <ul class="latest-blog">
       <li> <span class="date"> <span class="day">23</span> <span class="month">Jun</span> </span>
         <div class="text">
-          <h2><a href="blog-post.html">Nullam quis risus eget</a></h2>
+          <h2><a href="/blog/single">Nullam quis risus eget</a></h2>
           <p>Etiam porta sem malesuada magna lorem etor mollis euismod. Cras mattis consectetur purus.</p>
           <div class="meta">
             <div class="tags"><a href="#">Journal</a>, <a href="#">Photography</a>, <a href="#">Web Design</a></div>
@@ -19,7 +19,7 @@
       </li>
       <li> <span class="date"> <span class="day">18</span> <span class="month">Apr</span> </span>
         <div class="text">
-          <h2><a href="blog-post.html">Commodo Sem Inceptos Fusce</a></h2>
+          <h2><a href="/blog/single">Commodo Sem Inceptos Fusce</a></h2>
           <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec vestibulum ligula porta semper.</p>
           <div class="meta">
             <div class="tags"><a href="#">Journal</a>, <a href="#">Photography</a>, <a href="#">Web Design</a></div>
@@ -30,7 +30,7 @@
       </li>
       <li> <span class="date"> <span class="day">31</span> <span class="month">Mar</span> </span>
         <div class="text">
-          <h2><a href="blog-post.html">Inceptos Purus Etiam Condimentum</a></h2>
+          <h2><a href="/blog/single">Inceptos Purus Etiam Condimentum</a></h2>
           <p>Aenean leo quam. Pellentesque ornare lacinia quam. Vestibulum. Integer venenatis dapibus posuere velit aliquet.</p>
           <div class="meta">
             <div class="tags"><a href="#">Journal</a>, <a href="#">Photography</a></div>
@@ -41,7 +41,7 @@
       </li>
       <li> <span class="date"> <span class="day">15</span> <span class="month">Mar</span> </span>
         <div class="text">
-          <h2><a href="blog-post.html">Justo Etiam Bibendum Venenatis</a></h2>
+          <h2><a href="/blog/single">Justo Etiam Bibendum Venenatis</a></h2>
           <p>Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Donec id elit non mi porta gravida at eget metus.</p>
           <div class="meta">
             <div class="tags"><a href="#">Journal</a>, <a href="#">Photography</a></div>

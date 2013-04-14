@@ -16,8 +16,6 @@ class Annex_Theme
     // Data to be passed to the view
     protected $_data = [];
 
-    protected $_engine;
-
     // Array of global variables
     protected static $_global_data = [];
 
@@ -42,7 +40,7 @@ class Annex_Theme
      * @return  void
      * @uses    Theme::set_filename
      */
-    public function __construct($file = NULL, array $data = NULL, $engine = NULL)
+    public function __construct($file = NULL, array $data = NULL)
     {
         // Set theme to whatever config file has for theme name.
         if ( $theme = Kohana::$config->load('annex_annex.theme.name') )
@@ -60,11 +58,6 @@ class Annex_Theme
         {
             // Add values to the current data array
             $this->_data = $data + $this->_data;
-        }
-
-        if ( $engine !== NULL )
-        {
-            $this->_engine = $engine;
         }
     }
 
@@ -171,9 +164,9 @@ class Annex_Theme
      * @param   array   array of values
      * @return  Theme
      */
-    public static function factory($file = NULL, array $data = NULL, $engine = NULL)
+    public static function factory($file = NULL, array $data = NULL)
     {
-        return new Theme($file, $data, $engine);
+        return new Theme($file, $data);
     }
 
     /**
@@ -350,7 +343,7 @@ class Annex_Theme
      * @param   array   variables
      * @return  string
      */
-    protected static function capture($view_file, array $view_data, $engine)
+    protected static function capture($view_file, array $view_data)
     {
         // Extract all data into variables, EXTR_SKIP mean it won't override existing variables.
         extract($view_data, EXTR_SKIP);
@@ -385,6 +378,8 @@ class Annex_Theme
      * Render is the public function that essentially calls our capture function and renders the view we have set.
      * We have the option of rendering a different file if that file exists.
      *
+     * I process the PHP vars in the file first, and then run the view through the mustache rendering engine
+     *
      *  $this->render($file);
      *
      * @param   string view filename
@@ -402,19 +397,11 @@ class Annex_Theme
             echo 'You must set the file to use within your view before rendering';
         }
 
-        $processed_file = Theme::capture($this->_file, $this->_data, $this->_engine);
+        $processed_file = Theme::capture($this->_file, $this->_data);
+        $cms = Model_Brass_Page::cms();
+        $m = new Mustache_Engine;
 
-        if ( $this->_engine == 'brass' )
-        {
-            $cms = Model_Brass_Page::cms();
-            $m = new Mustache_Engine;
-            return $m->render($processed_file, $cms);
-        }
-        else
-        {
-            // Include the view as a PHP file
-            return $processed_file;
-        }
+        return $m->render($processed_file, $cms);
     }
 
     public static function style($filename)
@@ -429,5 +416,17 @@ class Annex_Theme
         }
 
         return Less::factory($file_loaded);
+    }
+
+    public static function glob_recursive($pattern, $flags = 0)
+    {
+        $files = glob($pattern, $flags);
+
+        foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir)
+        {
+            $files = array_merge($files, static::glob_recursive($dir.'/'.basename($pattern), $flags));
+        }
+
+        return $files;
     }
 }

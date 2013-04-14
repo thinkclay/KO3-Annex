@@ -2,6 +2,8 @@
 
 class Arr extends Kohana_Arr
 {
+    // cms.portfolio.header
+    // [ cms => [ portfolio => [ header ]]]
     public static function from_dots(&$array_ptr, $key, $value)
     {
         $keys = explode('.', $key);

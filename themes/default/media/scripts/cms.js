@@ -5,7 +5,6 @@ $(function(){
 
   $editable.attr('contenteditable', true);
 
-
   $editable
     .bind('focus', function() {
       $(this).addClass('editing');

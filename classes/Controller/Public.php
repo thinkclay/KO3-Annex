@@ -29,15 +29,16 @@ abstract class Controller_Public extends Controller_Template
 
         static::$user = Authorize::instance()->get_user();
 
+        $dir = strtolower(Request::$current->directory());
+        $controller = strtolower(Request::$current->controller());
+        $action = strtolower(Request::$current->action());
+
         if ( $this->auto_render )
         {
             // Load our default wrappers to the view, but do it on before so that the controller->action can override
             $this->template->styles = [];
             $this->template->scripts = [];
-            $this->template->js_vars = [
-                'controller' => strtolower(Request::$current->controller()),
-                'action' => strtolower(Request::$current->action())
-            ];
+            $this->template->js_vars = ['controller' => $controller, 'action' => $action];
 
             $this->template->bind_global('user', self::$user);
             $this->template->header = Theme::factory('views/container/header');

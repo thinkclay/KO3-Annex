@@ -43,7 +43,10 @@ class Annex_Theme
     public function __construct($file = NULL, array $data = NULL)
     {
         // Set theme to whatever config file has for theme name.
-        if ( $theme = Kohana::$config->load('annex_annex.theme.name') )
+        // The theme uses directories and loads the namespace accordingly
+        $namespace = strtolower(Request::$current->directory());
+
+        if ( $theme = Kohana::$config->load("annex_annex.theme.{$namespace}") )
         {
             static::$_theme_name = $theme;
         }

@@ -1,12 +1,10 @@
-  <?php var_dump(Theme::glob_recursive('themes')); ?>
-
   <h1 class="center">Our Services</h1>
   <div class="intro center">Vitae elit libero, a pharetra augue. Cras mattis consectetur purus sit amet fermentum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec ullamcorper nulla non metus auctor fringilla.</div>
   <div id="services-container" class="tab-container">
     <ul class="etabs">
-      <li class="tab"><a href="#tab-1">Web Design</a></li>
-      <li class="tab"><a href="#tab-2">Photography</a></li>
-      <li class="tab"><a href="#tab-3">Graphic Design</a></li>
+      <li class="tab"><a href="#tab-1" class="editable" data-cms="cms.process.tab1">{{cms.process.tab1}}</a></li>
+      <li class="tab"><a href="#tab-2" class="editable" data-cms="cms.process.tab2">{{cms.process.tab2}}</a></li>
+      <li class="tab"><a href="#tab-3" class="editable" data-cms="cms.process.tab3">{{cms.process.tab3}}</a></a></li>
     </ul>
     <div class="panel-container">
       <div id="tab-1"> <img src="/images/ikaros/art/p1.jpg" alt="" class="alignleft" />

@@ -23,8 +23,7 @@ abstract class Controller_Private extends Controller_Template
     public function before()
     {
         // Set the default theme before we our Template Controller kicks in
-        $theme = Kohana::$config->load('annex_annex.theme.name');
-        $this->template = '../themes/'.($theme ? $theme : 'default').'/views/wrapper';
+        $this->template = Theme::factory()->get_theme_wrapper();
 
         parent::before();
 

@@ -7,26 +7,33 @@ class Model_Brass_User extends Model_Authenticate_User_Brass implements Acl_Role
 {
     public $_fields = [
         'role' => [
+            'editable' => 'admin',
             'type'     => 'string',
             'required' => true,
         ],
         'created' => [
-            'type'     => 'string',
-            'required' => true,
+            'editable'  => FALSE,
+            'type'      => 'string',
+            'required'  => true,
         ],
         'last_login' => [
+            'editable'  => FALSE,
             'type'      => 'int',
         ],
         'updated_time' => [
-            'type' => 'string',
+            'editable' => FALSE,
+            'type'     => 'string',
         ],
         'login_count' => [
-            'type' => 'int',
+            'editable'   => FALSE,
+            'type'       => 'int',
         ],
         'token' => [
-            'type' => 'string',
+            'editable'   => FALSE,
+            'type'       => 'string',
         ],
         'username' => [
+            'editable'   => 'user',
             'label'      => 'User Name',
             'type'       => 'string',
             'required'   => true,
@@ -35,23 +42,29 @@ class Model_Brass_User extends Model_Authenticate_User_Brass implements Acl_Role
             'unique'     => true,
         ],
         'password' => [
-            'type'          => 'string',
-            'required'      => TRUE,
-            'min_length'    => 5,
-            'max_length'    => 50
+            'editable'   => FALSE,
+            'label'      => 'Password',
+            'type'       => 'string',
+            'required'   => TRUE,
+            'min_length' => 5,
+            'max_length' => 50
         ],
         'email' => [
+            'editable'   => 'user',
+            'label'      => 'Email Address',
             'type'       => 'string',
-            'required'   => true,
+            'required'   => TRUE,
             'min_length' => 4,
             'max_length' => 32,
-            'unique'     => true,
+            'unique'     => TRUE,
             'rules' => [
                 ['email'],
                 ['email_domain'],
             ]
         ],
         'first_name' => [
+            'editable'   => 'user',
+            'label'      => 'First Name',
             'type'       => 'string',
             'max_length' => 32,
             'rules'      => [
@@ -59,6 +72,8 @@ class Model_Brass_User extends Model_Authenticate_User_Brass implements Acl_Role
             ]
         ],
         'middle_name' => [
+            'editable'   => 'user',
+            'label'      => 'Middle Name',
             'type'       => 'string',
             'max_length' => 32,
             'rules'      => [
@@ -66,11 +81,18 @@ class Model_Brass_User extends Model_Authenticate_User_Brass implements Acl_Role
             ]
         ],
         'last_name' => [
+            'editable'   => 'user',
+            'label'      => 'Last Name',
             'type'       => 'string',
             'max_length' => 32,
             'rules'      => [
                 ['alpha_dash']
             ]
+        ],
+        'preferences' => [
+            'editable'   => FALSE,
+            'label'      => 'Preferences',
+            'type'      => 'array'
         ]
     ];
 

@@ -27,7 +27,7 @@ class Controller_Private_Content extends Controller_Private
 
     public function action_index()
     {
-        Model_Content::overview();
+        Model_Annex_Content::overview();
     }
 
     public function action_list()

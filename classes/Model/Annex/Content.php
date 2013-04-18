@@ -1,6 +1,6 @@
 <?php
 
-abstract class Model_Content extends Model
+abstract class Model_Annex_Content extends Model
 {
     public static function overview()
     {

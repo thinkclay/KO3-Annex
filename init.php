@@ -11,27 +11,35 @@ Route::set('annex', 'annex(/<controller>(/<action>(/<model>(/<id>))))')
         'action'        => 'index',
     ));
 
-// Annex Login
+// Annex Account Stuff
 Route::set('account login', 'account/login')
-    ->defaults(array(
+    ->defaults([
         'directory'     => 'public',
-        'controller'    => 'annex',
+        'controller'    => 'account',
         'action'        => 'login',
-    ));
-
-Route::set('account logout', 'account/logout')
-    ->defaults(array(
-        'directory'     => 'public',
-        'controller'    => 'annex',
-        'action'        => 'logout',
-    ));
+    ]);
 
 Route::set('account register', 'account/register')
-    ->defaults(array(
+    ->defaults([
         'directory'     => 'public',
-        'controller'    => 'annex',
+        'controller'    => 'account',
         'action'        => 'register',
-    ));
+    ]);
+
+Route::set('account logout', 'account/logout')
+    ->defaults([
+        'directory'     => 'private',
+        'controller'    => 'account',
+        'action'        => 'logout',
+    ]);
+
+
+Route::set('account manage', 'account/manage')
+    ->defaults([
+        'directory'     => 'private',
+        'controller'    => 'account',
+        'action'        => 'manage',
+    ]);
 
 // Static file serving
 Route::set('styles', 'styles/<file>', ['file' => '.+'])
@@ -65,10 +73,10 @@ Route::set('images', 'images(/<module>(/<file>))', ['file' => '.+'])
  * We want to extend and append to the bootstrap modules
  */
 $annex_modules = [
-    'authenticate'  => ANXMODS.'Authenticate',  // Custom authentication framework
-    'brass'         => ANXMODS.'Brass', // ORM Layer for MongoDb
-    'less'          => ANXMODS.'Less',  // Less Compiler Module
-    'annex'         => MODPATH.'annex', // Annex Extension Loader
+    'accredit'      => ANXMODS.'accredit',  // Custom authentication framework
+    'brass'         => ANXMODS.'brass',     // ORM Layer for MongoDb
+    'less'          => ANXMODS.'less',      // Less Compiler Module
+    'annex'         => MODPATH.'annex',     // Annex Extension Loader
 ];
 
 /**

@@ -67,15 +67,36 @@ Changelog: This will be used in the feature to automate updates and make it easy
 
 ## Using Brass ORM
 
-	// Inserting data
+	// creating a record from the brass_transaction model
+	$transaction = Brass::factory(
+		'brass_transaction',
+		[
+			'owner'  => '516F8FF5673FAAE898000002'
+			'name'   => 'Initial Deposit',
+			'amount' => 1500.00
+		]
+	)->create();
+
+
+	// retrieving brass_transactions from the database
+	$transactions = Brass::factory(
+		'brass_transaction', 
+		[
+			'owner' => $user->_id
+		]
+	))->load(0);
+	
+			
+		
+
+	// Quickly Inserting data
 	BrassDB::instance()->insert(
 		'brass_cms',
 		[
-	    'page' => 'home',
-	    'home' => [
-        'blog' => [
-            'header' => 'Latest Blog Post'
-        ]
+	    	'page' => 'home',
+	    	'home' => [
+        	'blog' => [
+            	'header' => 'Latest Blog Post'
+        	]
     	]
-  	]
 	);

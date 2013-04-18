@@ -9,19 +9,6 @@
  */
 class Controller_Private_Annex extends Controller_Private
 {
-    public function before()
-    {
-        parent::before();
-
-        $this->template->styles = [
-            "http://twitter.github.com/bootstrap/assets/css/bootstrap.css" => "all",
-            "http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" => "screen"
-        ];
-        $this->template->scripts = [];
-
-        $this->template->head = '<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->';
-    }
-
     public function action_index()
     {
         $status = Annex::render('annex/modules/status');

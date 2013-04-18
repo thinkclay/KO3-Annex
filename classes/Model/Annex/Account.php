@@ -48,9 +48,8 @@ class Model_Annex_Account
         {
             // create the account
             $user->created = time();
-            $user->role = 'admin';
+            $user->role = 'pending';
             $user->values($post->as_array());
-
 
             if ( $user->check() )
             {
@@ -61,6 +60,31 @@ class Model_Annex_Account
                     $auth->complete_login($user, TRUE);
                     return TRUE;
                 }
+            }
+        }
+    }
+
+    public static function update(array $post, Model_Brass_User $user)
+    {
+        // initial validation
+        $post = Validation::factory($post)
+            ->rule('username', 'alpha_dash')
+            ->rule('username', 'required')
+            ->rule('password_confirm', 'matches', [':validation', 'password', 'password_confirm']);
+        $post_data = $post->as_array();
+
+        if ( ! $post_data['password'] )
+            unset($post_data['password']);
+
+        if ( $post->check() )
+        {
+            $doc = Brass::factory('Brass_User', ['_id' => $user->_id])->load();
+
+            if ( $doc->loaded() )
+            {
+                $doc->values($post_data);
+                $doc->update();
+                Authorize::instance('private')->get_user()->reload();
             }
         }
     }

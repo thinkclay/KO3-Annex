@@ -7,22 +7,8 @@
  * @category    Public
  * @author      Clay McIlrath
  */
-class Controller_Public_Annex extends Controller_Public
+class Controller_Public_Account extends Controller_Public
 {
-    public function before()
-    {
-        parent::before();
-
-        $this->template->styles = [
-            "/styles/default/bootstrap.css" => "all",
-            "/styles/default/bootstrap-responsive.css" => "screen"
-        ];
-        $this->template->scripts = [
-        ];
-
-        $this->template->head = '<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->';
-    }
-
     /**
      * Register Action
      *
@@ -31,7 +17,7 @@ class Controller_Public_Annex extends Controller_Public
     public function action_register()
     {
         if ( static::$user )
-            $this->redirect('/annex');
+            $this->redirect('/account');
 
         $role = Request::$current->param('id');
         $username = $this->request->post('username');
@@ -47,7 +33,7 @@ class Controller_Public_Annex extends Controller_Public
                 $this->redirect('/account');
         }
 
-        $this->template->main->content = Theme::factory('views/forms/register')
+        $this->template->main->content = Theme::factory('views/forms/account/register')
             ->bind('username', $username)
             ->bind('password', $password)
             ->bind('password_confirm', $password_confirm)
@@ -99,19 +85,8 @@ class Controller_Public_Annex extends Controller_Public
             }
         }
 
-        $this->template->main->content = Theme::factory('views/forms/login')
+        $this->template->main->content = Theme::factory('views/forms/account/login')
             ->bind('username', $username)
             ->bind('password', $password);
-    }
-
-    /**
-     * Logout Action
-     *
-     * @todo if we end up implementing local storage sync, this would be a good spot to purge that cache
-     */
-    public function action_logout()
-    {
-        Authenticate::instance()->logout(TRUE);
-        $this->redirect();
     }
 }

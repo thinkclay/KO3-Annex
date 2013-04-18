@@ -28,75 +28,6 @@ abstract class Brass implements Brass_Interface
 	// You can overload this on a per field basis by defining a 'max_size' value in the field definition.
 	const MAX_SIZE_STRING = 65536;
 
-
-	/**
-	 * Load an Brass model.
-	 *
-	 * @param   string  model name
-	 * @param   array   values to pre-populate the model
-	 * @param   boolean use values to extend only, don't prepopulate model
-	 * @return  Brass
-	 */
-	public static function factory($name, array $values = NULL, $load_type = 0)
-	{
-		static $models;
-
-		if ( $values)
-		{
-			$name = self::extend($name, $values);
-		}
-
-		if ( ! isset($models[$name]))
-		{
-			$class = 'Model_'.$name;
-
-			$models[$name] = new $class;
-		}
-
-		// Create a new instance of the model by clone
-		$model = clone $models[$name];
-
-		if ( $values && $load_type !== Brass::EXTEND)
-		{
-			$model->values($values, $load_type === Brass::CLEAN);
-		}
-
-		return $model;
-	}
-
-	/**
-	 * Finds extended model name based on values array
-	 *
-	 * @param   string   name of (base) model
-	 * @param   array    data from database
-	 * @return  string   name of (extended) model
-	 */
-	public static function extend($name, array $values)
-	{
-		if ( self::$_cti === NULL)
-		{
-			// load extension config
-			self::$_cti = Kohana::$config->load('brassCTI');
-		}
-
-		while ( isset(self::$_cti[$name]))
-		{
-			$key = key(self::$_cti[$name]);
-
-			if ( isset($values[$key]) && isset(self::$_cti[$name][$key][$values[$key]]))
-			{
-				// extend
-				$name = self::$_cti[$name][$key][$values[$key]];
-			}
-			else
-			{
-				break;
-			}
-		}
-
-		return $name;
-	}
-
 	/**
 	 * @var  string  model name
 	 */
@@ -125,37 +56,108 @@ abstract class Brass implements Brass_Interface
 	/**
 	 * @var  array  field list (name => field data)
 	 */
-	protected $_fields = array();
+	protected $_fields = [];
 
 	/**
 	 * @var  array  relation list (name => relation data)
 	 */
-	protected $_relations = array();
+	protected $_relations = [];
 
 	/**
 	 * @var  array  object data
 	 */
-	protected $_object = array();
+	protected $_object = [];
 
 	/**
 	 * @var  array  clean object data (straight from DB)
 	 */
-	protected $_clean = array();
+	protected $_clean = [];
 
 	/**
 	 * @var  array  related data
 	 */
-	protected $_related = array();
+	protected $_related = [];
 
 	/**
 	 * @var  array  changed fields
 	 */
-	protected $_changed = array();
+	protected $_changed = [];
 
 	/**
 	 * @var  boolean  initialization status
 	 */
 	protected $_init = FALSE;
+
+
+	/**
+	 * Load an Brass model.
+	 *
+	 * @param   string  model name
+	 * @param   array   values to pre-populate the model
+	 * @param   boolean use values to extend only, don't prepopulate model
+	 * @return  Brass
+	 */
+	public static function factory($name, array $values = NULL, $load_type = 0)
+	{
+		static $models;
+
+		if ( $values )
+		{
+			$name = self::extend($name, $values);
+		}
+
+		if ( ! isset($models[$name]) )
+		{
+			$class = 'Model_'.$name;
+
+			$models[$name] = new $class;
+		}
+
+		// Create a new instance of the model by clone
+		$model = clone $models[$name];
+
+		if ( $values AND $load_type !== Brass::EXTEND )
+		{
+			$model->values($values, $load_type === Brass::CLEAN);
+		}
+
+		return $model;
+	}
+
+	/**
+	 * Finds extended model name based on values array
+	 *
+	 * @param   string   name of (base) model
+	 * @param   array    data from database
+	 * @return  string   name of (extended) model
+	 */
+	public static function extend($name, array $values)
+	{
+		if ( self::$_cti === NULL )
+		{
+			// load extension config
+			self::$_cti = Kohana::$config->load('brassCTI');
+		}
+
+		while ( isset(self::$_cti[$name]) )
+		{
+			$key = key(self::$_cti[$name]);
+
+			if ( isset($values[$key]) AND isset(self::$_cti[$name][$key][$values[$key]]) )
+			{
+				// extend
+				$name = self::$_cti[$name][$key][$values[$key]];
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		return $name;
+	}
+
+
 
 	/**
 	 * Calls the init() method. Brass constructors are only called once!
@@ -225,7 +227,7 @@ abstract class Brass implements Brass_Interface
 	 */
 	public function clear()
 	{
-		$this->_object = $this->_clean = $this->_changed = array();
+		$this->_object = $this->_clean = $this->_changed = [];
 
 		return $this;
 	}
@@ -370,7 +372,7 @@ abstract class Brass implements Brass_Interface
 			switch ( $field['type'])
 			{
 				case 'enum':
-					$value = isset($value) && isset($field['values'][$value])
+					$value = isset($value) AND isset($field['values'][$value])
 						? $field['values'][$value]
 						: NULL;
 				break;
@@ -393,7 +395,7 @@ abstract class Brass implements Brass_Interface
 				break;
 			}
 
-			if ( $value === NULL && isset($field['default']))
+			if ( $value === NULL AND isset($field['default']))
 			{
 				$value = $field['default'];
 			}
@@ -459,7 +461,7 @@ abstract class Brass implements Brass_Interface
 			$this->init();
 		}
 
-		if ( isset($this->_fields[$name]))
+		if ( isset($this->_fields[$name]) )
 		{
 			$match_default = isset($this->_fields[$name]['default'])
 				? $value === $this->_fields[$name]['default']
@@ -467,24 +469,29 @@ abstract class Brass implements Brass_Interface
 
 			$value = $this->load_field($name, $value);
 
-			if ( $this->__isset($name))
+			if ( $this->__isset($name) )
 			{
-				if ( $value === NULL || $match_default)
-				{
-					// setting existing field to NULL / default value -> unset value
+				// setting existing field to NULL / default value -> unset value
+				if ( $value === NULL OR $match_default)
 					return $this->__unset($name);
-				}
 
 				// don't update value if the value did not change
-				$same_clean  = isset($this->_clean[$name]) AND $this->_clean[$name] === Brass::normalize($value);
-				$same_object = ! $same_clean AND isset($this->_object[$name]) AND Brass::normalize($this->_object[$name]) === Brass::normalize($value);
+				$same_clean = $same_object = FALSE;
 
-				if ( $same_clean || $same_object )
+				if ( isset($this->_clean[$name]) )
 				{
-					return FALSE;
+					if ( ! $same_clean = ($this->_clean[$name] === Brass::normalize($value)) AND isset($this->_object[$name]) )
+					{
+						$same_object = (Brass::normalize($this->_object[$name]) === Brass::normalize($value));
+					}
 				}
+
+				$d = [ 'same_clean' => $same_clean, 'same_object' => $same_object, 'original' => $this->_clean[$name], 'new' => $value];;
+
+				if ( $same_clean OR $same_object )
+					return FALSE;
 			}
-			elseif ( $value === NULL || $value === '' || $match_default)
+			elseif ( $value === NULL OR $value === '' OR $match_default )
 			{
 				// setting unset field to NULL / empty string / default value -> nothing happens
 				return;
@@ -497,7 +504,7 @@ abstract class Brass implements Brass_Interface
 			// mark change
 			$this->_changed[$name] = TRUE;
 		}
-		elseif ( isset($this->_relations[$name]) && in_array($this->_relations[$name]['type'], array('belongs_to', 'has_one')))
+		elseif ( isset($this->_relations[$name]) AND in_array($this->_relations[$name]['type'], array('belongs_to', 'has_one')))
 		{
 			if ( $this->_relations[$name]['type'] === 'belongs_to')
 			{
@@ -551,51 +558,49 @@ abstract class Brass implements Brass_Interface
 	 */
 	protected function init()
 	{
+		// Can only be called once
 		if ( $this->_init)
-		{
-			// Can only be called once
 			return;
-		}
 
 		// Set up fields
 		$this->set_model_definition();
 
-		if ( ! $this->_model)
+		if ( ! $this->_model )
 		{
 			// Set the model name based on the class name
 			$this->_model = strtolower(substr(get_class($this), 6));
 		}
 
-		foreach ( $this->_fields as $name => & $field)
+		foreach ( $this->_fields as $name => & $field )
 		{
-			if ( $field['type'] === 'has_one' && ! isset($field['model']))
+			if ( $field['type'] === 'has_one' AND ! isset($field['model']))
 			{
 				$field['model'] = $name;
 			}
-			elseif ( $field['type'] === 'has_many' && ! isset($field['model']))
+			elseif ( $field['type'] === 'has_many' AND ! isset($field['model']))
 			{
 				$field['model'] = Inflector::singular($name);
 			}
 		}
 
-		if (!$this->_embedded )
+		if ( ! $this->_embedded )
 		{
-			if ( ! $this->_collection)
+			if ( ! $this->_collection )
 			{
 				// Set the collection name to the plural model name
 				$this->_collection = Inflector::plural($this->_model);
 			}
 
-			if ( ! isset($this->_fields['_id']))
+			if ( ! isset($this->_fields['_id']) )
 			{
 				// default _id field
 				$this->_fields['_id'] = array('type'=>'MongoId');
 			}
 
 			// Normalize relations
-			foreach ( $this->_relations as $name => &$relation)
+			foreach ( $this->_relations as $name => &$relation )
 			{
-				if ( $relation['type'] === 'has_and_belongs_to_many')
+				if ( $relation['type'] === 'has_and_belongs_to_many' )
 				{
 					$relation['model'] = isset($relation['model'])
 						 ? $relation['model']
@@ -605,7 +610,7 @@ abstract class Brass implements Brass_Interface
 						? $relation['related_relation']
 						: Inflector::plural($this->_model);
 				}
-				elseif ( ! isset($relation['model']))
+				elseif ( ! isset($relation['model']) )
 				{
 					if ( $relation['type'] === 'belongs_to' || $relation['type'] === 'has_one')
 					{
@@ -617,14 +622,15 @@ abstract class Brass implements Brass_Interface
 					}
 				}
 
-				switch ( $relation['type'])
+				switch ( $relation['type'] )
 				{
-					case 'belongs_to':
+					case 'belongs_to' :
 						$this->_fields[$name . '_id'] = array('type'=>'MongoId', 'required' => ! Arr::get($relation, 'sparse', FALSE));
-					break;
-					case 'has_and_belongs_to_many':
+						break;
+
+					case 'has_and_belongs_to_many' :
 						$this->_fields[$name . '_ids'] = array('type'=>'set', 'duplicates' => FALSE);
-					break;
+						break;
 				}
 			}
 		}
@@ -669,7 +675,7 @@ abstract class Brass implements Brass_Interface
 	 */
 	public function values(array $values, $clean = FALSE)
 	{
-		if ( $clean)
+		if ( $clean )
 		{
 			// lazy loading - clean values are loaded when accessed
 			$this->_clean = array_intersect_key($values, $this->_fields) + $this->_clean;
@@ -678,7 +684,7 @@ abstract class Brass implements Brass_Interface
 		{
 			foreach ($values as $field => $value)
 			{
-				if ( isset($this->_fields[$field]) || ( isset($this->_relations[$field]) && $this->_relations[$field]['type'] === 'belongs_to'))
+				if ( isset($this->_fields[$field]) || ( isset($this->_relations[$field]) AND $this->_relations[$field]['type'] === 'belongs_to'))
 				{
 					// Set the field using __set()
 					$this->$field = $value;
@@ -690,93 +696,38 @@ abstract class Brass implements Brass_Interface
 	}
 
 	/**
-	 * Get the model data as an associative array.
-	 * @param  boolean  retrieve values directly from _object
-	 *
-	 * @return  array  field => value
-	 */
-	public function as_array( $clean = TRUE )
-	{
-		$array = array();
-
-		foreach ( $this->_fields as $field_name => $field_data)
-		{
-			if ( $this->__isset($field_name))
-			{
-				if ( Arr::get($field_data,'local') === TRUE)
-				{
-					// local fields are not included in as_array array (not stored in db, not included in JSON objects)
-					continue;
-				}
-
-				if ( $clean && isset($this->_clean[$field_name]))
-				{
-					// use 'clean' value
-					$array[ $field_name ] = $this->_clean[$field_name];
-				}
-				else
-				{
-					// use 'loaded' value (that has to be normalized)
-					$value = $clean
-						? $this->_object[$field_name]
-						: $this->__get($field_name);
-
-					if ( ! $clean && Arr::get($field_data, 'xss_clean') && is_string($value))
-					{
-						// undo htmlspecialchars encoding done by HTML purifier
-						$value = htmlspecialchars_decode($value);
-					}
-
-					$array[ $field_name ] = Brass::normalize( $value, $clean );
-				}
-			}
-			else if ( ! $clean && isset($field_data['default']))
-			{
-				// use default value
-				$array[ $field_name ] = $field_data['default'];
-			}
-		}
-
-		return count($array) || ! $clean
-			? $array
-			: (object) array();
-	}
-
-	/**
 	 * Test if the model is loaded.
 	 *
 	 * @return  boolean
 	 */
 	public function loaded()
 	{
-		return $this->_embedded || (isset($this->_id) && !isset($this->_changed['_id']));
+		return $this->_embedded || (isset($this->_id) AND !isset($this->_changed['_id']));
 	}
 
 	/**
 	 * Get all of the changed fields as an associative array.
 	 *
-	 * @param  boolean  indicate update (TRUE) or insert (FALSE) - (determines use of modifiers like $set/$inc)
-	 * @param  array    prefix data, used internally
-	 * @return  array  field => value
+	 * @param   boolean  indicate update (TRUE) or insert (FALSE) - (determines use of modifiers like $set/$inc)
+	 * @param   array    prefix data, used internally
+	 * @return  array    field => value
 	 */
-	public function changed($update, array $prefix= array())
+	public function changed($update, array $prefix= [])
 	{
-		$changed = array();
+		$changed = [];
 
 		foreach ( $this->_fields as $name => $field)
 		{
-			if (isset($field['local']) && $field['local'] === TRUE)
-			{
-				// local variables are not stored in DB
+			// local variables are not stored in DB
+			if ( isset($field['local']) AND $field['local'] === TRUE )
 				continue;
-			}
 
 			$value = isset($this->_object[$name])
 				? $this->_object[$name]
 				: Arr::get($this->_clean, $name);
 
 			// prepare prefix
-			$path = array_merge($prefix,array($name));
+			$path = array_merge($prefix, [$name]);
 
 			if ( isset($this->_changed[$name]))
 			{
@@ -786,9 +737,9 @@ abstract class Brass implements Brass_Interface
 					$value = $value->as_array();
 				}
 
-				if ( $this->_changed[$name] === TRUE)
+				if ( $this->_changed[$name] === TRUE )
 				{
-					$data = array();
+					$data = [];
 					$path = implode('.', $path);
 
 					if ( $update)
@@ -844,7 +795,7 @@ abstract class Brass implements Brass_Interface
 			}
 		}
 
-		$this->_changed = array();
+		$this->_changed = [];
 	}
 
 	/**
@@ -887,7 +838,7 @@ abstract class Brass implements Brass_Interface
 	 * @param   array  specify additional criteria
 	 * @return  mixed  if limit = 1, returns $this (or extended model), otherwise returns iterator
 	 */
-	public function load($limit = 1, array $sort = NULL, $skip = NULL, array $fields = array(), array $criteria = array())
+	public function load($limit = 1, array $sort = NULL, $skip = NULL, array $fields = [], array $criteria = [])
 	{
 		if ( $this->_embedded)
 		{
@@ -898,7 +849,7 @@ abstract class Brass implements Brass_Interface
 		$criteria += $this->changed(FALSE);
 
 		// parameters can also be supplied in an array (instead of each parameter individually)
-		if ( is_array($limit))
+		if ( is_array($limit) )
 		{
 			// add default value for $limit, and extract values
 			extract($limit + array(
@@ -909,7 +860,7 @@ abstract class Brass implements Brass_Interface
 		// resets $this->_changed array
 		$this->clear();
 
-		if ( $limit === 1 && $sort === NULL && $skip === NULL)
+		if ( $limit === 1 AND $sort === NULL AND $skip === NULL)
 		{
 			$values = $this->db()->find_one($this->_collection,$criteria,$fields);
 
@@ -1005,7 +956,7 @@ abstract class Brass implements Brass_Interface
 	 * @return  $this
 	 * @throws  Brass_Exception   Updating failed
 	 */
-	public function update( $criteria = array(), $safe = TRUE)
+	public function update( $criteria = [], $safe = TRUE)
 	{
 		if ( $this->_embedded)
 		{
@@ -1382,7 +1333,7 @@ abstract class Brass implements Brass_Interface
 				case 'string':
 					$value = trim((string) $value);
 
-					if ( ! $clean && strlen($value) )
+					if ( ! $clean AND strlen($value) )
 					{
 						$max_size = Arr::get($field, 'max_size', Brass::MAX_SIZE_STRING);
 
@@ -1440,7 +1391,7 @@ abstract class Brass implements Brass_Interface
 				break;
 			}
 
-			if ( ! $clean && is_string($value) AND $value === '' )
+			if ( ! $clean AND is_string($value) AND $value === '' )
 			{
 				$value = NULL;
 			}
@@ -1667,7 +1618,7 @@ abstract class Brass implements Brass_Interface
 			// model has been added or was already added
 			return TRUE;
 		}
-		elseif ( isset($this->_fields[$relation]) && $this->_fields[$relation]['type'] === 'has_many' )
+		elseif ( isset($this->_fields[$relation]) AND $this->_fields[$relation]['type'] === 'has_many' )
 		{
 			return $this->__get($relation)->push($model);
 		}
@@ -1773,19 +1724,88 @@ abstract class Brass implements Brass_Interface
 			return $value;
 	}
 
+	/**
+	 * Get the model data as an associative array.
+	 *
+	 * @param  boolean  retrieve values directly from _object
+	 *
+	 * @return  array  field => value
+	 */
+	public function as_array($clean = TRUE)
+	{
+		$array = [];
+
+		foreach ( $this->_fields as $field_name => $field_data)
+		{
+			if ( $this->__isset($field_name))
+			{
+				if ( Arr::get($field_data,'local') === TRUE)
+					// local fields are not included in as_array array (not stored in db, not included in JSON objects)
+					continue;
+
+				if ( $clean AND isset($this->_clean[$field_name]))
+				{
+					// use 'clean' value
+					$array[ $field_name ] = $this->_clean[$field_name];
+				}
+				else
+				{
+					// use 'loaded' value (that has to be normalized)
+					$value = $clean
+						? $this->_object[$field_name]
+						: $this->__get($field_name);
+
+					if ( ! $clean AND Arr::get($field_data, 'xss_clean') AND is_string($value))
+					{
+						// undo htmlspecialchars encoding done by HTML purifier
+						$value = htmlspecialchars_decode($value);
+					}
+
+					$array[ $field_name ] = Brass::normalize( $value, $clean );
+				}
+			}
+			else if ( ! $clean AND isset($field_data['default']))
+			{
+				// use default value
+				$array[ $field_name ] = $field_data['default'];
+			}
+		}
+
+		return count($array) || ! $clean
+			? $array
+			: (object) array();
+	}
+
+	/**
+	 * Return a Form
+	 *
+	 * this will loop through the model and build out a form, checking permissions and other model fields
+	 * in the process
+	 */
 	public function as_form()
 	{
 		$form = [];
+		$values = $this->as_array(TRUE);
+
+		// Non logged in users have no business modifying data
+		if ( ! $user = Authorize::instance('private')->get_user() )
+			return FALSE;
 
 		foreach ( $this->_fields as $field_name => $field_data )
 		{
 			if ( preg_match('/^_/', $field_name) )
 				break;
 
-			var_dump($field_data);
+			$editable = isset($field_data['editable']) ? $field_data['editable'] : FALSE;
 
-			$form[] = Form::label($field_name, $field_name);
-			$form[] = Form::input($field_name, '', ['placeholder' => $field_name]);
+			if ( $editable == 'user' OR $editable == $user->role )
+			{
+				$label = isset($field_data['label']) ? $field_data['label'] : $field_name;
+				$value = isset($values[$field_name]) ? $values[$field_name] : '';
+
+				$form[] = Form::label($field_name, $label);
+				$form[] = Form::input($field_name, $value, ['placeholder' => $field_name]);
+			}
 		}
 
 		return $form;

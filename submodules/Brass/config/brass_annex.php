@@ -3,8 +3,8 @@
 return [
     // Module Information
     'module' => [
-        'name'      => 'Registration',
-        'overview'  => 'Registration support for Annex',
+        'name'      => 'Brass',
+        'overview'  => 'ORM/ODM Layer for Mongo and others',
         'version'   => '0.0.1',
         'url'       =>  [
             'author'    => 'http://thinkclay.com',

@@ -65,10 +65,10 @@ Route::set('images', 'images(/<module>(/<file>))', ['file' => '.+'])
  * We want to extend and append to the bootstrap modules
  */
 $annex_modules = [
-    'auth'  => ANXMODS.'Auth',  // Custom authentication framework
-    'brass' => ANXMODS.'Brass', // ORM Layer for MongoDb
-    'less'  => ANXMODS.'Less',  // Less Compiler Module
-    'annex' => MODPATH.'annex', // Annex Extension Loader
+    'authenticate'  => ANXMODS.'Authenticate',  // Custom authentication framework
+    'brass'         => ANXMODS.'Brass', // ORM Layer for MongoDb
+    'less'          => ANXMODS.'Less',  // Less Compiler Module
+    'annex'         => MODPATH.'annex', // Annex Extension Loader
 ];
 
 /**

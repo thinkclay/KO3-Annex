@@ -31,6 +31,7 @@ abstract class Authenticate
             $_driver = isset($_config['driver']) ? $_config['driver'] : 'Brass';
             $_class  = 'Authenticate_'.ucfirst($_driver);
 
+            // $_instance['authenticate'] = new Authenticate_Brass('authenticate', [])
             $_instances[$_name] = new $_class($_name, $_config);
         }
 

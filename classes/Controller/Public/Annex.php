@@ -30,6 +30,9 @@ class Controller_Public_Annex extends Controller_Public
      */
     public function action_register()
     {
+        if ( static::$user )
+            $this->redirect('/annex');
+
         $role = Request::$current->param('id');
         $username = $this->request->post('username');
         $password = $this->request->post('password');
@@ -38,27 +41,10 @@ class Controller_Public_Annex extends Controller_Public
 
         if ( $_POST )
         {
-            $check = Model_User::create($_POST, 'user');
+            $user_created = Model_Annex_Account::create($_POST, 'user');
 
-            if ( is_array($check) )
-            {
-                $check['success'] = 0;
-                echo json_encode($check);
-            }
-            else if ( $check == false )
-            {
-                echo json_encode([
-                    'success'   => 0,
-                    'message'   =>'User creation failed'
-                ]);
-            }
-            else if ( $check == true )
-            {
-                echo json_encode([
-                    'success'   => 1,
-                    'message'   => 'An email has been sent to '.$_POST['email'].'<br /> Follow instructions to complete registration.'
-                ]);
-            }
+            if ( $user_created )
+                $this->redirect('/account');
         }
 
         $this->template->main->content = Theme::factory('views/forms/register')

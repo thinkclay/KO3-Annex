@@ -21,8 +21,8 @@ abstract class Model_Authenticate_User_Brass extends Brass
         'password' => [
             'type'          => 'string',
             'required'      => TRUE,
-            'min_length'    => 5,
-            'max_length'    => 50
+            'min_length'    => 6,
+            'max_length'    => 256
         ],
         'logins'          => ['type' => 'counter'],
         'last_login'      => ['type' => 'int'],
@@ -33,9 +33,17 @@ abstract class Model_Authenticate_User_Brass extends Brass
     // Specify config name so password gets hashed correctly (with the right salt pattern) when set in user
     protected $_name = 'authenticate';
 
+    // On create, we want to hash the password
+    // Due to an unresolved bug with the singleton we have to unset and reset the pass
+    // To get the hashed pass to save to the db
     public function create($safe = TRUE)
     {
-        $this->password = $this->hash($this->password);
+        $password = $this->hash($this->password);
+
+        unset($this->password);
+
+        $this->password = $password;
+
         return parent::create($safe);
     }
 

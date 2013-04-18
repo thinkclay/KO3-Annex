@@ -2560,17 +2560,32 @@ blockquote p {
     margin: 10px 0;
     padding: 1em;
 }
-    .portfolio-overview img.aligncenter {
-        padding-bottom: 1em;
+    img {
+        display: block;
+        text-align: center;
+        float: left;
+        margin: 0;
+        padding: 0 1em 0 2em;
     }
-    .portfolio-overview h4 {
-        color: #585;
-        margin-bottom: 0;
+    .portfolio-overview .title {
+        color: #666;
+        display: block;
+        font-size: 1.1em;
+        font-weight: 700;
+        padding-bottom: .25em;
         text-shadow: 1px 0 1px #fff;
     }
-    
+    .portfolio-overview .dollar {
+        color: #585;
+        display: block;
+        font-size: 1.5em;
+        text-shadow: 1px 0 1px #fff;
+    }
+
 .one-fourth .portfolio-overview .one-third { 
     float: none; 
-    padding: 10px 0;
+    padding: 13px 0;
     width: auto; 
+    
+    img { padding-left: 0; }
 }

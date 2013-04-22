@@ -4,9 +4,11 @@ class Arr extends Kohana_Arr
 {
     // cms.portfolio.header
     // [ cms => [ portfolio => [ header ]]]
-    public static function from_dots(&$array_ptr, $key, $value)
+    //
+    // IT's MUTABLE!!!!!!!
+    public static function from_char($char, &$array_ptr, $key, $value)
     {
-        $keys = explode('.', $key);
+        $keys = explode($char, $key);
 
         // extract the last key
         $last_key = array_pop($keys);

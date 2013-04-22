@@ -70,7 +70,13 @@ class Controller_Private_Content extends Controller_Private
             $this->auto_render = FALSE;
             $struct = [];
 
-            Arr::from_dots($struct, $post['path'], $post['data']);
+            Arr::from_char('.', $struct, $post['path'], $post['data']);
+
+            // Set to an empty string for better display
+            if ( $post['data'] == '<p><br></p>' )
+            {
+                $post['data'] = '';
+            }
 
             // If this is a global content item
             if ( isset($struct['cms_global']) )
@@ -112,9 +118,9 @@ class Controller_Private_Content extends Controller_Private
             }
 
             if ( isset($updated) OR isset($created) )
-                return json_encode(['status' => 'success']);
+                echo json_encode(['status' => 'success']);
             else
-                return json_encode(['status' => 'failed']);
+                echo json_encode(['status' => 'failed']);
         }
     }
 }

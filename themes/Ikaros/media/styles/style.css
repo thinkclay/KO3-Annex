@@ -1,4 +1,4 @@
-/*
+one/*
 Theme Name: Ikaros - Responsive HTML Business & Portfolio
 Theme URI: http://themes.iki-bir.com/ikaros
 Author: elemis
@@ -338,6 +338,10 @@ img {
 	display: block;
 }
 
+img.one-third {
+	padding: 0 !important;
+}
+
 #fancybox-thumbs ul li img {
 	max-width: none;
 }
@@ -559,9 +563,26 @@ blockquote p {
 	width: 100%;
 }
 
+.clear { clear: both; }
+
 /*-----------------------------------------------------------------------------------*/
 /*	MENU
 /*-----------------------------------------------------------------------------------*/
+
+.admin_panel{
+	color: #ccc;
+	font: normal 13px/28px sans-serif;
+	height: 28px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	min-width: 600px;
+	z-index: 99999;
+	background: #000;
+}
+
+.admin_nav ul li { display: inline; background: none;}
 
 .menu {
 	list-style: none;
@@ -1879,6 +1900,18 @@ blockquote p {
 	margin: 0px auto;
 }
 
+.left{
+	float: left;
+}
+
+.right{
+	float: right;
+}
+
+ul li.social {
+	background: transparent url(/images/ikaros/icon-bullet.png) no-repeat left 7px;
+	padding: 0 0 0 20px;
+}
 /*-----------------------------------------------------------------------------------*/
 /*	TWITTER
 /*-----------------------------------------------------------------------------------*/

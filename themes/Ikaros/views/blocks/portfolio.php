@@ -1,4 +1,3 @@
-<hr />
 
 <!-- Begin Portfolio -->
 <h1 class="center editable" data-cms="cms.portfolio.header">{{cms.portfolio.header}}</h1>

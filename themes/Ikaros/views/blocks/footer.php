@@ -15,45 +15,35 @@
         </li>
       </ul>
     </div>
+
     <div class="one-fourth">
-      <h3>Twitter</h3>
+      <h3><a href="http://twitter.com/p2binvestor">@P2BINVESTOR</a></h3>
       <div id="twitter-wrapper">
         <div id="twitter"></div>
-        <span class="username"><a href="http://twitter.com/elemisdesign">→ Follow @elemisdesign</a></span> </div>
+      </div>
     </div>
+
     <div class="one-fourth">
-      <h3>A Little About Me</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
-      <p>Donec id elit non porta gravida at eget metus. Nullam quis risus eget urna mollis ornare vel.</p>
+      <h3>COMMON QUESTIONS</h3>
+      <p><a href="#">What is Receivables Financing?</a></p>
+      <p><a href="#">What are the risks?</a></p>
+      <p><a href="#">What is your collections process?</a></p>
+      <p><a href="#">More FAQs</a></p>
     </div>
+
     <div class="one-fourth last">
-      <h3>Contact Form</h3>
+      <h3>Connect with P2Bi</h3>
       <!-- Begin Form -->
       <div class="form-container">
         <div class="response"></div>
         <form class="forms" action="contact/form-handler.php" method="post">
           <fieldset>
-            <ol>
-              <li class="form-row text-input-row">
-                <input type="text" name="name" class="text-input required defaultText" title="Name*"/>
-              </li>
-              <li class="form-row text-input-row">
-                <input type="text" name="email" class="text-input required email defaultText" title="Email*"/>
-              </li>
-              <li class="form-row text-area-row">
-                <textarea name="message" class="text-area required defaultText"></textarea>
-              </li>
-              <li class="form-row hidden-row">
-                <input type="hidden" name="hidden" value="" />
-              </li>
-              <li class="button-row">
-                <input type="submit" value="Submit" name="submit" class="btn-submit" />
-              </li>
-            </ol>
-            <input type="hidden" name="v_error" id="v-error" value="Required" />
-            <input type="hidden" name="v_email" id="v-email" value="Enter a valid email" />
+            <input type="text" name="subscribe" placeholder="ENETER YOUR EMAIL" />
+            <input type="submit" value="Subscribe" name="submit" class="btn-submit" />
           </fieldset>
         </form>
+        <p class="number left">(303) 569-4853</p>
+        <p class="email right"><a href="#">Email Us</a></p>
       </div>
       <!-- End Form -->
     </div>

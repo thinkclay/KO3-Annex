@@ -1,10 +1,26 @@
 $(function(){
   var $editable = $('.editable');
+
   var model = 'brass_page';
   var post_url = '/annex/content/update/'+model;
 
   $editable.attr('contenteditable', true);
 
+  // First remove the editable class
+  $editable.removeClass('editable');
+
+  // Then we toggle the editable class in here. 
+  $('#admin_edit').bind('click', function(e){
+    e.preventDefault();
+
+    // Toggle if a block is editable or not. 
+    $editable.toggleClass('editable');
+
+    // Toggle the text. 
+    var text = $('#admin_edit').text();
+    $('#admin_edit').text( text == "Save" ? "Edit" : "Save" );
+  });
+  
   $editable
     .bind('focus', function() {
       $(this).addClass('editing');

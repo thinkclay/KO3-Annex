@@ -36,14 +36,26 @@ class Controller_Private_Content extends Controller_Private
 
     public function action_create()
     {
-        $model = Request::$current->param('model');
         $driver = ucfirst(Kohana::$config->load('annex_core.driver'));
+        $model = 'Brass_'.ucfirst(Request::$current->param('model'));
+        $post = $this->request->post();
 
-        if ( $model AND $driver )
+        // If post data is set, we need to save
+        // we also want some nice messages here so the user knows if worked or failed
+        if ( $post )
+        {
+            $doc = Brass::factory($model);
+            $post['owner'] = static::$user->_id;
+            $post['created'] = time();
+            $doc->values($post);
+            $doc->create();
+        }
+        // if there's no post data, we should show the model form
+        else if ( $model AND $driver )
         {
             // load all users from the database and list them here in a table
             $this->template->main->content = Theme::factory('views/forms/form')
-                ->set('elements', Brass::factory('Brass_User')->as_form())
+                ->set('elements', Brass::factory($model)->as_form())
                 ->set('method', 'POST');
         }
     }

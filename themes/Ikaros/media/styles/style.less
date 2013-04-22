@@ -427,28 +427,31 @@ blockquote p {
 	color: #999999;
 }
 
-.download-box, .warning-box, .info-box, .note-box {
+
+.status-box {
 	clear:both;
 	margin: 10px 0px;
 	padding: 15px 15px 13px 15px;
+	font-weight: 600;
+	font-style: italic;
 	line-height: 17px;
 }
-.info-box {
+.status-box.info {
 	background:#c2ddf9;
 	border:1px solid #80bbef;
 	color:#4783b7;
 }
-.warning-box {
+.status-box.warning {
 	background:#ffcccc;
 	border:1px solid #ff9999;
 	color:#c31b00;
 }
-.download-box {
-	background:#d1f7b6;
-	border:1px solid #8bca61;
-	color:#5e9537;
+.status-box.success {
+	background: #d1f7b6;
+	border: 1px solid #69a840;
+	color: #4d8426;
 }
-.note-box {
+.status-box.note {
 	background:#fdebae;
 	border:1px solid #e6c555;
 	color:#9e660d;
@@ -3066,10 +3069,34 @@ table tbody tr:hover td
 }
 
 /* ---------- CUSTOM P2BI STYLES ---------- */
+.hidden { display: none; }
+
 .callout {
 	background: url('/images/ikaros/patterns/fabric.png');
 	border: 1px solid #eee;
 	padding: .25em 1em;
+
+	h4 {
+		padding-top: .75em;
+	}
+
+	hr {
+		background: #ddd;
+		height: 1px;
+		margin: 1em 0;
+		padding: 0;
+	}
+
+	.question {
+		font-size: 1.2em;
+		line-height: 1.6em;
+	}
+
+	.replies {
+		background: #fff;
+		border: 1px solid #ddd;
+		padding: 1em;
+	}
 }
 
 .portfolio-overview {

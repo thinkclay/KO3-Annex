@@ -20,20 +20,43 @@ class Controller_Public_Scripts extends Controller_Public
 
         $module = $this->request->param('module');
         $file = $this->request->param('file');
+        $file_info = pathinfo($file);
 
         if ( ! $path = Kohana::$config->load($module.'_annex.theme.scripts') )
         {
             $path = Kohana::$config->load('theme_'.$module.'_annex.scripts');
         }
 
-        // Find the file extension
-        $ext = pathinfo($file, PATHINFO_EXTENSION);
-        $file = pathinfo($file);
+        // If we dont have a path still, then our theme isnt a module,
+        // and we need to just do some intelligent searching instead
+        if ( $path )
+        {
+            // Get the server path to the file
+            $file = Kohana::find_file($path, $file_info['filename'], $file_info['extension']);
+        }
+        else
+        {
+            $dir = new RecursiveDirectoryIterator(APPPATH);
+            $iterator = new RecursiveIteratorIterator($dir);
 
-        // Get the server path to the file
-        $file = Kohana::find_file($path, $file['filename'], $ext);
+            // Make sure the path does not contain "/.Trash*" folders and ends with .js
+            $files = new RegexIterator($iterator, '#^(?:[A-Z]:)?(?:/(?!\.Trash)[^/]+)+/[^/]+\.js$#Di');
 
-        if ($file)
+            foreach ($files as $f)
+            {
+                $regex = '/(themes\/'.$module.')'. // Match the theme path with the module name: themes/default
+                    '.*('.
+                    $file_info['filename'].'\.'.$file_info['extension']. // match every folder to our file
+                    ')/i';
+
+                if ( $match = preg_match($regex, $f) )
+                {
+                    $file = $f;
+                }
+            }
+        }
+
+        if ( $file )
         {
             // Check if the browser sent an "if-none-match: <etag>" header, and tell if the file hasn't changed
             Controller::check_cache(sha1($this->request->uri()).filemtime($file), $this->request);
@@ -42,7 +65,7 @@ class Controller_Public_Scripts extends Controller_Public
             $this->response->body(file_get_contents($file));
 
             // Set the proper headers to allow caching
-            $this->response->headers('content-type',  File::mime_by_ext($ext));
+            $this->response->headers('content-type',  File::mime_by_ext($file_info['extension']));
             $this->response->headers('last-modified', date('r', filemtime($file)));
         }
         else

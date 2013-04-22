@@ -2,12 +2,7 @@
 
 <!-- start: header -->
 <?php if ( isset($content) ) : ?>
-<div class="header-wrapper">
-    <div class="header">
-        <?php echo @$content; ?>
-    </div>
-    <div class="header-light"></div>
-</div>
+    <?php echo @$content; ?>
 <?php endif; ?>
 <!-- end: header -->
 

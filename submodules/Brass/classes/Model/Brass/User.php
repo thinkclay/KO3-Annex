@@ -6,15 +6,24 @@
 class Model_Brass_User extends Model_Authenticate_User_Brass implements Acl_Role_Interface
 {
     public $_fields = [
+        'id' => [
+            'type' => 'string'
+        ],
+
         'role' => [
-            'editable' => 'admin',
-            'type'     => 'string',
-            'required' => true,
+            'editable'  => 'admin',
+            'label'     => 'Role',
+            'type'      => 'string',
+            'required'  => true,
         ],
         'created' => [
             'editable'  => FALSE,
             'type'      => 'string',
             'required'  => true,
+        ],
+        'updated' => [
+            'editable'  => FALSE,
+            'type'      => 'string'
         ],
         'last_login' => [
             'editable'  => FALSE,
@@ -49,6 +58,7 @@ class Model_Brass_User extends Model_Authenticate_User_Brass implements Acl_Role
             'min_length' => 5,
             'max_length' => 50
         ],
+
         'email' => [
             'editable'   => 'user',
             'label'      => 'Email Address',
@@ -62,6 +72,41 @@ class Model_Brass_User extends Model_Authenticate_User_Brass implements Acl_Role
                 ['email_domain'],
             ]
         ],
+        'phone1' => [
+            'type' => 'string',
+        ],
+        'phone2' => [
+            'type' => 'string',
+        ],
+        'address1' => [
+            'type' => 'string',
+        ],
+        'address2' => [
+            'type' => 'string',
+        ],
+        'city' => [
+            'type' => 'string',
+        ],
+        'state' => [
+            'type' => 'string',
+        ],
+        'postal_code' => [
+            'type' => 'string',
+        ],
+        'country' => [
+            'type' => 'string',
+        ],
+
+        'accredited' => [
+            'type' => 'boolean',
+        ],
+        'account_id' => [
+            'type' => 'string',
+        ],
+        'ssn_last2' => [
+            'type'      => 'string'
+        ],
+
         'first_name' => [
             'editable'   => 'user',
             'label'      => 'First Name',
@@ -89,6 +134,44 @@ class Model_Brass_User extends Model_Authenticate_User_Brass implements Acl_Role
                 ['alpha_dash']
             ]
         ],
+
+
+        'old_investor_id' => [
+            'type'  => 'string',
+        ],
+
+
+
+        // 'alt_phone' => [
+        //     'type' => 'string',
+        //     string '' (length=0)
+        // ],
+        // 'alt_phone_type' => [
+        //     'type' => 'string',
+        //     string '0' (length=1)
+        // ],
+
+
+
+
+        // 'ssn_last2' => [
+        //     'type' => 'string',
+        //     string '' (length=0)
+        // ],
+        // 'state' => [
+        //     'type' => 'string',
+        //     string '' (length=0)
+        // ],
+        // 'updated_at' => [
+        //     'type' => 'string',
+        //     string '2012-11-23 15:39:26' (length=19)
+        // ],
+        // 'user_id' => [
+        //     'type' => 'string',
+        //     string '1' (length=1)
+        // ],
+
+
         'preferences' => [
             'editable'   => FALSE,
             'label'      => 'Preferences',

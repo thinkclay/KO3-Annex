@@ -9,6 +9,15 @@
  */
 class Controller_Private_Account extends Controller_Private
 {
+
+    /**
+     * Index Action
+     */
+    public function action_index()
+    {
+        $this->redirect('/'.static::$user->role);
+    }
+
     /**
      * Register Action
      *

@@ -12,19 +12,6 @@ class Controller_Private_Content extends Controller_Private
     private $_model = FALSE;
     private $_id = FALSE;
 
-    public function before()
-    {
-        parent::before();
-
-        $this->template->styles = [
-            "/styles/annex/bootstrap.css" => "all",
-            "/styles/annex/bootstrap.css-responsive.css" => "screen"
-        ];
-        $this->template->scripts = [];
-
-        $this->template->head = '<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->';
-    }
-
     public function action_index()
     {
         Model_Annex_Content::overview();
@@ -37,8 +24,12 @@ class Controller_Private_Content extends Controller_Private
 
         if ( $model AND $driver )
         {
+            $model = 'Brass_'.ucfirst($model);
+
             // load all users from the database and list them here in a table
-            var_dump( Brass::factory('Brass_User')->load()->as_array() );
+            $data = Brass::factory($model)->load(0)->as_array();
+
+            $this->template->main->content = Theme::factory('views/content/list')->bind('data', $data);
         }
     }
 

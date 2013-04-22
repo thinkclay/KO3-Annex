@@ -12,6 +12,13 @@ Route::set('annex', 'annex(/<controller>(/<action>(/<model>(/<id>))))')
     ));
 
 // Annex Account Stuff
+Route::set('account', 'account')
+    ->defaults([
+        'directory'     => 'private',
+        'controller'    => 'account',
+        'action'        => 'index',
+    ]);
+
 Route::set('account login', 'account/login')
     ->defaults([
         'directory'     => 'public',

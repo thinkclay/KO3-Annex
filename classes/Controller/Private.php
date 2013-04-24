@@ -27,10 +27,10 @@ abstract class Controller_Private extends Controller_Template
 
         parent::before();
 
-        static::$user = Authorize::instance('private')->get_user();
+        static::$user = Authorize::instance()->get_user();
 
         // Check user auth and role: load up instance of A2 and pass it our config file
-        $this->authorize = Authorize::instance('private');
+        $this->authorize = Authorize::instance();
 
         // load up the template
         $dir = Request::$current->directory();

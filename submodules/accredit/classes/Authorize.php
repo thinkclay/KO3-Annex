@@ -8,18 +8,18 @@
  *
  * The Access Control List (roles,resources,rules) and the desired Authentication library are stored in a
  * config file. Usage in your code (controller/libraries/models) are as follow:
-
-        // simple acl usage (resource string 'blog')
-        if ( Authorize::instance()->allowed('blog','read') )
-            // do
-        else
-            // don't
-
-        // advanced acl usage (resource object: $blog), allows using the improved assertions
-        if ( Authorize::instance()->allowed($blog,'delete') )
-            // do
-        else
-            // don't
+ *
+ *      // simple acl usage (resource string 'blog')
+ *       if ( Authorize::instance()->allowed('blog','read') )
+ *          // do
+ *       else
+ *          // don't
+ *
+ *       // advanced acl usage (resource object: $blog), allows using the improved assertions
+ *       if ( Authorize::instance()->allowed($blog,'delete') )
+ *           // do
+ *       else
+ *           // don't
  *
  */
 class Authorize extends Acl

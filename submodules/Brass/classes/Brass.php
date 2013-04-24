@@ -1786,7 +1786,7 @@ abstract class Brass implements Brass_Interface
         $values = $this->as_array(FALSE);
 
         // Non logged in users have no business modifying data
-        if ( ! $user = Authorize::instance('private')->get_user() )
+        if ( ! $user = Authorize::instance()->get_user() )
             return FALSE;
 
         foreach ( $this->_fields as $field_name => $field_data )

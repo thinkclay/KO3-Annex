@@ -48,7 +48,7 @@ class Controller_Public_Account extends Controller_Public
     public function action_login()
     {
         // If the user is already logged in, let's redirect them to the configured admin landing page
-        if ( Authorize::instance('private')->logged_in() )
+        if ( Authorize::instance()->logged_in() )
         {
             $this->redirect(Kohana::$config->load('annex_annex.admin.path'));
             return;

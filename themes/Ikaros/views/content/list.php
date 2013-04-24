@@ -1,28 +1,22 @@
 <?php if ( isset($data) ) : ?>
-<table cellspacing="0" cellpadding="0" class="administration" data-actions="[become, details]">
+<table cellspacing="0" cellpadding="0" class="administration">
     <thead>
         <tr>
         <?php foreach ( $data[0]->_fields as $key => $val ) : ?>
-        <?php if ( isset($val['editable']) AND $val['editable'] ) : ?>
+        <?php if ( isset($val['editable']) AND $val['editable'] ) : $keys[] = $key; ?>
             <th><?php echo @$val['label']; ?></th>
         <?php endif; ?>
         <?php endforeach; ?>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
     <?php foreach ( $data as $row ) : $row = $row->as_array(); ?>
         <tr>
-        <?php foreach ( $data[0]->_fields as $key => $val ) : ?>
-        <?php if ( isset($val['editable']) AND $val['editable'] ) : ?>
-            <td>
-            <?php if ( @is_array($row[$key]) ) : ?>
-                <?php print_r($row[$key]); ?>
-            <?php else : ?>
-                <?php echo @$row[$key]; ?>
-            <?php endif; ?>
-            </td>
-        <?php endif; ?>
-        <?php endforeach; ?>
+            <?php foreach ( $keys as $key ) : ?>
+            <td><?php echo (string) @$row[$key]; ?></td>
+            <?php endforeach; ?>
+            <td><a href="/annex/account/become/user/<?php echo $row['_id']; ?>">Become</a></td>
         </tr>
     <?php endforeach; ?>
     </tbody>

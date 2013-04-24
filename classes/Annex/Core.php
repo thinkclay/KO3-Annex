@@ -127,7 +127,7 @@ class Annex_Core
 	 */
 	private function _instantiate_module($module)
 	{
-		$private_config = Kohana::$config->load('private');
+		$private_config = Kohana::$config->load('authorize');
 		$module_config = Kohana::$config->load($module.'_annex');
 
 		if (isset($private_config) AND isset($module_config))

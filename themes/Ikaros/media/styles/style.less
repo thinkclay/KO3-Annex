@@ -2200,18 +2200,18 @@ blockquote p {
 	clear:both;
 }
 .toggle h4.title {
-	cursor: pointer;
-	background: #f7f7f7;
+	background: #f7f7f7 url('/images/ikaros/arrow-right.png') no-repeat 5px center;
 	border: 1px solid #e3e3e3;
+	cursor: pointer;
 	margin: 0 0 10px 0;
-	padding: 10px;
+	padding: .5em .5em .5em 2em;
 	font-size: 13px;
 }
 .toggle h4.title:hover {
-
+	border-color: #ccc;
 }
 .toggle h4.title.active {
-
+	background: #f7f7f7 url('/images/ikaros/arrow-down.png') no-repeat 5px center;
 }
 .togglebox {
 	height: auto;
@@ -3069,6 +3069,16 @@ table tbody tr:hover td
 }
 
 /* ---------- CUSTOM P2BI STYLES ---------- */
+body.investor .column-left {
+	float: left;
+	width: 70%;
+}
+body.investor .column-right {
+	float: right;
+	width: 26%;
+}
+
+
 .hidden { display: none; }
 
 .callout {
@@ -3095,6 +3105,7 @@ table tbody tr:hover td
 	.replies {
 		background: #fff;
 		border: 1px solid #ddd;
+		margin: .75em 0;
 		padding: 1em;
 	}
 }
@@ -3130,7 +3141,7 @@ table tbody tr:hover td
 	text-shadow: 1px 0 1px #fff;
 }
 
-.one-fourth .portfolio-overview .one-third {
+.column-right .portfolio-overview .one-third {
 	float: none;
 	padding: 13px 0;
 	width: auto;

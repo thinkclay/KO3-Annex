@@ -42,7 +42,7 @@ if ( isset($selected) )
 </nav>
 <?php endif; ?>
 
-<?php if ( isset($selected) AND isset($navigation[$selected]) ) : ?>
+<?php if ( isset($selected) AND isset($navigation[$selected]) AND isset($navigation[$selected]['sub']) ) : ?>
 <nav id="submenu" class="clearfix">
   <div class="container">
     <ul>

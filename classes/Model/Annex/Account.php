@@ -84,7 +84,7 @@ class Model_Annex_Account
             {
                 $doc->values($post_data);
                 $doc->update();
-                Authorize::instance('private')->get_user()->reload();
+                Authorize::instance()->get_user()->reload();
             }
         }
     }

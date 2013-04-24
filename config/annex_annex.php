@@ -42,29 +42,5 @@ return [
         'styles'    => 'themes/default/media/styles',
         'scripts'   => 'themes/default/media/scripts',
         'views'     => 'themes/default/views/'
-    ],
-
-
-    /**
-     * The ACL Resources (String IDs are fine, use of ACL_Resource_Interface objects also possible)
-     * Use: ROLE => PARENT (make sure parent is defined as resource itself before you use it as a parent)
-     */
-    'resources' => [
-        'annex'     => NULL,
-    ],
-
-    /*
-     * The ACL Rules (Again, string IDs are fine, use of ACL_Role/Resource_Interface objects also possible)
-     * Split in allow rules and deny rules, one sub-array per rule
-     */
-    'rules' => [
-        'allow' => [
-            'annex' => [
-                'role'      => ['admin'],
-                'resource'  => ['annex'],
-                'privilege' => ['index']
-            ]
-        ],
-        'deny' => []
     ]
 ];

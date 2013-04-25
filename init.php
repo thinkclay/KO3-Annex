@@ -4,19 +4,23 @@ define('ANXROOT', MODPATH.'annex'.DIRECTORY_SEPARATOR);
 define('ANXMODS', ANXROOT.'submodules'.DIRECTORY_SEPARATOR);
 
 // Annex Control Panel
-Route::set('annex', 'annex(/<controller>(/<action>(/<model>(/<id>))))')
-    ->defaults(array(
-        'directory'     => 'private',
-        'controller'    => 'annex',
-        'action'        => 'index',
-    ));
+Route::set('admin', 'admin')
+    ->defaults([
+        'directory'     => 'admin',
+        'controller'    => 'admin',
+    ]);
+
+Route::set('admin content', 'admin/content(/<action>(/<model>(/<id>)))')
+    ->defaults([
+        'directory'     => 'admin',
+        'controller'    => 'content'
+    ]);
 
 // Annex Account Stuff
 Route::set('account', 'account')
     ->defaults([
         'directory'     => 'private',
         'controller'    => 'account',
-        'action'        => 'index',
     ]);
 
 Route::set('account login', 'account/login')
@@ -39,7 +43,6 @@ Route::set('account logout', 'account/logout')
         'controller'    => 'account',
         'action'        => 'logout',
     ]);
-
 
 Route::set('account manage', 'account/manage')
     ->defaults([

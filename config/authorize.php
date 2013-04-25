@@ -27,9 +27,7 @@ return [
      */
     'roles' => [
         'user'      => NULL,
-        'investor'  => ['user'],
-        'client'    => ['user'],
-        'admin'     => ['user', 'investor', 'client'],
+        'admin'     => ['user'],
         'developer' => ['admin'],
     ],
 
@@ -44,8 +42,9 @@ return [
      * Use: ROLE => PARENT (make sure parent is defined as resource itself before you use it as a parent)
      */
     'resources' => [
-        'annex'     => NULL,
+        'admin'     => NULL,
         'account'   => NULL,
+        'content'   => NULL,
     ],
 
     /*
@@ -59,16 +58,16 @@ return [
      */
     'rules' => [
         'allow' => [
-            'admin' => [
-                'role'      => ['admin'],
-                'resource'      => ['annex', 'content'],
+            'user' => [
+                'role'          => ['user'],
+                'resource'      => ['account'],
                 'privileges'    => '*'
             ],
-            'account' => [
-                'role'          => ['user'],
-                'resource'      => ['account', 'investor'],
+            'admin' => [
+                'role'          => ['admin'],
+                'resource'      => '*',
                 'privileges'    => '*'
-            ]
+            ],
         ],
         'deny' => [
         ]

@@ -7,13 +7,14 @@
  * @category    Private
  * @author      Clay McIlrath
  */
-class Controller_Private_Annex extends Controller_Private
+class Controller_Admin_Admin extends Controller_Admin
 {
     public function action_index()
     {
         $status = Annex::render('annex/modules/status');
 
-        $this->template->main->content = View::factory('annex/index')
-            ->bind('content', $status);
+        $this->template->main->content = Theme::factory('views/container/2col')
+            ->set('left', $status)
+            ->set('right', 'right content');
     }
 }

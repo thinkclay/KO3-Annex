@@ -173,6 +173,7 @@ class Authorize extends Acl
 
         $result = $this->is_allowed($role, $resource, $privilege);
 
+
         if ( ! $exception OR $result === TRUE )
         {
             return $result;

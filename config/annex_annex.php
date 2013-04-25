@@ -32,6 +32,7 @@ return [
     'theme' => [
         'public'    => 'default',
         'private'   => 'default',
+        'admin'     => 'default',
         'settings'  => [
             'media' => 'builder'
         ],

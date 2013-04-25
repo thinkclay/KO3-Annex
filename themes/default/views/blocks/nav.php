@@ -9,7 +9,6 @@ if ( isset($selected) )
 }
 ?>
 
-<?php if ( isset($navigation) ) : ?>
 <nav id="main-navigation" class="clearfix">
   <div class="container clearfix">
     <div class="logo">
@@ -18,13 +17,14 @@ if ( isset($selected) )
       </a>
     </div>
 
+    <?php if ( count($navigation) ) : ?>
     <!-- Begin Menu -->
     <div id="menu" class="menu">
       <ul id="tiny">
         <?php foreach ( $navigation as $item ) : ?>
         <li class="<?php echo isset($item['li_class']) ? $item['li_class'] : ''; ?>">
-          <a href="<?php echo $item['url']; ?>" >
-            <?php echo $item['text']; ?>
+          <a href="<?php echo @$item['url']; ?>" >
+            <?php echo @$item['text']; ?>
           </a>
           <?php if ( isset($item['sub']) AND is_array($item['sub']) ) : ?>
           <ul>
@@ -38,9 +38,9 @@ if ( isset($selected) )
       </ul>
     </div>
     <!-- End Menu -->
+    <?php endif; ?>
   </div>
 </nav>
-<?php endif; ?>
 
 <?php if ( isset($selected) AND isset($navigation[$selected]) AND isset($navigation[$selected]['sub']) ) : ?>
 <nav id="submenu" class="clearfix">

@@ -7,7 +7,7 @@
  * @category    Private
  * @author      Clay McIlrath
  */
-class Controller_Private_Content extends Controller_Private
+class Controller_Admin_Content extends Controller_Admin
 {
     private $_model = FALSE;
     private $_id = FALSE;

@@ -14,7 +14,9 @@ class Controller_Admin_Content extends Controller_Admin
 
     public function action_index()
     {
-        Model_Annex_Content::overview();
+        $list = Model_Annex_Content::overview();
+
+        $this->template->main->content = Theme::factory('views/content/model-list')->bind('data', $list);
     }
 
     public function action_list()
@@ -24,15 +26,34 @@ class Controller_Admin_Content extends Controller_Admin
 
         if ( $model AND $driver )
         {
-            $model = 'Brass_'.ucfirst($model);
+            $brass_model = 'Brass_'.ucfirst($model);
 
             // load all users from the database and list them here in a table
-            $data = Brass::factory($model)->load(0)->as_array();
 
-            $this->template->main->content = Theme::factory('views/content/list')->bind('data', $data);
+            if ( ! class_exists('Model_'.$brass_model) )
+            {
+                $brass_model = 'Brass_'.ucfirst(preg_replace('/[s|es]$/i', '', $model));
+            }
+
+            $data = Brass::factory($brass_model)->load(0)->as_array();
+            $view = Theme::factory("views/content/model-list-$model", NULL, TRUE);
+            $model_name = preg_replace('/[es|s]$/i', '', $model);
+
+            if ( $view )
+            {
+                $this->template->main->content = Theme::factory("views/content/model-list-$model")
+                    ->bind('model', $model_name)
+                    ->bind('data', $data);
+            }
+            else
+            {
+                $this->template->main->content = Theme::factory('views/content/model-list-default')
+                    ->bind('model', $model_name)
+                    ->bind('data', $data);
+            }
+
         }
     }
-
 
     public function action_create()
     {
@@ -57,6 +78,24 @@ class Controller_Admin_Content extends Controller_Admin
             $this->template->main->content = Theme::factory('views/forms/form')
                 ->set('elements', Brass::factory($model)->as_form())
                 ->set('method', 'POST');
+        }
+    }
+
+    public function action_view()
+    {
+        $model = 'Brass_'.ucfirst(Request::$current->param('model'));
+        $id = Request::$current->param('id');
+
+        if ( isset($model) AND isset($id) )
+        {
+            $doc = Brass::factory($model, ['_id' => new MongoId($id)]);
+
+            if ( $doc )
+            {
+                $this->template->main->content = Theme::factory('views/forms/form')
+                    ->set('elements', $doc->as_form())
+                    ->set('method', 'POST');
+            }
         }
     }
 

@@ -42,21 +42,6 @@ class Controller_Private_Account extends Controller_Private
     }
 
     /**
-     * Register Action
-     *
-     * @todo use a form generator built from the user model instead of hard coding fields
-     */
-    public function action_become()
-    {
-        if ( static::$user->role != 'admin' )
-            $this->redirect('error/denied');
-
-        $user = Brass::factory('brass_user', ['_id' => $this->request->param('id')])->load();
-
-        Authenticate::instance()->complete_login($user);
-    }
-
-    /**
      * Logout Action
      *
      * @todo if we end up implementing local storage sync, this would be a good spot to purge that cache

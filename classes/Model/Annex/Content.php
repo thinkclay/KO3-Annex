@@ -4,7 +4,18 @@ abstract class Model_Annex_Content extends Model
 {
     public static function overview()
     {
-        echo 'this will return a list of content types';
+        $collections = BrassDB::instance()->db()->getCollectionNames();
+        $list = [];
+
+        foreach ( $collections as $collection )
+        {
+            if ( preg_match('/^brass/i', $collection) )
+            {
+                $list[] = preg_replace('/^brass_/i', '', $collection);
+            }
+        }
+
+        return $list;
     }
 
     public static function __callStatic($name, $arguments)

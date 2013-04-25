@@ -40,7 +40,7 @@ class Annex_Theme
      * @return  void
      * @uses    Theme::set_filename
      */
-    public function __construct($file = NULL, array $data = NULL)
+    public function __construct($file = NULL, array $data = NULL, $find_only = FALSE)
     {
         // Set theme to whatever config file has for theme name.
         // The theme uses directories and loads the namespace accordingly
@@ -50,6 +50,9 @@ class Annex_Theme
         {
             static::$_theme_name = $theme;
         }
+
+        if ( $find_only == TRUE )
+            return $this->_file = $this->find_file($theme, $file);
 
         if ( $file !== NULL )
         {
@@ -62,6 +65,7 @@ class Annex_Theme
             // Add values to the current data array
             $this->_data = $data + $this->_data;
         }
+
     }
 
     /**
@@ -167,9 +171,14 @@ class Annex_Theme
      * @param   array   array of values
      * @return  Theme
      */
-    public static function factory($file = NULL, array $data = NULL)
+    public static function factory($file = NULL, array $data = NULL, $find_only = FALSE)
     {
-        return new Theme($file, $data);
+        $theme = new Theme($file, $data, $find_only);
+
+        if ( $find_only )
+            return $theme->_file;
+        else
+            return $theme;
     }
 
     /**
@@ -310,6 +319,28 @@ class Annex_Theme
         {
             throw new Annex_Exception("Couldn't set file {$file} beacuse file could not be found in the {$theme} or default theme folders");
         }
+    }
+
+    /**
+     * The set_filename function first checks if the file exists, if it does then we set the $ext
+     * and _file. However, if the file does not exist then we check if we have a default of that file to
+     * use instead and if we do then we set the $ext and file of that default file. If it doesn't exist in either
+     * place then throw an error.
+     *
+     *  $this->set_filename($file);
+     *
+     * @param   string  view filename
+     * @return  void
+     * @uses    local $_file and $_ext variable
+     */
+    public function find_file($theme, $file)
+    {
+        if ( $p = Kohana::find_file('themes', $theme . '/' . $file) )
+            return $p;
+        else if ( $p = Kohana::find_file('themes', 'default/' . $file) )
+            return $p;
+        else
+            return FALSE;
     }
 
     /**

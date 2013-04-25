@@ -10,6 +10,13 @@ Route::set('admin', 'admin')
         'controller'    => 'admin',
     ]);
 
+Route::set('admin become user', 'admin/become-user(/<id>)')
+    ->defaults([
+        'directory'     => 'admin',
+        'controller'    => 'admin',
+        'action'        => 'become_user'
+    ]);
+
 Route::set('admin content', 'admin/content(/<action>(/<model>(/<id>)))')
     ->defaults([
         'directory'     => 'admin',

@@ -1,4 +1,4 @@
-<?php if ( isset($data) ) : ?>
+<?php if ( isset($data) AND isset($model) ) : ?>
 <table cellspacing="0" cellpadding="0" class="administration">
     <thead>
         <tr>
@@ -16,7 +16,7 @@
             <?php foreach ( $keys as $key ) : ?>
             <td><?php echo (string) @$row[$key]; ?></td>
             <?php endforeach; ?>
-            <td><a href="/annex/account/become/user/<?php echo $row['_id']; ?>">Become</a></td>
+            <td><a href="/admin/content/view/<?php echo $model; ?>/<?php echo $row['_id']; ?>">Details</a></td>
         </tr>
     <?php endforeach; ?>
     </tbody>

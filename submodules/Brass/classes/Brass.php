@@ -486,7 +486,7 @@ abstract class Brass implements Brass_Interface
                     }
                 }
 
-                $d = [ 'same_clean' => $same_clean, 'same_object' => $same_object, 'original' => $this->_clean[$name], 'new' => $value];;
+                $d = [ 'same_clean' => $same_clean, 'same_object' => $same_object, 'original' => @$this->_clean[$name], 'new' => $value];;
 
                 if ( $same_clean OR $same_object )
                     return FALSE;
@@ -1143,7 +1143,7 @@ abstract class Brass implements Brass_Interface
             // add validation rules
             $array = $this->_check($array);
 
-            if ( $subject === Brass::CHECK_ONLY)
+            if ( $subject === Brass::CHECK_ONLY )
             {
                 foreach ( $this->_fields as $field_name => $field_data )
                 {
@@ -1155,10 +1155,10 @@ abstract class Brass implements Brass_Interface
                 }
             }
 
-            if ( ! $array->check() )
-            {
-                throw new Brass_Validation_Exception($this->_model, $array);
-            }
+            return $array->check();
+
+            // if ( ! $array->check() )
+            //     throw new Brass_Validation_Exception($this->_model, $array);
         }
 
         if ( $subject !== Brass::CHECK_LOCAL )
@@ -1796,13 +1796,32 @@ abstract class Brass implements Brass_Interface
 
             $editable = isset($field_data['editable']) ? $field_data['editable'] : FALSE;
 
-            if ( $editable == 'user' OR $editable == $user->role )
+            if ( $editable == 'user' OR $editable == $user->role OR ($editable AND $user->role == 'admin') )
             {
+                $input_type = isset($field_data['input']) ? $field_data['input'] : 'text';
                 $label = isset($field_data['label']) ? $field_data['label'] : $field_name;
                 $value = isset($values[$field_name]) ? $values[$field_name] : '';
 
                 $form[] = Form::label($field_name, $label);
-                $form[] = Form::input($field_name, $value, ['placeholder' => $field_name]);
+                $attributes = isset($field_data['attributes']) ? $field_data['attributes'] : [];
+
+                if ( $input_type == 'select_state' )
+                {
+                    $form[] = Form::select($field_name, Model_Annex_Form::state_list(), $value);
+                }
+                else if ( $input_type == 'select_country' )
+                {
+                    if ( $value == '' )
+                    {
+                        $value = 'United States';
+                    }
+
+                    $form[] = Form::select($field_name, Model_Annex_Form::country_list(), $value);
+                }
+                else
+                {
+                    $form[] = Form::$input_type($field_name, $value, $attributes);
+                }
             }
         }
 

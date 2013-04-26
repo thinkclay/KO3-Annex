@@ -11,7 +11,9 @@ abstract class Model_Annex_Content extends Model
         {
             if ( preg_match('/^brass/i', $collection) )
             {
-                $list[] = preg_replace('/^brass_/i', '', $collection);
+                $model = preg_replace('/^brass_/i', '', $collection);
+                $model = preg_replace('/[s|es]$/i', '', $model);
+                $list[] = $model;
             }
         }
 

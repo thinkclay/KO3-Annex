@@ -6,6 +6,10 @@ Author URI: http://iki-bir.com
 Version: 1.0.2
 */
 
+@p2bi_blue = #2F4159;
+@p2bi_yellow = #F9CF00;
+
+
 /*-----------------------------------------------------------------------------------*/
 /*	RESET
 /*-----------------------------------------------------------------------------------*/
@@ -47,11 +51,6 @@ table {
 }
 .clear {
 	clear:both;
-	display:block;
-	overflow:hidden;
-	visibility:hidden;
-	width:0;
-	height:0
 }
 .clearfix:after, .wrapper:after {
 	clear:both;
@@ -3042,6 +3041,7 @@ table
 {
 	border: 1px solid #ddd;
 	border-collapse: collapse;
+	margin: 1em 0;
 	text-align: left;
 }
 table th
@@ -3056,6 +3056,7 @@ table td
 {
 	background: #eee;
 	color: #666;
+	line-height: 1.6em;
 	padding: 10px;
 	border-top: 1px dashed #fff;
 }
@@ -3070,11 +3071,11 @@ table tbody tr:hover td
 }
 
 /* ---------- CUSTOM P2BI STYLES ---------- */
-body.investor .column-left {
+body.three-one .column-left, body.investor .column-left {
 	float: left;
 	width: 70%;
 }
-body.investor .column-right {
+body.three-one .column-right, body.investor .column-right {
 	float: right;
 	width: 26%;
 }
@@ -3103,7 +3104,7 @@ body.investor .column-right {
 		line-height: 1.6em;
 	}
 
-	.replies {
+	.replies, .snapshot {
 		background: #fff;
 		border: 1px solid #ddd;
 		margin: .75em 0;
@@ -3119,6 +3120,51 @@ body.investor .column-right {
 	}
 	a.button {
 		margin: .4em 0 0;
+	}
+}
+
+.client {
+	position: relative;
+
+	h2 {
+		color: @p2bi_blue;
+		font-size: 1.8em;
+		margin: .5em 0 .25em;
+	}
+
+	h3 {
+		color: #888;
+		font-size: 1.4em;
+	}
+
+	.amt {
+		color: #558855;
+		font-size: 1.4em;
+	}
+
+	.details {
+		background: @p2bi_yellow;
+		border: 1px solid desaturate(@p2bi_yellow, 20%);
+		color: @p2bi_blue;
+		float: right;
+		font-size: 1.3em;
+		font-weight: 600;
+		line-height: 1;
+		margin: 15px 5px;
+		padding: .5em 1em;
+		text-shadow: 0 -1px 1px saturate(@p2bi_yellow, 80%);
+	}
+	.details:hover {
+		background: saturate(@p2bi_yellow, 20%);
+		border: 1px solid desaturate(@p2bi_yellow, 60%);
+	}
+
+	.one-fourth {
+		border-right: 1px solid #ddd;
+		box-sizing: border-box;
+	}
+	.one-fourth.last {
+		border: none;
 	}
 }
 
@@ -3162,7 +3208,7 @@ body.investor .column-right {
 }
 
 .green {
-	color: green;
+	color: #558855;
 }
 .red {
 	color: red;

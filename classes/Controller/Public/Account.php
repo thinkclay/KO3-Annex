@@ -85,8 +85,18 @@ class Controller_Public_Account extends Controller_Public
             }
         }
 
-        $this->template->main->content = Theme::factory('views/forms/account/login')
+        $this->template->class = 'three-one';
+
+        $left = Theme::factory('views/forms/account/login')
             ->bind('username', $username)
             ->bind('password', $password);
+
+        $right = Theme::factory('views/forms/account/register');
+
+        $this->template->main->content = Theme::factory('views/container/2col')
+            ->bind('left', $left)
+            ->bind('right', $right);
+
+
     }
 }

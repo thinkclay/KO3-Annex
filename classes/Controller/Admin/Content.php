@@ -65,17 +65,36 @@ class Controller_Admin_Content extends Controller_Admin
         // we also want some nice messages here so the user knows if worked or failed
         if ( $post )
         {
+            $this->auto_render = FALSE;
+
             $doc = Brass::factory($model);
             $post['owner'] = static::$user->_id;
             $post['created'] = time();
             $doc->values($post);
-            $doc->create();
+
+            if ( $doc->check() )
+            {
+                $doc->create();
+
+                echo json_encode([
+                    'status'    => 'success',
+                    'message'   => 'Saved successfully'
+                ]);
+            }
+            else
+            {
+                echo json_encode([
+                    'status'    => 'error',
+                    'message'   => 'Form failed to submit, you need to see fill out all the required fields'
+                ]);
+            }
         }
         // if there's no post data, we should show the model form
         else if ( $model AND $driver )
         {
             // load all users from the database and list them here in a table
             $this->template->main->content = Theme::factory('views/forms/form')
+                ->set('class', 'ajax')
                 ->set('elements', Brass::factory($model)->as_form())
                 ->set('method', 'POST');
         }
@@ -85,16 +104,44 @@ class Controller_Admin_Content extends Controller_Admin
     {
         $model = 'Brass_'.ucfirst(Request::$current->param('model'));
         $id = Request::$current->param('id');
+        $post = $this->request->post();
 
+        // If post data is set, we need to save
+        // we also want some nice messages here so the user knows if worked or failed
         if ( isset($model) AND isset($id) )
         {
-            $doc = Brass::factory($model, ['_id' => new MongoId($id)]);
+            $doc = Brass::factory($model, ['_id' => new MongoId($id)])->load();
 
             if ( $doc )
             {
                 $this->template->main->content = Theme::factory('views/forms/form')
+                    ->set('class', 'ajax')
                     ->set('elements', $doc->as_form())
                     ->set('method', 'POST');
+            }
+
+            if ( $post )
+            {
+                $this->auto_render = FALSE;
+
+                $doc->values($post);
+
+                if ( $doc->check() )
+                {
+                    $doc->update();
+
+                    echo json_encode([
+                        'status'    => 'success',
+                        'message'   => 'Saved successfully'
+                    ]);
+                }
+                else
+                {
+                    echo json_encode([
+                        'status'    => 'error',
+                        'message'   => 'Form failed to submit, you need to see fill out all the required fields'
+                    ]);
+                }
             }
         }
     }

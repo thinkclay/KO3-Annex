@@ -3,58 +3,28 @@
 
   <!-- Begin Content -->
   <div class="post-container">
+  <?php foreach($posts as $post): ?>
     <div class="post">
       <div class="post-info">
         <div class="date">
-          <div class="day">27</div>
-          <div class="month">Jun</div>
+          <div class="day"><?php echo date('d', $post['created']); ?></div>
+          <div class="month"><?php echo date('M', $post['created']); ?></div>
         </div>
         <div class="title-meta">
-          <h1 class="post-title"><a href="/blog/single">Ridiculus Mattis Lorem Dolor Inceptos</a></h1>
-          <div class="meta">Posted by <a href="#">admin</a> under <a href="#">Web Design</a> | <a href="#">No Comments</a></div>
+          <h1 class="post-title"><a href="/blog/single"><?php echo $post['title']; ?></a></h1>
+          <div class="meta">Posted by <a href="#"><?php echo $post['user_name']; ?></a> under <a href="#"><?php if(isset($post['category'])) { echo $post['category']; } ?></a> | <a href="#">No Comments</a></div>
         </div>
       </div>
-      <div class="featured"><a href="/blog/single"><img src="/images/ikaros/art/post1.jpg" alt="" /></a></div>
-      <p>Donec sed odio dui. Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue. Nullam id dolor id nibh ultricies vehicula ut id elit. Sed posuere consectetur est at lobortis.</p>
-      <p>Maecenas faucibus mollis interdum. Donec id elit non mi porta gravida at eget metus. Donec id elit non mi porta gravida at eget metus. Cras mattis consectetur purus sit amet fermentum.</p>
-      <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras mattis consectetur purus sit amet fermentum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem elit.</p>
-      <div class="tags"><span></span> Tags: <a href="#">photography</a>, <a href="#">journal</a>, <a href="#">black & white</a></div>
-    </div>
-    <div class="post">
-      <div class="post-info">
-        <div class="date">
-          <div class="day">14</div>
-          <div class="month">May</div>
-        </div>
-        <div class="title-meta">
-          <h1 class="post-title"><a href="/blog/single">Vestibulum Sem Cursus</a></h1>
-          <div class="meta">Posted by <a href="#">admin</a> under <a href="#">Graphic Design</a> | <a href="#">3 Comments</a></div>
-        </div>
+      <!-- <div class="featured"><a href="/blog/single"><img src="/images/ikaros/art/post1.jpg" alt="" /></a></div> -->
+      <p><?php echo $post['long_description']; ?></p>
+      <div class="tags"><span></span> Tags: 
+        <?php foreach($post['tags'] as $tag) : ?>
+          <a href="#"><?php echo $tag; ?></a>,
+        <?php endforeach; ?>
       </div>
-      <div class="featured"><a href="/blog/single"><img src="/images/ikaros/art/post2.jpg" alt="" /></a></div>
-      <p>Donec sed odio dui. Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue. Nullam id dolor id nibh ultricies vehicula ut id elit. Sed posuere consectetur est at lobortis.</p>
-      <p>Maecenas faucibus mollis interdum. Donec id elit non mi porta gravida at eget metus. Donec id elit non mi porta gravida at eget metus. Cras mattis consectetur purus sit amet fermentum.</p>
-      <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras mattis consectetur purus sit amet fermentum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem elit.</p>
-      <div class="tags"><span></span> Tags: <a href="#">photography</a>, <a href="#">journal</a>, <a href="#">black & white</a></div>
     </div>
-    <div class="post">
-      <div class="post-info">
-        <div class="date">
-          <div class="day">09</div>
-          <div class="month">Apr</div>
-        </div>
-        <div class="title-meta">
-          <h1 class="post-title"><a href="/blog/single">Etiam Condimentum Pellentesque</a></h1>
-          <div class="meta">Posted by <a href="#">admin</a> under <a href="#">Journal</a> | <a href="#">5 Comments</a></div>
-        </div>
-      </div>
-      <div class="featured"><iframe src="http://player.vimeo.com/video/6757600?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff" width="640" height="360" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></div>
-      <p>Donec sed odio dui. Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue. Nullam id dolor id nibh ultricies vehicula ut id elit. Sed posuere consectetur est at lobortis.</p>
-      <p>Maecenas faucibus mollis interdum. Donec id elit non mi porta gravida at eget metus. Donec id elit non mi porta gravida at eget metus. Cras mattis consectetur purus sit amet fermentum.</p>
-      <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras mattis consectetur purus sit amet fermentum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem elit.</p>
-      <div class="tags"><span></span> Tags: <a href="#">photography</a>, <a href="#">journal</a>, <a href="#">black & white</a></div>
-    </div>
-
+  <?php endforeach; ?>
+   
     <!-- Begin Page-navi -->
     <div id="navigation">
       <div class="nav-previous"><a href="#" ><span class="meta-nav-prev">&larr; Older posts</span></a></div>

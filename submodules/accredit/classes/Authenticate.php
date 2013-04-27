@@ -289,7 +289,7 @@ abstract class Authenticate
                     {
                         // user has to wait some more before being allowed to login again
                         if ($last + $time > time())
-                            throw new A1_Rate_Exception('Login not allowed. Rate limit active', $last + $time);
+                            throw new Authenticate_Rate_Exception('Login not allowed. Rate limit active', $last + $time);
                         else
                             break;
                     }

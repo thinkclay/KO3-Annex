@@ -21,7 +21,7 @@
         <?php if(isset($keywords)): ?><meta name="keywords" content="<?php echo $keywords?>" /><?php endif; ?>
 
         <!-- STYLES -->
-        <link rel="shortcut icon" type="image/x-icon" href="/images/ikaros/favicon.png" />
+        <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <?php if (isset($styles)) foreach($styles as $file => $type){ echo HTML::style($file, ['media' => $type])."\r\n\t"; } ?>
         <?php echo isset($less) ? Less::compile($less) : ""; ?>
 

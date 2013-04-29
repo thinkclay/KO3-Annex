@@ -188,4 +188,9 @@ class Model_Brass_User extends Model_Authenticate_User_Brass implements Acl_Role
         $regex = '/^[-a-z0-9_\@\.]++$/iD';
         return (bool) preg_match($regex, $val);
     }
+
+    public static function unique_username($username)
+    {
+        return BrassDB::instance()->find_one('brass_user', ['username', $username]) ? FALSE : TRUE;
+    }
 }

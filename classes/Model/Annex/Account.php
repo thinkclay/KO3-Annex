@@ -30,37 +30,77 @@ class Model_Annex_Account
         }
     }
 
-    public static function create(array $post = [], $role = null)
+    /**
+     * Create User
+     *
+     * @param  array   $post        the post array
+     * @param  string  $role        role type
+     * @param  string  $response    how do we want to return the success/errors (array, bool)?
+     */
+    public static function create(array $post = [], $role = 'pending', $response = 'array')
     {
+        $user = Brass::factory('Brass_User');
+
         // initial validation
-        $post = Validation::factory($post)
+        $post_validation = Validation::factory($post)
             ->rule('username', 'alpha_dash')
             ->rule('username', 'required')
+            ->rule('username', [$user, 'username'])
+            ->rule('username', [$user, 'unique_username'])
             ->rule('password', 'required')
             ->rule('password_confirm', 'required')
             ->rule('password_confirm', 'matches', [':validation', 'password', 'password_confirm']);
 
 
-        $user = Brass::factory('Brass_User');
-        $auth = Authenticate::instance();
-
-        if ( $post->check() )
+        if ( $post_validation->check() )
         {
             // create the account
             $user->created = time();
-            $user->role = 'pending';
-            $user->values($post->as_array());
+            $user->role = $role;
+            $user->values($post_validation->as_array());
 
-            if ( $user->check() )
+            try
             {
-                // $check = static::email_verification($user);
-
-                if ( $user->create() )
+                if ( $user->check() )
                 {
-                    $auth->complete_login($user, TRUE);
-                    return TRUE;
+                    // $check = static::email_verification($user);
+
+                    if ( $user->create() )
+                    {
+                        Authenticate::instance()->complete_login($user, TRUE);
+
+                        if ( $response == 'array' )
+                            return [
+                                'status' => 'success',
+                                'message' => 'user created successfully'
+                            ];
+                        else
+                            return TRUE;
+                    }
                 }
             }
+            catch (Brass_Validation_Exception $e)
+            {
+                if ( $response == 'array' )
+                    return [
+                        'status' => 'error',
+                        'message' => 'user creation failed due to user errors',
+                        'errors' => $e->array->errors()
+                    ];
+                else
+                    return FALSE;
+            }
+        }
+        else
+        {
+            if ( $response == 'array' )
+                return [
+                    'status' => 'error',
+                    'message' => 'user creation failed due to form errors',
+                    'errors' => $post_validation->errors()
+                ];
+            else
+                return FALSE;
         }
     }
 

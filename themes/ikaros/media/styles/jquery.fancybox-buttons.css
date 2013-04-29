@@ -21,8 +21,7 @@
 	padding: 0;
 	list-style: none;
 	background: #111;
-	-webkit-box-shadow: 0 1px 3px #000,0 0 0 1px rgba(0,0,0,.7),inset 0 0 0 1px rgba(255,255,255,.05);
-	-moz-box-shadow: 0 1px 3px #000,0 0 0 1px rgba(0,0,0,.7),inset 0 0 0 1px rgba(255,255,255,.05);
+	box-shadow: 0 1px 3px #000,0 0 0 1px rgba(0,0,0,.7),inset 0 0 0 1px rgba(255,255,255,.05);
 	background: #111 -webkit-gradient(linear,0% 0%,0% 100%,from(rgba(255,255,255,.2)),color-stop(.5,rgba(255,255,255,.15)),color-stop(.5,rgba(255,255,255,.1)),to(rgba(255,255,255,.15)));
 	background: #111 -moz-linear-gradient(top,rgba(255,255,255,.2) 0%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.1) 50%,rgba(255,255,255,.15) 100%);
 	border-radius: 3px;
@@ -39,7 +38,7 @@
 	width: 30px;
 	height: 30px;
 	text-indent: -9999px;
-	background-image: url('fancybox_buttons.png');
+	background-image: url('/images/ikaros/fancybox_buttons.png');
 	background-repeat: no-repeat;
 	outline: none;
 }

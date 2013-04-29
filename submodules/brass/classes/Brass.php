@@ -1155,10 +1155,12 @@ abstract class Brass implements Brass_Interface
                 }
             }
 
-            return $array->check();
+            // return $array->check();
 
-            // if ( ! $array->check() )
-            //     throw new Brass_Validation_Exception($this->_model, $array);
+            if ( $array->check() )
+                return $array->check();
+            else
+                throw new Brass_Validation_Exception($this->_model, $array);
         }
 
         if ( $subject !== Brass::CHECK_LOCAL )

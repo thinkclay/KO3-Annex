@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
- * Annex - Public Default Controller
+ * Annex - Public Account Controller
  *
  * @package     Annex
  * @category    Public
@@ -11,33 +11,30 @@ class Controller_Public_Account extends Controller_Public
 {
     /**
      * Register Action
-     *
-     * @todo use a form generator built from the user model instead of hard coding fields
      */
     public function action_register()
     {
-        if ( static::$user )
-            $this->redirect('/account');
+        if ( static::$user AND ! static::$user->role == 'admin' )
+            return $this->redirect('/account');
 
-        $role = Request::$current->param('id');
-        $username = $this->request->post('username');
-        $password = $this->request->post('password');
-        $password_confirm = $this->request->post('password_confirm');
-        $email = $this->request->post('email');
+        $post = $this->request->post();
 
-        if ( $_POST )
+        if ( $post )
         {
-            $user_created = Model_Annex_Account::create($_POST, 'user');
+            $user_created = Model_Annex_Account::create($post, 'pending', 'array');
 
             if ( $user_created )
+            {
                 $this->redirect('/account');
+                return;
+            }
         }
 
         $this->template->main->content = Theme::factory('views/forms/account/register')
-            ->bind('username', $username)
-            ->bind('password', $password)
-            ->bind('password_confirm', $password_confirm)
-            ->bind('email', $email);
+            ->bind('username', $post['username'])
+            ->bind('password', $post['password'])
+            ->bind('password_confirm', $post['password_confirm'])
+            ->bind('email', $post['email']);
     }
 
     /**
@@ -48,11 +45,8 @@ class Controller_Public_Account extends Controller_Public
     public function action_login()
     {
         // If the user is already logged in, let's redirect them to the configured admin landing page
-        if ( Authorize::instance()->logged_in() )
-        {
-            $this->redirect(Kohana::$config->load('annex_annex.admin.path'));
-            return;
-        }
+        if ( static::$user AND ! static::$user->role == 'admin' )
+            return $this->redirect(Kohana::$config->load('annex_annex.admin.path'));
 
         if ( $_POST )
         {
@@ -85,8 +79,6 @@ class Controller_Public_Account extends Controller_Public
             }
         }
 
-        $this->template->class = 'three-one';
-
         $left = Theme::factory('views/forms/account/login')
             ->bind('username', $username)
             ->bind('password', $password);
@@ -96,7 +88,5 @@ class Controller_Public_Account extends Controller_Public
         $this->template->main->content = Theme::factory('views/container/2col')
             ->bind('left', $left)
             ->bind('right', $right);
-
-
     }
 }

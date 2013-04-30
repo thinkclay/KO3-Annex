@@ -10,6 +10,10 @@ class Model_Brass_User extends Model_Authenticate_User_Brass implements Acl_Role
             'type' => 'string'
         ],
 
+        'devmode' => [
+            'type'  => 'bool'
+        ],
+
         'role' => [
             'editable'  => 'admin',
             'label'     => 'Role',

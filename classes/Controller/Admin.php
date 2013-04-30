@@ -9,10 +9,6 @@
  */
 abstract class Controller_Admin extends Controller_Template
 {
-    public $template = NULL;
-
-    public static $user = FALSE;
-
     /**
      * Before Other Functions
      *
@@ -27,19 +23,10 @@ abstract class Controller_Admin extends Controller_Template
 
         parent::before();
 
-        static::$user = Authorize::instance()->get_user();
-
-        // Check user auth and role: load up instance of A2 and pass it our config file
-        $this->authorize = Authorize::instance();
-
         // load up the template
         $dir = strtolower(Request::$current->directory());
         $controller = strtolower(Request::$current->controller());
         $action = strtolower(Request::$current->action());
-
-        $this->navigation = Kohana::$config->load("navigation");
-
-        $this->template->classes = [$dir, $controller, $action];
 
         // First let's see if the user is logged in, and if not redirect to the proper error page
         if ( ! $this->authorize->logged_in() )
@@ -54,13 +41,14 @@ abstract class Controller_Admin extends Controller_Template
             // Load our default wrappers to the view, but do it on before so that the controller->action can override
             $this->template->styles = [];
             $this->template->scripts = [];
+            $this->template->classes = [$dir, $controller, $action];
 
             if ( static::$user->role == 'admin' )
             {
                 array_push($this->template->styles, Theme::style('admin.less'));
             }
 
-            $this->template->bind_global('user', self::$user);
+            $this->template->bind_global('user', static::$user);
             $this->template->id = $controller;
             $this->template->header = Theme::factory('views/container/header');
             $this->template->main = Theme::factory('views/container/main');

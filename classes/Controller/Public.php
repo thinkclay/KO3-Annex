@@ -9,10 +9,6 @@
  */
 abstract class Controller_Public extends Controller_Template
 {
-    public $template = NULL;
-
-    public static $user = FALSE;
-
     /**
      * Before Other Functions
      *
@@ -27,8 +23,6 @@ abstract class Controller_Public extends Controller_Template
 
         parent::before();
 
-        static::$user = Authorize::instance()->get_user();
-
         $dir = strtolower(Request::$current->directory());
         $controller = strtolower(Request::$current->controller());
         $action = strtolower(Request::$current->action());
@@ -40,7 +34,7 @@ abstract class Controller_Public extends Controller_Template
             $this->template->scripts = [];
             $this->template->js_vars = ['controller' => $controller, 'action' => $action];
 
-            $this->template->bind_global('user', self::$user);
+            $this->template->bind_global('user', static::$user);
             $this->template->header = Theme::factory('views/container/header');
             $this->template->main = Theme::factory('views/container/main');
             $this->template->footer = Theme::factory('views/container/footer');

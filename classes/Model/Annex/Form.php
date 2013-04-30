@@ -2,6 +2,16 @@
 
 class Model_Annex_Form extends Model
 {
+    public static function email_keys()
+    {
+        foreach ( Kohana::$config->load('emails.templates') as $key => $val )
+        {
+            $templates[$key] = $val['name'];
+        }
+
+        return $templates;
+    }
+
     public static function country_list($type = 'full')
     {
         if ( $type == 'names' )

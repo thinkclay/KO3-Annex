@@ -4,20 +4,17 @@
     <thead>
         <tr>
             <th>Field Name</th>
-            <th>Field Data</th>
-            <th>Actions</th>
+            <th>Field Data (<a href="/admin/content/view/<?php echo $model; ?>/<?php echo $row['_id']; ?>">Details</a>)</th>
         </tr>
     </thead>
     <tbody>
-        <?php foreach ( $data[0]->_fields as $key => $val ) : ?>
-        <?php if ( isset($val['editable']) AND $val['editable'] ) : $keys[] = $key; ?>
+        <?php foreach ( $row as $key => $val ) : ?>
         <tr>
             <td><?php echo @$key; ?></td>
             <td><?php echo @$row[$key]; ?></td>
-            <td><a href="/admin/content/view/<?php echo $model; ?>/<?php echo $row['_id']; ?>">Details</a></td>
         </tr>
-        <?php endif; ?>
         <?php endforeach; ?>
+
     </tbody>
 </table>
 <hr />

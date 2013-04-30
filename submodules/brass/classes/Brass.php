@@ -1807,18 +1807,9 @@ abstract class Brass implements Brass_Interface
                 $form[] = Form::label($field_name, $label);
                 $attributes = isset($field_data['attributes']) ? $field_data['attributes'] : [];
 
-                if ( $input_type == 'select_state' )
+                if ( $input_type == 'select' AND isset($field_data['populate']) )
                 {
-                    $form[] = Form::select($field_name, Model_Annex_Form::state_list(), $value);
-                }
-                else if ( $input_type == 'select_country' )
-                {
-                    if ( $value == '' )
-                    {
-                        $value = 'United States';
-                    }
-
-                    $form[] = Form::select($field_name, Model_Annex_Form::country_list(), $value);
+                    $form[] = Form::select($field_name, call_user_func($field_data['populate']), $value);
                 }
                 else
                 {

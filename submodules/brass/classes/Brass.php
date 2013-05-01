@@ -222,6 +222,43 @@ abstract class Brass implements Brass_Interface
             : isset($this->_related[$name]);
     }
 
+
+    public static function query_magic($vals)
+    {
+        $keys = Annex_Helper::get_func_arg_names();
+        $query = [];
+
+        for ( $i=0; $i<count($keys); $i++ )
+        {
+            $k = $keys[$i];
+            $v = isset($vals[$i]) ? $vals[$i] : NULL;
+
+            if ( $v != NULL )
+                $query[$k] = $v;
+        }
+
+        return $query;
+    }
+
+    public static function id_to_mongo_id($obj)
+    {
+        if ( is_string($obj) )
+            return new MongoId($obj);
+
+        else if ( is_array($obj) )
+            return new MongoId($obj['_id']);
+
+        else if ( is_object($obj) AND get_class($obj) == 'MongoId'  )
+            return $obj;
+
+        else if ( is_object($obj) AND get_class($obj) == 'Model_Brass_User' )
+            return $obj->_id;
+
+        else
+            return $obj;
+    }
+
+
     /**
      * Empties the model
      */

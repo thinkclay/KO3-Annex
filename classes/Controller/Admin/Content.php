@@ -200,7 +200,7 @@ class Controller_Admin_Content extends Controller_Admin
             // If we found a document, lets update it
             if ( $existing )
             {
-                $db = Brass::factory('brass_page', $params)->db();
+                $db = Brass::factory('Brass_Page', $params)->db();
                 $updated = $db->update('brass_pages', $params, ['$set' => [$post['path'] => $post['data']]]);
             }
             // Otherwise we need to create it

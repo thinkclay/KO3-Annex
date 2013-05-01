@@ -28,7 +28,7 @@ class Controller_Public_Images extends Controller_Public
         $path .= '/'.$file['dirname'];
 
         // Get the server path to the file
-        $loaded_file = Kohana::find_file($path, $file['filename'], $file['extension']);
+        $loaded_file = realpath(Kohana::find_file($path, $file['filename'], $file['extension']));
 
         if ( $file )
         {

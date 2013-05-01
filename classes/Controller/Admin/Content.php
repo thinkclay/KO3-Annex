@@ -123,7 +123,7 @@ class Controller_Admin_Content extends Controller_Admin
             if ( $post )
             {
                 $this->auto_render = FALSE;
-
+                
                 $doc->values($post);
 
                 if ( $doc->check() )
@@ -200,8 +200,7 @@ class Controller_Admin_Content extends Controller_Admin
             // If we found a document, lets update it
             if ( $existing )
             {
-                $db = Brass::factory('Brass_Page', $params)->db();
-                $updated = $db->update('brass_pages', $params, ['$set' => [$post['path'] => $post['data']]]);
+                $updated = BrassDB::instance()->update('brass_pages', $params, ['$set' => [$post['path'] => $post['data']]]);
             }
             // Otherwise we need to create it
             else
@@ -210,9 +209,7 @@ class Controller_Admin_Content extends Controller_Admin
                 unset($post['ajax']);
                 unset($post['data']);
 
-                $doc = Brass::factory('brass_page');
-                $doc->values($post);
-                $created = $doc->create();
+                $created = BrassDB::instance()->insert('brass_pages', $post);
             }
 
             if ( isset($updated) OR isset($created) )

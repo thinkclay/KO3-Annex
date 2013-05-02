@@ -1,40 +1,71 @@
-# lessphp v0.2.0
-#### <http://leafo.net/lessphp>
+# lessphp v0.3.9
+### <http://leafo.net/lessphp>
 
-`lessphp` is a compiler for LESS written in php.
-For a complete description of the language see <http://leafo.net/lessphp/docs/>
+[![Build Status](https://secure.travis-ci.org/leafo/lessphp.png)](http://travis-ci.org/leafo/lessphp)
 
-### How to use in your php project
+`lessphp` is a compiler for LESS written in PHP. The documentation is great,
+so check it out: <http://leafo.net/lessphp/docs/>.
 
-Copy less.inc.php to your include directory and include it into your project.
+Here's a quick tutorial:
 
-There are a few ways to interface with the compiler. The easiest is to have it
-compile a LESS file when the page is requested. The static function 
-`less::ccompile`, checked compile, will compile the input LESS file only when it
-is newer than the output file.
+### How to use in your PHP project
 
-	try {
-		lessc::ccompile('input.less', 'output.css');
-	catch (exception $ex) {
-		exit($ex->getMessage());
-	}
+The only file required is `lessc.inc.php`, so copy that to your include directory.
 
-Note that all failures with lessc are reported through exceptions.
-If you need more control you can make your own instance of lessc.
+The typical flow of **lessphp** is to create a new instance of `lessc`,
+configure it how you like, then tell it to compile something using one built in
+compile methods.
 
-	$input = 'mystyle.less';
+The `compile` method compiles a string of LESS code to CSS.
 
-	$lc = new lessc($input);
+```php
+<?php
+require "lessc.inc.php";
 
-	try {
-		file_put_contents('mystyle.css', $lc->parse());
-	} catch (exception $ex) { ... }
+$less = new lessc;
+echo $less->compile(".block { padding: 3 + 4px }");
+```
 
-In addition to loading from file, you can also parse from a string like so:
+The `compileFile` method reads and compiles a file. It will either return the
+result or write it to the path specified by an optional second argument.
 
-	$lc = new lessc();
-	$lesscode = 'body { ... }';
-	$out = $lc->parse($lesscode);
+```php
+<?php
+echo $less->compileFile("input.less");
+```
+
+The `compileChecked` method is like `compileFile`, but it only compiles if the output
+file doesn't exist or it's older than the input file:
+
+```php
+<?php
+$less->checkedCompile("input.less", "output.css");
+```
+
+If there any problem compiling your code, an exception is thrown with a helpful message:
+
+```php
+<?php
+try {
+  $less->compile("invalid LESS } {");
+} catch (exception $e) {
+  echo "fatal error: " . $e->getMessage();
+}
+```
+
+The `lessc` object can be configured through an assortment of instance methods.
+Some possible configuration options include [changing the output format][1],
+[setting variables from PHP][2], and [controlling the preservation of
+comments][3], writing [custom functions][4] and much more. It's all described
+in [the documentation][0].
+
+
+ [0]: http://leafo.net/lessphp/docs/
+ [1]: http://leafo.net/lessphp/docs/#output_formatting
+ [2]: http://leafo.net/lessphp/docs/#setting_variables_from_php
+ [3]: http://leafo.net/lessphp/docs/#preserving_comments
+ [4]: http://leafo.net/lessphp/docs/#custom_functions
+
 
 ### How to use from the command line
 
@@ -42,18 +73,24 @@ An additional script has been included to use the compiler from the command
 line. In the simplest invocation, you specify an input file and the compiled
 css is written to standard out:
 
-	~> plessc input.less > output.css
+    $ plessc input.less > output.css
 
 Using the -r flag, you can specify LESS code directly as an argument or, if 
 the argument is left off, from standard in:
 
-	~> plessc -r "my less code here"
+    $ plessc -r "my less code here"
 
 Finally, by using the -w flag you can watch a specified input file and have it 
-compile as needed to the output file
+compile as needed to the output file:
 
-	~> plessc -w input-file output-file
+    $ plessc -w input-file output-file
 
 Errors from watch mode are written to standard out.
 
+The -f flag sets the [output formatter][1]. For example, to compress the
+output run this:
+
+    $ plessc -f=compressed myfile.less
+
+For more help, run `plessc --help`
 

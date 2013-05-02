@@ -174,14 +174,14 @@ hr {
 
 a {
   text-decoration: none;
-  color: #6b99b6;
+  color: @p2bi_blue;
   -webkit-transition:all 200ms ease-in;
   -o-transition:all 200ms ease-in;
   -moz-transition:all 200ms ease-in;
 }
 
 a:hover {
-  color: #b66b79;
+  color: desaturate(@p2bi_blue, 50%);
 }
 
 a.button,
@@ -368,8 +368,8 @@ ol li {
 }
 
 .lite1 {
-  color: #6b99b6;
-  border-bottom: 1px dotted #6b99b6;
+  color: @p2bi_blue;
+  border-bottom: 1px dotted @p2bi_blue;
 }
 
 .lite2 {
@@ -987,7 +987,7 @@ blockquote p {
 
 .filter li a.active,
 .filter li a:hover {
-  color: #6b99b6;
+  color: @p2bi_blue;
 }
 
 .filter:after {
@@ -1319,7 +1319,7 @@ blockquote p {
 }
 
 .latest-blog li h2 a:hover {
-  color: #6b99b6;
+  color: @p2bi_blue;
 }
 
 .latest-blog:after {
@@ -1459,7 +1459,7 @@ blockquote p {
 }
 
 .posts-grid .excerpt h2 a:hover {
-  color: #6b99b6;
+  color: @p2bi_blue;
 }
 
 .posts-grid .meta {
@@ -1546,7 +1546,7 @@ blockquote p {
 }
 
 .post-container .post .post-info .title-meta .post-title a:hover {
-  color: #6b99b6;
+  color: @p2bi_blue;
 }
 
 .post-container .post {
@@ -1685,7 +1685,7 @@ blockquote p {
 
 }
 .sidebox ul.posts-list li h6 a:hover {
-  color: #6b99b6;
+  color: @p2bi_blue;
 }
 
 .sidebox ul.posts-list li em {
@@ -1702,7 +1702,7 @@ blockquote p {
 }
 
 .sidebox a:hover {
-  color: #6b99b6;
+  color: @p2bi_blue;
 }
 /*-----------------------------------------------------------------------------------*/
 /*  COMMENTS
@@ -1762,7 +1762,7 @@ blockquote p {
   color: #999999;
 }
 #comments .info a:hover {
-  color: #6b99b6;
+  color: @p2bi_blue;
 }
 #comments a.reply-link {
   position: absolute;
@@ -1803,10 +1803,13 @@ blockquote p {
   margin: 0px auto;
 }
 
-.footer h3 {
+.footer h3, .footer h3 a {
   color: #6b99b6;
   text-transform: uppercase;
   font-size: 14px;
+}
+.footer h3 a:hover {
+  color: lighten(#6b99b6, 20%);
 }
 
 .footer .post-list {
@@ -1845,7 +1848,7 @@ blockquote p {
 
 .footer a:hover,
 .footer .post-list a:hover {
-  color: #6b99b6;
+  color: @p2bi_blue;
 }
 
 .site-generator-wrapper {
@@ -1896,7 +1899,7 @@ blockquote p {
 }
 
 #twitter-wrapper a:hover {
-  color: #6b99b6;
+  color: @p2bi_blue;
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -2088,7 +2091,7 @@ blockquote p {
 
 .tab a.active,
 .tab a:hover {
-  color: #6b99b6;
+  color: @p2bi_blue;
 }
 
 .tab.active {

@@ -23,7 +23,7 @@ return [
     'compress'  => TRUE,
     'cache'      => 'cache/', // relative path from DOCROOT with a writable folder to store compiled / compressed css
     'styles'    => 'media/styles',
-    'scripts'   => 'themes/ikaros/media/scripts',
-    'images'    => 'themes/ikaros/media/images',
-    'views'     => 'themes/ikaros/views/'
+    'scripts'   => 'media/scripts',
+    'images'    => 'media/images',
+    'views'     => 'views'
 ];

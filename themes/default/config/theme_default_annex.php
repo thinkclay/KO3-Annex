@@ -19,8 +19,9 @@ return [
         'media' => 'builder'
     ],
     'compress'  => TRUE,
-    'cache'      => 'cache/', // relative path from DOCROOT with a writable folder to store compiled / compressed css
-    'styles'    => 'themes/default/media/styles',
-    'scripts'   => 'themes/default/media/scripts',
-    'views'     => 'themes/default/views/'
+    'cache'     => 'cache/', // relative path from DOCROOT with a writable folder to store compiled / compressed css
+    'styles'    => 'media/styles',
+    'scripts'   => 'media/scripts',
+    'images'    => 'media/images',
+    'views'     => 'views'
 ];

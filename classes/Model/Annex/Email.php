@@ -53,7 +53,8 @@ class Model_Annex_Email extends Model
     {
         $headers = 'MIME-Version: 1.0'."\r\n".
                 'Content-type: text/html; charset=iso-8859-1'."\r\n".
-                'From: '.$this->config['system']."\r\n";
+                'From: '.$this->config['system']."\r\n".
+                'Reply-To: '.$this->config['system']."\r\n";
         $message = $message;
 
         if ( mail($to, $subject, $message, $headers) )

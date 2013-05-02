@@ -45,7 +45,7 @@ class Controller_Public_Account extends Controller_Public
     public function action_login()
     {
         // If the user is already logged in, let's redirect them to the configured admin landing page
-        if ( static::$user AND ! static::$user->role == 'admin' )
+        if ( static::$user AND ! $this->authorize->allowed('admin') )
             return $this->redirect(Kohana::$config->load('annex_annex.admin.path'));
 
         if ( $_POST )
@@ -54,8 +54,13 @@ class Controller_Public_Account extends Controller_Public
                 ->rule('username', 'not_empty')
                 ->rule('password', 'not_empty');
 
+            $this->auto_render = FALSE;
+            $this->response->headers('Content-Type', 'application/json');
+
             if ( $post->check() )
             {
+
+
                 $username = $this->request->post('username');
                 $password = $this->request->post('password');
                 $remember = $this->request->post('remember') ? $this->request->post('remember') : FALSE;
@@ -64,18 +69,32 @@ class Controller_Public_Account extends Controller_Public
                 if ( $user AND $user->role != 'pending' )
                 {
                     // Redirect to account/index if login passed
-                    $this->redirect(Kohana::$config->load('annex_annex.admin.path'));
+                    echo json_encode([
+                        'status'    => 'success',
+                        'message'   => 'Successfully logged in. Please wait while you are redirected',
+                        'redirect'  => Kohana::$config->load('annex_annex.admin.path')
+                    ]);
+
+                    return;
                 }
                 else
                 {
-                    $message = 'Invalid username or password';
-                    print_r($message);
+                    echo json_encode([
+                        'status'    => 'error',
+                        'message'   => 'Invalid username or password'
+                    ]);
+
+                    return;
                 }
             }
             else
             {
-                $message = 'Please enter a username and password';
-                print_r($message);
+                echo json_encode([
+                    'status'    => 'error',
+                    'message'   => 'Please enter a username and password'
+                ]);
+
+                return;
             }
         }
 

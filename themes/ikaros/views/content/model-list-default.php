@@ -11,7 +11,13 @@
         <?php foreach ( $row as $key => $val ) : ?>
         <tr>
             <td><?php echo @$key; ?></td>
-            <td><?php echo @$row[$key]; ?></td>
+            <td>
+            <?php if ( isset($row[$key]) AND is_array($row[$key]) ) : ?>
+                <pre><?php print_r($row[$key]); ?></pre>
+            <?php else : ?>
+                <?php echo $row[$key]; ?>
+            <?php endif; ?>
+            </td>
         </tr>
         <?php endforeach; ?>
 

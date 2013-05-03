@@ -121,7 +121,7 @@ body {
 	color: #555555;
 }
 
-input, textarea {
+input[type="text"], input[type="email"], input[type="password"], textarea {
 	font-family: 'Droid Sans', sans-serif;
 	font-size: 13px;
 	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
@@ -2586,7 +2586,7 @@ ul li.social {
 
 
 /* ---------- CUSTOM P2BI STYLES ---------- */
-.portfolio-overview { 
+.portfolio-overview {
     background: url('/images/ikaros/patterns/fabric.png');
     border: 1px solid #eee;
     clear: both;
@@ -2601,9 +2601,9 @@ ul li.social {
         margin-bottom: 0;
         text-shadow: 1px 0 1px #fff;
     }
-    
-.one-fourth .portfolio-overview .one-third { 
-    float: none; 
+
+.one-fourth .portfolio-overview .one-third {
+    float: none;
     padding: 10px 0;
-    width: auto; 
+    width: auto;
 }

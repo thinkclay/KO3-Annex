@@ -25,6 +25,7 @@ var RLANG = {
 	link: 'Link',
 	link_insert: 'Insert link',
 	unlink: 'Unlink',
+	cta: 'Call to Action',
 	formatting: 'Formatting',
 	paragraph: 'Paragraph',
 	quote: 'Quote',
@@ -520,6 +521,11 @@ var RLANG = {
 						{
 							title: RLANG.unlink,
 							exec: 'unlink'
+						},
+						cta:
+						{
+							title: RLANG.cta,
+							exec: 'cta'
 						}
 					}
 				},
@@ -1425,6 +1431,10 @@ var RLANG = {
 					{
 						this.execRun(cmd, param);
 					}
+				}
+				else if (cmd === 'cta')
+				{
+					this.$editor.insertHtml('<span class="cta">Call To Action -- Edit and link me!</span>');
 				}
 				else if (cmd === 'JustifyLeft' || cmd === 'JustifyCenter' || cmd === 'JustifyRight' || cmd === 'JustifyFull')
 				{

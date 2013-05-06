@@ -87,7 +87,7 @@ Route::set('images', 'images(/<module>(/<file>))', ['file' => '.+'])
     ]);
 
 
-Route::set('error', 'error/<action>(/<message>)', ['action' => '[0-9]++', 'message' => '.+'])
+Route::set('annex_error', 'error/<action>(/<message>)', ['action' => '[0-9]++', 'message' => '.+'])
     ->defaults([
         'directory'     => 'public',
         'controller'    => 'error'

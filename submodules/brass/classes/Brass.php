@@ -759,9 +759,12 @@ abstract class Brass implements Brass_Interface
             if ( isset($field['local']) AND $field['local'] === TRUE )
                 continue;
 
-            $value = isset($this->_object[$name])
-                ? $this->_object[$name]
-                : Arr::get($this->_clean, $name);
+            $value = isset($this->_object[$name]) ? $this->_object[$name] : Arr::get($this->_clean, $name);
+
+            if ( $field['type'] == 'objectid' )
+            {
+                $value = new MongoId($value);
+            }
 
             // prepare prefix
             $path = array_merge($prefix, [$name]);
@@ -950,10 +953,8 @@ abstract class Brass implements Brass_Interface
     public function create($safe = TRUE)
     {
         if ( $this->_embedded)
-        {
             throw new Brass_Exception(':name model is embedded and cannot be created in the database',
                 array(':name' => $this->_model));
-        }
 
         if ( ! isset($this->_id))
         {
@@ -961,7 +962,7 @@ abstract class Brass implements Brass_Interface
             $this->_id = new MongoId;
         }
 
-        if ( $values = $this->changed(FALSE))
+        if ( $values = $this->changed(FALSE) )
         {
             $options = is_array($safe)
                 ? $safe

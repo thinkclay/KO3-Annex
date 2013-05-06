@@ -68,7 +68,7 @@ class Controller_Admin_Content extends Controller_Admin
             $doc = Brass::factory($model);
             $post['owner'] = static::$user->_id;
             $post['created'] = time();
-            
+
             if ( isset($_FILES['photo']) )
             {
                 if ( $photo = Form::save_image($_FILES['photo']) )
@@ -83,7 +83,7 @@ class Controller_Admin_Content extends Controller_Admin
                     $errors[] = 'There was a problem while uploading the image. Make sure it is uploaded and must be JPG/PNG/GIF file.';
                 }
             }
-            
+
             $doc->values($post);
 
             if ( $doc->check() )

@@ -184,6 +184,37 @@ a:hover {
   color: desaturate(@p2bi_blue, 50%);
 }
 
+.status-box {
+  clear:both;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 300;
+  margin: 10px 0px;
+  padding: 15px 15px 13px 15px;
+  line-height: 17px;
+  text-shadow: none;
+}
+.status-box.info {
+  background:#c2ddf9;
+  border:1px solid #80bbef;
+  color:#4783b7;
+}
+.status-box.warning {
+  background:#ffcccc;
+  border:1px solid #ff9999;
+  color:#c31b00;
+}
+.status-box.success {
+  background: #d1f7b6;
+  border: 1px solid #69a840;
+  color: #4d8426;
+}
+.status-box.note {
+  background:#fdebae;
+  border:1px solid #e6c555;
+  color:#9e660d;
+}
+
 a.button,
 .forms fieldset .btn-submit,
 .comment-form .btn-submit,
@@ -2704,6 +2735,9 @@ body.three-one .column-right, body.investor .column-right {
   padding: 1em 2em;
 
   .ui-slider {
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid #ddd;
     margin: 1em 0;
   }
   a.button {
@@ -2713,6 +2747,11 @@ body.three-one .column-right, body.investor .column-right {
 
 .client {
   position: relative;
+
+  .avatar {
+    float: left;
+    padding: 10px 15px 15px 0;
+  }
 
   h2 {
     color: @p2bi_blue;

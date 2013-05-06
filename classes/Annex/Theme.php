@@ -343,22 +343,6 @@ class Annex_Theme
             return FALSE;
     }
 
-    /**
-     * If we find the wrapper file for the user's theme we will use return that file path for the Public or Private wrappers
-     *
-     * @return  string  the relative file path to the theme wrapper
-     *
-     * @todo    this currently only works within annex folder and we want it to work for the app path as well
-     */
-    public function get_theme_wrapper()
-    {
-
-        if ( Kohana::find_file('themes', static::$_theme_name.'/views/wrapper') )
-            return '../themes/'.static::$_theme_name.'/views/wrapper';
-        else
-            return '../themes/default/views/wrapper';
-    }
-
     public static function get_setting($setting_name)
     {
         $config = Kohana::$config->load('theme_'.static::$_theme_name.'_annex');

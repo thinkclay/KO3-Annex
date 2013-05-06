@@ -55,9 +55,21 @@ class Model_Annex_Email extends Model
                 'Content-type: text/html; charset=iso-8859-1'."\r\n".
                 'From: '.$this->config['system']."\r\n".
                 'Reply-To: '.$this->config['system']."\r\n";
-        $message = $message;
 
         if ( mail($to, $subject, $message, $headers) )
+            return TRUE;
+        else
+            return FALSE;
+    }
+
+    public function error_report($error, $data)
+    {
+        $headers = 'MIME-Version: 1.0'."\r\n".
+                'Content-type: text/html; charset=iso-8859-1'."\r\n".
+                'From: '.$this->config['system']."\r\n".
+                'Reply-To: '.$this->config['system']."\r\n";
+
+        if ( mail($this->config['system'], 'Error: '.$error, '<pre>'.var_export($data, TRUE).'</pre>', $headers) )
             return TRUE;
         else
             return FALSE;

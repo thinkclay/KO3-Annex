@@ -33,7 +33,7 @@ abstract class Controller_Template extends Controller
         if ( $this->auto_render === TRUE )
         {
             // Load the template
-            $this->template = View::factory($this->template);
+            $this->template = Theme::factory($this->template);
 
             $role = (static::$user) ? static::$user->role : 'guest';
             $this->navigation = Kohana::$config->load("navigation.$role");

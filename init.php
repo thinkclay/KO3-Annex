@@ -60,31 +60,38 @@ Route::set('account manage', 'account/manage')
 
 // Static file serving
 Route::set('styles', 'styles(/<module>(/<file>))', ['file' => '.+'])
-    ->defaults(array(
+    ->defaults([
         'directory'     => 'public',
         'controller'    => 'media',
         'action'        => 'index',
         'type'          => 'styles',
         'file'          => NULL,
-    ));
+    ]);
 
 Route::set('scripts', 'scripts(/<module>(/<file>))', ['file' => '.+'])
-    ->defaults(array(
+    ->defaults([
         'directory'     => 'public',
         'controller'    => 'media',
         'action'        => 'index',
         'type'          => 'scripts',
         'file'          => NULL,
-    ));
+    ]);
 
 Route::set('images', 'images(/<module>(/<file>))', ['file' => '.+'])
-    ->defaults(array(
+    ->defaults([
         'directory'     => 'public',
         'controller'    => 'media',
         'action'        => 'index',
         'type'          => 'images',
         'file'          => NULL,
-    ));
+    ]);
+
+
+Route::set('error', 'error/<action>(/<message>)', ['action' => '[0-9]++', 'message' => '.+'])
+    ->defaults([
+        'directory'     => 'public',
+        'controller'    => 'error'
+    ]);
 
 
 /**

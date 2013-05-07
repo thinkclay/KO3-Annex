@@ -251,7 +251,7 @@ abstract class Brass implements Brass_Interface
         else if ( is_object($obj) AND get_class($obj) == 'MongoId'  )
             return $obj;
 
-        else if ( is_object($obj) AND get_class($obj) == 'Model_Brass_User' )
+        else if ( is_object($obj) AND preg_match('/Model_Brass/i', get_class($obj)) )
             return $obj->_id;
 
         else
@@ -881,10 +881,8 @@ abstract class Brass implements Brass_Interface
     public function load($limit = 1, array $sort = NULL, $skip = NULL, array $fields = [], array $criteria = [])
     {
         if ( $this->_embedded)
-        {
             throw new Brass_Exception(':name model is embedded and cannot be loaded from database',
                 array(':name' => $this->_model));
-        }
 
         $criteria += $this->changed(FALSE);
 
@@ -905,19 +903,16 @@ abstract class Brass implements Brass_Interface
             $values = $this->db()->find_one($this->_collection,$criteria,$fields);
 
             if ( $values === NULL)
-            {
                 return $this;
-            }
             else
-            {
                 return $this->_model !== self::extend($this->_model, $values)
                     ? Brass::factory( self::extend($this->_model, $values), $values, Brass::CLEAN)
                     : $this->values($values, TRUE);
-            }
         }
         else
         {
             $values = $this->db()->find($this->_collection,$criteria,$fields);
+
 
             if ( is_int($limit))
             {
@@ -1177,6 +1172,7 @@ abstract class Brass implements Brass_Interface
         {
             // validate local data
             $array = Validation::factory($local)->bind(':model', $this);
+
 
             // add validation rules
             $array = $this->_check($array);

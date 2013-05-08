@@ -17,7 +17,7 @@ if ( isset($selected) )
       </a>
     </div>
 
-    <?php if ( count($navigation) ) : ?>
+    <?php if ( isset($navigation) AND count($navigation) ) : ?>
     <!-- Begin Menu -->
     <div id="menu" class="menu">
       <ul id="tiny">

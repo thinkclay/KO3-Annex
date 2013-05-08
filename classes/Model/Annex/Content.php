@@ -16,6 +16,7 @@ abstract class Model_Annex_Content extends Model
                 $list[] = $model;
             }
         }
+        sort($list);
 
         return $list;
     }

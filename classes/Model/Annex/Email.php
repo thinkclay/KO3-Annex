@@ -22,8 +22,13 @@ class Model_Annex_Email extends Model
      * with the key matching the key set here. If it is found, it will render the mail template
      * as a mustache template and send it to the array of users it should go to
      */
-    public function send($key, $to, $data)
+    public function send($key = NULL, $to = 'system', $data = NULL)
     {
+        // Swap the "to" field with config value if there if key exists
+        // Then make sure it's a mail friendly string
+        $to = $this->config->get($to) ? $this->config->get($to) : $to;
+        $to = is_array($to) ? implode(', ', $to) : $to;
+
         $file = preg_replace('/\./', DIRECTORY_SEPARATOR, $key);
         $conf = $this->config->get('templates')[$key];
 

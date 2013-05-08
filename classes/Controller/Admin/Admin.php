@@ -11,11 +11,14 @@ class Controller_Admin_Admin extends Controller_Admin
 {
     public function action_index()
     {
-        $status = Annex::render('annex/modules/status');
+        $left = Annex::render('annex/modules/status');
+        $list = Model_Annex_Content::overview();
+        $right = Theme::factory('views/content/model-list')->bind('data', $list);
 
         $this->template->main->content = Theme::factory('views/container/2col')
-            ->set('left', $status)
-            ->set('right', 'right content');
+            ->set('class', 'three-to-one')
+            ->set('left', $left)
+            ->set('right', $right);
     }
 
     /**

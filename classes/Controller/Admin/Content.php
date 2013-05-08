@@ -65,6 +65,8 @@ class Controller_Admin_Content extends Controller_Admin
         // we also want some nice messages here so the user knows if worked or failed
         if ( $post )
         {
+            $this->auto_render = FALSE;
+
             $doc = Brass::factory($model);
             $post['owner'] = static::$user->_id;
             $post['created'] = time();
@@ -108,6 +110,7 @@ class Controller_Admin_Content extends Controller_Admin
         {
             // load all users from the database and list them here in a table
             $this->template->main->content = Theme::factory('views/forms/form')
+                ->set('class', 'ajax')
                 ->set('elements', Brass::factory($model)->as_form())
                 ->set('method', 'POST');
         }
@@ -128,12 +131,15 @@ class Controller_Admin_Content extends Controller_Admin
             if ( $doc )
             {
                 $this->template->main->content = Theme::factory('views/forms/form')
+                    ->set('class', 'ajax')
                     ->set('elements', $doc->as_form())
                     ->set('method', 'POST');
             }
 
             if ( $post )
             {
+                $this->auto_render = FALSE;
+
                 if ( isset($_FILES['photo']) )
                 {
                     if ( $photo = Form::save_image($_FILES['photo']) )

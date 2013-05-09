@@ -1,3 +1,9 @@
+.clearfix {
+  zoom: 1;
+  &:before { content: ''; display: block; }
+  &:after { content: ''; display: table; clear: both; }
+}
+
 .redactor_box {
 	position: relative;
 	border: 1px solid #ddd;
@@ -164,6 +170,8 @@ body .redactor_box_fullscreen {
 	TOOLBAR
 */
 .redactor_toolbar {
+    .clearfix;
+    
 	font-family: Helvetica, Arial, Verdana, Tahoma, sans-serif !important;
 	position: relative;
 	left: 0;
@@ -182,8 +190,6 @@ body .redactor_box_fullscreen {
 	background: -ms-linear-gradient(top,  #f1f1f1 0%,#e2e2e2 100%);
 	background: linear-gradient(to bottom,  #f1f1f1 0%,#e2e2e2 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1f1f1', endColorstr='#e2e2e2',GradientType=0 );
-	overflow: hidden !important;
-	height: 32px !important;
 	border-bottom: 1px solid #bbb;
 }
 body .redactor_air .redactor_toolbar {

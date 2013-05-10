@@ -59,8 +59,6 @@ class Controller_Public_Account extends Controller_Public
 
             if ( $post->check() )
             {
-
-
                 $username = $this->request->post('username');
                 $password = $this->request->post('password');
                 $remember = $this->request->post('remember') ? $this->request->post('remember') : FALSE;
@@ -72,7 +70,7 @@ class Controller_Public_Account extends Controller_Public
                     echo json_encode([
                         'status'    => 'success',
                         'message'   => 'Successfully logged in. Please wait while you are redirected',
-                        'redirect'  => Kohana::$config->load('annex_annex.admin.path')
+                        'redirect'  => '/account'
                     ]);
 
                     return;

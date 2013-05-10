@@ -31,9 +31,25 @@ class Controller_Private_Account extends Controller_Private
         $password_confirm = $this->request->post('password_confirm');
         $email = $this->request->post('email');
 
-        if ( $_POST )
+        if ( $post = $this->request->post() )
         {
-            $user_created = Model_Annex_Account::update($_POST, static::$user);
+            $this->auto_render = FALSE;
+
+            if ( Model_Annex_Account::update($post, static::$user) )
+            {
+                echo json_encode([
+                    'status' => 'success',
+                    'message' => 'Account updated'
+                ]);
+            }
+            else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'We could not update your account with that information'
+                ]);
+            }
+
+            return;
         }
 
         $this->template->main->content = Theme::factory('views/forms/account/manage')

@@ -125,7 +125,11 @@ class Model_Annex_Account
                 $doc->values($post_data);
                 $doc->update();
                 Authorize::instance()->get_user()->reload();
+
+                return TRUE;
             }
         }
+
+        return FALSE;
     }
 }

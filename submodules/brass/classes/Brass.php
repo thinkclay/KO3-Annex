@@ -1836,15 +1836,16 @@ abstract class Brass implements Brass_Interface
                 $label = isset($field_data['label']) ? $field_data['label'] : $field_name;
                 $value = isset($values[$field_name]) ? $values[$field_name] : '';
 
-                $form[] = Form::label($field_name, $label);
                 $attributes = isset($field_data['attributes']) ? $field_data['attributes'] : [];
 
                 if ( $input_type == 'select' AND isset($field_data['populate']) )
                 {
+                    $form[] = Form::label($field_name, $label);
                     $form[] = Form::select($field_name, call_user_func($field_data['populate']), $value);
                 }
                 else if ( $input_type == 'image' )
                 {
+                    $form[] = Form::label($field_name, $label);
                     if ( $value )
                     {
                         $form[] = '<img src="/uploads/'.$value['name'].'" /><br />';
@@ -1853,6 +1854,7 @@ abstract class Brass implements Brass_Interface
                 }
                 else if ( $input_type == 'file' )
                 {
+                    $form[] = Form::label($field_name, $label);
                     $form[] = Form::file($field_name);
                 }
                 else if ( $input_type == 'checkbox' )
@@ -1863,9 +1865,11 @@ abstract class Brass implements Brass_Interface
                     }
 
                     $form[] = Form::checkbox($field_name, $value, $attributes);
+                    $form[] = Form::label($field_name, $label);
                 }
                 else
                 {
+                    $form[] = Form::label($field_name, $label);
                     $form[] = Form::$input_type($field_name, $value, $attributes);
                 }
             }

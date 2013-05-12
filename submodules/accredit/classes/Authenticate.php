@@ -208,7 +208,7 @@ abstract class Authenticate
     {
         if ( $remember === TRUE && $this->_config['cookie']['lifetime'] )
         {
-            $token = text::random('alnum', 32);
+            $token = Text::random('alnum', 32);
             $user->{$this->_config['columns']['token']} = $this->hash($token);
 
             Cookie::set($this->_config['cookie']['key'], $token.'.'.$user->{$this->_config['columns']['username']}, $this->_config['cookie']['lifetime']);

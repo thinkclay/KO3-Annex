@@ -46,8 +46,8 @@ class Controller_Public_Account extends Controller_Public
     {
         // If the user is already logged in, let's redirect them to the configured admin landing page
         if ( static::$user AND ! $this->authorize->allowed('admin') )
-            return $this->redirect(Kohana::$config->load('annex_annex.admin.path'));
-
+            return $this->redirect('/account');
+        
         if ( $_POST )
         {
             $post = Validation::factory($_POST)
@@ -64,7 +64,7 @@ class Controller_Public_Account extends Controller_Public
                 $remember = $this->request->post('remember') ? $this->request->post('remember') : FALSE;
                 $user = Authenticate::instance()->login($username, $password, $remember);
 
-                if ( $user AND $user->role != 'pending' )
+                if ( $user )
                 {
                     // Redirect to account/index if login passed
                     echo json_encode([
@@ -102,6 +102,7 @@ class Controller_Public_Account extends Controller_Public
 
         $right = Theme::factory('views/forms/account/register');
 
+        $this->template->main->before = Theme::factory('views/container/hero');
         $this->template->main->content = Theme::factory('views/container/2col')
             ->bind('left', $left)
             ->bind('right', $right);

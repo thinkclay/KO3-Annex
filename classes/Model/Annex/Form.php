@@ -2,6 +2,21 @@
 
 class Model_Annex_Form extends Model
 {
+    public static function role_list()
+    {
+        if ( $roles = Kohana::$config->load('authorize.roles') )
+        {
+            $data = [];
+
+            foreach ( $roles as $k => $v )
+            {
+                $data[$k] = $k;
+            }
+        }
+
+        return $data;
+    }
+
     public static function email_keys()
     {
         foreach ( Kohana::$config->load('emails.templates') as $key => $val )

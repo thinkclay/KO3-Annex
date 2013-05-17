@@ -16,9 +16,11 @@ class Model_Brass_User extends Model_Authenticate_User_Brass implements Acl_Role
 
         'role' => [
             'editable'  => 'admin',
+            'input'     => 'select',
             'label'     => 'Role',
+            'populate'  => 'Model_Annex_Form::role_list',
+            'required'  => TRUE,
             'type'      => 'string',
-            'required'  => true,
         ],
         'created' => [
             'editable'  => FALSE,

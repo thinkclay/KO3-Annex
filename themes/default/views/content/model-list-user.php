@@ -16,7 +16,10 @@
             <?php foreach ( $keys as $key ) : ?>
             <td><?php echo (string) @$row[$key]; ?></td>
             <?php endforeach; ?>
-            <td><a href="/admin/become-user/<?php echo $row['_id']; ?>">Become</a></td>
+            <td>
+                <a href="/admin/become-user/<?php echo $row['_id']; ?>">become</a> |
+                <a href="/admin/content/view/user/<?php echo $row['_id']; ?>">edit</a>
+            </td>
         </tr>
     <?php endforeach; ?>
     </tbody>

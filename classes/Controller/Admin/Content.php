@@ -157,18 +157,24 @@ class Controller_Admin_Content extends Controller_Admin
 
                 $doc->values($post);
 
-                if ( $doc->check() )
+                try
                 {
-                    $doc->update();
-
-                    echo json_encode([
-                        'status'    => 'success',
-                        'message'   => 'Saved successfully'
-                    ]);
+                    if ( $doc->update() )
+                    {
+                        echo json_encode([
+                            'status'    => 'success',
+                            'message'   => 'Saved successfully'
+                        ]);
+                    }
                 }
-                else
+                catch (Kohana_Exception $e)
                 {
                     $errors[] = 'Form failed to submit, you need to see fill out all the required fields';
+
+                    foreach ( $e->array->errors() as $k => $v )
+                    {
+                        $errors[] = '<br />Failed to save '.$k.' because '.$v[0];
+                    }
 
                     echo json_encode([
                         'status'    => 'error',

@@ -19,40 +19,13 @@ class Controller_Admin_Content extends Controller_Admin
         $this->template->main->content = Theme::factory('views/content/model-list')->bind('data', $list);
     }
 
+    /**
+     * List all an overview of entries of the model type called in the url
+     */
     public function action_list()
     {
         $model = Request::$current->param('model');
-        $driver = ucfirst(Kohana::$config->load('annex_core.driver'));
-
-        if ( $model AND $driver )
-        {
-            $brass_model = 'Brass_'.ucfirst($model);
-
-            // load all users from the database and list them here in a table
-
-            if ( ! class_exists('Model_'.$brass_model) )
-            {
-                $brass_model = 'Brass_'.ucfirst(preg_replace('/[s|es]$/i', '', $model));
-            }
-
-            $data = Brass::factory($brass_model)->load(0)->as_array();
-            $view = Theme::factory("views/content/model-list-$model", NULL, TRUE);
-            $model_name = preg_replace('/[es|s]$/i', '', $model);
-
-            if ( $view )
-            {
-                $this->template->main->content = Theme::factory("views/content/model-list-$model")
-                    ->bind('model', $model_name)
-                    ->bind('data', $data);
-            }
-            else
-            {
-                $this->template->main->content = Theme::factory('views/content/model-list-default')
-                    ->bind('model', $model_name)
-                    ->bind('data', $data);
-            }
-
-        }
+        $this->template->main->content = Model_Annex_Content::show_list($model);
     }
 
     public function action_create()

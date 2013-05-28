@@ -104,7 +104,7 @@ class Model_Annex_Account
         }
     }
 
-    public static function update(array $post, Model_Brass_User $user)
+    public static function update(array $post, $uid)
     {
         // initial validation
         $post = Validation::factory($post)
@@ -118,7 +118,7 @@ class Model_Annex_Account
 
         if ( $post->check() )
         {
-            $doc = Brass::factory('Brass_User', ['_id' => $user->_id])->load();
+            $doc = Brass::factory('Brass_User', ['_id' => $uid])->load();
 
             if ( $doc->loaded() )
             {

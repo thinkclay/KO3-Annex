@@ -23,6 +23,19 @@ Route::set('admin content', 'admin/content(/<action>(/<model>(/<id>)))')
         'controller'    => 'content'
     ]);
 
+Route::set('admin manage users', 'admin/users')
+    ->defaults([
+        'directory'     => 'admin',
+        'controller'    => 'users'
+    ]);
+
+Route::set('admin edit user', 'admin/user(/<id>)')
+    ->defaults([
+        'directory'     => 'admin',
+        'controller'    => 'users',
+        'action'        => 'edit'
+    ]);
+
 // Annex Account Stuff
 Route::set('account', 'account')
     ->defaults([

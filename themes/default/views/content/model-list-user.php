@@ -18,7 +18,7 @@
             <?php endforeach; ?>
             <td>
                 <a href="/admin/become-user/<?php echo $row['_id']; ?>">become</a> |
-                <a href="/admin/content/view/user/<?php echo $row['_id']; ?>">edit</a>
+                <a href="/admin/user/<?php echo $row['_id']; ?>">edit</a>
             </td>
         </tr>
     <?php endforeach; ?>

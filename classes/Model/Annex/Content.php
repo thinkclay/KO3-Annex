@@ -2,6 +2,39 @@
 
 abstract class Model_Annex_Content extends Model
 {
+
+    /**
+     * List entries of passed model type in a table
+     */
+    public static function show_list($model)
+    {
+        $driver = ucfirst(Kohana::$config->load('annex_core.driver'));
+
+        $brass_model = 'Brass_'.ucfirst($model);
+
+        if ( ! class_exists('Model_'.$brass_model) )
+        {
+            $brass_model = 'Brass_'.ucfirst(preg_replace('/[s|es]$/i', '', $model));
+        }
+
+        $data = Brass::factory($brass_model)->load(0)->as_array();
+        $view = Theme::factory("views/content/model-list-$model", NULL, TRUE);
+        $model_name = preg_replace('/[es|s]$/i', '', $model);
+
+        if ( $view )
+        {
+            return Theme::factory("views/content/model-list-$model")
+                ->bind('model', $model_name)
+                ->bind('data', $data);
+        }
+        else
+        {
+            return Theme::factory('views/content/model-list-default')
+                ->bind('model', $model_name)
+                ->bind('data', $data);
+        }
+    }
+
     public static function overview()
     {
         $collections = BrassDB::instance()->db()->getCollectionNames();

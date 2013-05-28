@@ -7,7 +7,7 @@
  * @category    Public
  * @author      Clay McIlrath
  */
-class Controller_Private_Account extends Controller_Private
+class Controller_Admin_Users extends Controller_Admin
 {
 
     /**
@@ -15,7 +15,7 @@ class Controller_Private_Account extends Controller_Private
      */
     public function action_index()
     {
-        $this->redirect('/'.static::$user->role);
+        $this->template->main->content = Model_Annex_Content::show_list('user');
     }
 
     /**
@@ -23,7 +23,7 @@ class Controller_Private_Account extends Controller_Private
      *
      * @todo use a form generator built from the user model instead of hard coding fields
      */
-    public function action_manage()
+    public function action_edit()
     {
         $role = Request::$current->param('id');
         $username = $this->request->post('username');
@@ -55,16 +55,5 @@ class Controller_Private_Account extends Controller_Private
         $this->template->main->content = Theme::factory('views/forms/account/manage')
             ->set('method', 'POST')
             ->bind('user', static::$user);
-    }
-
-    /**
-     * Logout Action
-     *
-     * @todo if we end up implementing local storage sync, this would be a good spot to purge that cache
-     */
-    public function action_logout()
-    {
-        Authenticate::instance()->logout(TRUE);
-        $this->redirect();
     }
 }

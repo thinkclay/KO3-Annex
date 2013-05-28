@@ -47,7 +47,7 @@ class Controller_Public_Account extends Controller_Public
         // If the user is already logged in, let's redirect them to the configured admin landing page
         if ( static::$user AND ! $this->authorize->allowed('admin') )
             return $this->redirect('/account');
-        
+
         if ( $_POST )
         {
             $post = Validation::factory($_POST)
@@ -106,5 +106,55 @@ class Controller_Public_Account extends Controller_Public
         $this->template->main->content = Theme::factory('views/container/2col')
             ->bind('left', $left)
             ->bind('right', $right);
+    }
+
+    public function action_forgot()
+    {
+        $this->template->main->before = Theme::factory('views/container/hero');
+        $this->template->main->content = '';
+
+        if ( $this->request->param('token') )
+        {
+            $data = explode('-', $this->request->param('token'));
+
+            // If the token is expired, show an error and move on
+            if ( $data[2] < time() )
+            {
+                $this->template->main->content .= '<div class="status-box warning">Your token has expired, please reset again</div>';
+            }
+            else if ( $user = Model_Annex_Account::find_user($data[0]) )
+            {
+                Authenticate::instance()->complete_login($user, $remember = TRUE);
+                $this->redirect('/account/manage');
+            }
+        }
+
+        if ( $_POST )
+        {
+            $this->auto_render = FALSE;
+
+            if ( $user = Model_Annex_Account::find_user($_POST['username']) )
+            {
+                $token = Model_Annex_Account::generate_token($user, strtotime('+1 hour'));
+                $url = URL::base('http').'account/reset/'.$token;
+                $data = array_merge($user->as_array(), ['reset_url' => $url]);
+
+                Model_Annex_Email::factory()->send('mail.account.forgot', $user->email, $data);
+
+                echo json_encode([
+                    'status'    => 'success',
+                    'message'   => 'Reset instructions have been sent to your email'
+                ]);
+            }
+            else
+            {
+                echo json_encode([
+                    'status'    => 'error',
+                    'message'   => 'Failed to find a user with that username or email'
+                ]);
+            }
+        }
+
+        $this->template->main->content .= Theme::factory('views/forms/account/forgot');
     }
 }

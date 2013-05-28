@@ -65,6 +65,43 @@ Version: Provide a 3 digit point release. The last point should be for minor upd
 
 Changelog: This will be used in the feature to automate updates and make it easy to decide which updates are critical vs feature based
 
+## Validating a User (registration)
+	// create the account
+	$user = Brass::factory('Brass_User');
+	$user->created = time();
+	$user->role = $role;
+	$user->values($post_validation->as_array());
+
+	try
+	{
+	    if ( $user->check() )
+	    {
+	        if ( $user->create() )
+	        {
+	            Authenticate::instance()->complete_login($user, TRUE);
+
+	            if ( $response == 'array' )
+	                return [
+	                    'status' => 'success',
+	                    'message' => 'user created successfully'
+	                ];
+	            else
+	                return TRUE;
+	        }
+	    }
+	}
+	catch (Brass_Validation_Exception $e)
+	{
+	    if ( $response == 'array' )
+	        return [
+	            'status' => 'error',
+	            'message' => 'user creation failed due to user errors',
+	            'errors' => $e->array->errors()
+	        ];
+	    else
+	        return FALSE;
+	}
+
 ## Using Brass ORM
 
 	// creating a record from the brass_transaction model
@@ -80,14 +117,14 @@ Changelog: This will be used in the feature to automate updates and make it easy
 
 	// retrieving brass_transactions from the database
 	$transactions = Brass::factory(
-		'brass_transaction', 
+		'brass_transaction',
 		[
 			'owner' => $user->_id
 		]
 	))->load(0);
-	
-			
-		
+
+
+
 
 	// Quickly Inserting data
 	BrassDB::instance()->insert(

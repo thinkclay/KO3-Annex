@@ -9,7 +9,6 @@ class Model_Annex_Account
      * @param   BrassObject Brass user object
      * @param   Role Type
      * @return  void
-     * @author  Winter King
      */
     public static function email_verification($user, $type = 'default')
     {
@@ -28,6 +27,44 @@ class Model_Annex_Account
             else
                 return false;
         }
+    }
+
+    public static function generate_token($user, $expiration)
+    {
+        $token = urlencode($user->email).'-'.md5($user->email.time().'myM@g1calS4lt').'-'.$expiration;
+        $user->token = $token;
+        $user->update();
+
+        return $token;
+    }
+
+    /**
+     * Find a user based on username being an actual username OR an email
+     *
+     *
+     * @return mixed $user | false
+     */
+    public static function find_user($username)
+    {
+        // var_dump(new MongoId($username)); exit;
+        // Check on username first
+        $user = Brass::factory('Brass_User', ['username' => $username])->load();
+
+        if ( $user->loaded() )
+            return $user;
+
+        // Check for email instead
+        $user = Brass::factory('Brass_User', ['email' => $username])->load();
+
+        if ( $user->loaded() )
+            return $user;
+
+        $user = Brass::factory('Brass_User', ['_id' => $username])->load();
+
+        if ( $user->loaded() )
+            return $user;
+
+        return FALSE;
     }
 
     /**

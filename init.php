@@ -57,6 +57,20 @@ Route::set('account register', 'account/register')
         'action'        => 'register',
     ]);
 
+Route::set('account reset', 'account/forgot(/<token>)', ['token' => '.+'])
+    ->defaults([
+        'directory'     => 'public',
+        'controller'    => 'account',
+        'action'        => 'forgot',
+    ]);
+
+Route::set('account reset', 'account/reset(/<token>)', ['token' => '.+'])
+    ->defaults([
+        'directory'     => 'public',
+        'controller'    => 'account',
+        'action'        => 'forgot',
+    ]);
+
 Route::set('account logout', 'account/logout')
     ->defaults([
         'directory'     => 'private',

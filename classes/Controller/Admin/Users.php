@@ -25,7 +25,8 @@ class Controller_Admin_Users extends Controller_Admin
      */
     public function action_edit()
     {
-        $role = Request::$current->param('id');
+        $user = Model_Annex_Account::find_user($this->request->param('id'));
+
         $username = $this->request->post('username');
         $password = $this->request->post('password');
         $password_confirm = $this->request->post('password_confirm');
@@ -35,7 +36,7 @@ class Controller_Admin_Users extends Controller_Admin
         {
             $this->auto_render = FALSE;
 
-            if ( Model_Annex_Account::update($post, static::$user->_id) )
+            if ( Model_Annex_Account::update($post, $user->_id) )
             {
                 echo json_encode([
                     'status' => 'success',
@@ -54,6 +55,6 @@ class Controller_Admin_Users extends Controller_Admin
 
         $this->template->main->content = Theme::factory('views/forms/account/manage')
             ->set('method', 'POST')
-            ->bind('user', static::$user);
+            ->bind('user', $user);
     }
 }

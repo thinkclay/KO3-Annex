@@ -29,7 +29,7 @@ return [
 				'db'         => 'example',
 
 				// default timeout of 20 seconds is too long
-				'timeout'    => 2000,
+				'connectTimeoutMS'    => 2000,
 
 				// Connect to DB on creation - how do you want to deal with connection errors
 				// TRUE : BrassDB::instance fails and an exception is thrown. Next call to BrassDB::instance will try to connect again

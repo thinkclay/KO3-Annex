@@ -301,6 +301,9 @@ class Annex_Theme
      */
     public function set_filename($theme, $file)
     {
+        $theme = is_string($theme) ? $theme : $theme['public'];
+        $file = is_string($file) ? $file : $file->_file;
+
         if ( $path = Kohana::find_file('themes', $theme . '/' . $file) )
         {
             $this->_ext = $this->get_extension($path);

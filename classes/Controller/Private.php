@@ -23,7 +23,7 @@ abstract class Controller_Private extends Controller_Template
     public function before()
     {
         // Set the default theme before we our Template Controller kicks in
-        $this->template = Theme::factory()->get_theme_wrapper();
+        $this->template = 'views/wrapper';
 
         parent::before();
 

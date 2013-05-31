@@ -217,9 +217,10 @@ abstract class Brass implements Brass_Interface
      */
     public function __isset($name)
     {
-        return isset($this->_fields[$name])
-            ? (isset($this->_object[$name])  || isset($this->_clean[$name]))
-            : isset($this->_related[$name]);
+        if ( isset($this->_fields[$name]) )
+            return isset($this->_object[$name]);
+        else
+            return isset($this->_related[$name]);
     }
 
 
@@ -552,8 +553,10 @@ abstract class Brass implements Brass_Interface
         }
         else
         {
-            throw new Brass_Exception(':name model does not have a field :field',
-                array(':name' => $this->_model, ':field' => $name));
+            throw new Brass_Exception(
+                ':name model does not have a field :field',
+                [':name' => $this->_model, ':field' => $name]
+            );
         }
     }
 
@@ -739,7 +742,7 @@ abstract class Brass implements Brass_Interface
      */
     public function loaded()
     {
-        return $this->_embedded || (isset($this->_id) AND !isset($this->_changed['_id']));
+        return $this->_embedded OR (isset($this->_id) AND ! isset($this->_changed['_id']));
     }
 
     /**
@@ -881,8 +884,7 @@ abstract class Brass implements Brass_Interface
     public function load($limit = 1, array $sort = NULL, $skip = NULL, array $fields = [], array $criteria = [])
     {
         if ( $this->_embedded)
-            throw new Brass_Exception(':name model is embedded and cannot be loaded from database',
-                array(':name' => $this->_model));
+            throw new Brass_Exception(':name model is embedded and cannot be loaded from database', [':name' => $this->_model]);
 
         $criteria += $this->changed(FALSE);
 
@@ -913,7 +915,6 @@ abstract class Brass implements Brass_Interface
         {
             $values = $this->db()->find($this->_collection,$criteria,$fields);
 
-
             if ( is_int($limit))
             {
                 $values->limit($limit);
@@ -933,7 +934,7 @@ abstract class Brass implements Brass_Interface
                 ? ($values->hasNext()
                         ? $this->values( $values->getNext(), TRUE)
                         : $this)
-                : new Brass_Iterator($this->_model,$values);
+                : new Brass_Iterator($this->_model, $values);
         }
     }
 
@@ -983,34 +984,35 @@ abstract class Brass implements Brass_Interface
     /**
      * Update the current document using the current data.
      *
-     * @param   array  Additional criteria for update
-     * @param   array|boolean|integer   options array or value for 'safe' (true/false/replication integer)
-     *                                  see: http://www.php.net/manual/en/mongocollection.insert.php
+     * @see     http://www.php.net/manual/en/mongocollection.insert.php
+     *
+     * @param   array  $criteria    Additional criteria for update
+     * @param   array  $options     array or value for 'safe' (true/false/replication integer)
      * @return  $this
-     * @throws  Brass_Exception   Updating failed
+     * @throws  Brass_Exception     Updating failed
      */
-    public function update( $criteria = [], $safe = TRUE)
+    public function update($criteria = [], $options)
     {
         if ( $this->_embedded)
-        {
-            throw new Brass_Exception(':name model is embedded and cannot be updated itself (update parent instead)',
-                array(':name' => $this->_model));
-        }
+            throw new Brass_Exception(
+                ':name model is embedded and cannot be updated itself (update parent instead)',
+                [':name' => $this->_model]
+            );
 
-        if ( $values = $this->changed(TRUE))
+        if ( $values = $this->changed(TRUE) )
         {
             $criteria['_id'] = $this->_id;
-
-            $options = is_array($safe) ? $safe : array('safe' => $safe);
 
             try
             {
                 $this->db()->update($this->_collection, $criteria, $values, $options);
             }
-            catch ( MongoCursorException $e)
+            catch ( MongoCursorException $e )
             {
-                throw new Brass_Exception('Unable to update :model, database returned error :error',
-                    array(':model' => $this->_model, ':error' => $e->getMessage()));
+                throw new Brass_Exception(
+                    'Unable to update :model, database returned error :error',
+                    [':model' => $this->_model, ':error' => $e->getMessage()]
+                );
             }
 
             $this->saved();

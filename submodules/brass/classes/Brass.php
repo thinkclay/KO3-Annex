@@ -1175,7 +1175,6 @@ abstract class Brass implements Brass_Interface
             // validate local data
             $array = Validation::factory($local)->bind(':model', $this);
 
-
             // add validation rules
             $array = $this->_check($array);
 

@@ -3,9 +3,9 @@
 return [
     // Module Information
     'module' => [
-        'name'      => 'Auth',
-        'overview'  => 'Less support for Annex',
-        'version'   => '0.0.1',
+        'name'      => 'Accredit',
+        'overview'  => 'Authentication and Authorization support for Annex',
+        'version'   => '0.0.2',
         'url'       =>  [
             'author'    => 'http://thinkclay.com',
         ],
@@ -14,6 +14,7 @@ return [
         // levels: update, feature, security
         'changelog' => [
             '0.0.1' => ['update' => 'Initial Development of the Module'],
+            '0.0.2' => ['update' => 'updated options to support newer mongo driver'],
         ],
     ]
 ];

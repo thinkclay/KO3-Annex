@@ -742,7 +742,7 @@ abstract class Brass implements Brass_Interface
      */
     public function loaded()
     {
-        return $this->_embedded OR (isset($this->_id) AND ! isset($this->_changed['_id']));
+        return $this->_embedded OR (is_object($this->_id) AND ! isset($this->_changed['_id']));
     }
 
     /**
@@ -999,7 +999,13 @@ abstract class Brass implements Brass_Interface
                 [':name' => $this->_model]
             );
 
-        if ( $values = $this->changed(TRUE) )
+        if ( is_bool($options) )
+        {
+            $safe = $options;
+            $options = [];
+        }
+
+        if ( $values = $this->changed($safe) )
         {
             $criteria['_id'] = $this->_id;
 

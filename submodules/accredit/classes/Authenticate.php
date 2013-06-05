@@ -36,9 +36,7 @@ abstract class Authenticate
         }
 
         if ( CRYPT_BLOWFISH !== 1 )
-        {
             throw new Kohana_Exception('This server does not support bcrypt hashing');
-        }
 
         return $_instances[$_name];
     }
@@ -264,9 +262,10 @@ abstract class Authenticate
         if ( empty($password) )
             return FALSE;
 
+
         $user = is_object($username) ? $username : $this->_load_user($username);
 
-        if ( ! $user->loaded() )
+        if ( ! $user )
             return FALSE;
 
         if (
@@ -285,10 +284,10 @@ abstract class Authenticate
 
                 foreach ( array_reverse($this->_config['rate_limits'], TRUE) as $attempts => $time )
                 {
-                    if ($attempt > $attempts)
+                    if ( $attempt > $attempts )
                     {
                         // user has to wait some more before being allowed to login again
-                        if ($last + $time > time())
+                        if ( $last + $time > time() )
                             throw new Authenticate_Rate_Exception('Login not allowed. Rate limit active', $last + $time);
                         else
                             break;

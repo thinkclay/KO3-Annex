@@ -13,12 +13,26 @@ class Authenticate_Brass extends Authenticate
      */
     protected function _load_user($username)
     {
-        return Brass::factory(
+        $user_by_username = Brass::factory(
             $this->_config['user_model'],
             [
                 $this->_config['columns']['username'] => $username
             ]
         )->load();
+
+        $user_by_email = Brass::factory(
+            $this->_config['user_model'],
+            [
+                $this->_config['columns']['email'] => $username
+            ]
+        )->load();
+
+        if ( $user_by_username->loaded() )
+            return $user_by_username;
+        else if ( $user_by_email->loaded() )
+            return $user_by_email;
+        else
+            return FALSE;
     }
 
     /**

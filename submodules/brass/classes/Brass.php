@@ -218,7 +218,7 @@ abstract class Brass implements Brass_Interface
     public function __isset($name)
     {
         if ( isset($this->_fields[$name]) )
-            return isset($this->_object[$name]);
+            return isset($this->_fields[$name]);
         else
             return isset($this->_related[$name]);
     }
@@ -1780,21 +1780,23 @@ abstract class Brass implements Brass_Interface
         {
             if ( $this->__isset($field_name))
             {
-                if ( Arr::get($field_data,'local') === TRUE)
-                    // local fields are not included in as_array array (not stored in db, not included in JSON objects)
+                // local fields are not included in as_array array (not stored in db, not included in JSON objects)
+                if ( Arr::get($field_data,'local') === TRUE )
                     continue;
 
-                if ( $clean AND isset($this->_clean[$field_name]))
+
+                if ( $clean AND isset($this->_clean[$field_name]) )
                 {
                     // use 'clean' value
-                    $array[ $field_name ] = $this->_clean[$field_name];
+                    $array[$field_name] = $this->_clean[$field_name];
                 }
                 else
                 {
                     // use 'loaded' value (that has to be normalized)
-                    $value = $clean
-                        ? $this->_object[$field_name]
-                        : $this->__get($field_name);
+                    if ( $clean AND isset($this->_object[$field_name]) )
+                        $value = $this->_object[$field_name];
+                    else
+                        $value = $this->__get($field_name);
 
                     if ( ! $clean AND Arr::get($field_data, 'xss_clean') AND is_string($value))
                     {
@@ -1802,7 +1804,7 @@ abstract class Brass implements Brass_Interface
                         $value = htmlspecialchars_decode($value);
                     }
 
-                    $array[ $field_name ] = Brass::normalize( $value, $clean );
+                    $array[ $field_name ] = Brass::normalize($value, $clean);
                 }
             }
             else if ( ! $clean AND isset($field_data['default']))

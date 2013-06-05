@@ -1,5 +1,5 @@
 <?php if ( isset($data) ) : ?>
-<table cellspacing="0" cellpadding="0" class="administration">
+<table cellspacing="0" cellpadding="0" class="administration sortable">
     <thead>
         <tr>
         <?php foreach ( $data[0]->_fields as $key => $val ) : ?>

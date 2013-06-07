@@ -1,0 +1,3 @@
+[submodule "submodules/brass"]
+	path = submodules/brass
+	url = git@github.com:thinkclay/KO3-Brass.git

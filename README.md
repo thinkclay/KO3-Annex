@@ -16,45 +16,47 @@ You should copy this file to `APPPATH/config/annex_core.php` and make changes th
 
 The configuration file contains an array of configuration groups. Which looks similar to:
 
-	// Module Information
-	'module'	=> array(
-		'name'		=> 'Filedrop',
-		'overview'	=> 'Fildrop HTML5 based file management',
-		'version'	=> '0.0.1'
-		'changelog'	=> array(
-			'0.0.1'	=> array('update' => 'Initial Development of the Module')
-		),
+```php
+// Module Information
+'module'	=> array(
+	'name'		=> 'Filedrop',
+	'overview'	=> 'Fildrop HTML5 based file management',
+	'version'	=> '0.0.1'
+	'changelog'	=> array(
+		'0.0.1'	=> array('update' => 'Initial Development of the Module')
 	),
+),
 
-	// Theme Settings
-	'theme'		=> array(
-		'styles'	=> 'resources/styles',
-		'scripts'	=> 'resources/scripts'
-	),
+// Theme Settings
+'theme'		=> array(
+	'styles'	=> 'resources/styles',
+	'scripts'	=> 'resources/scripts'
+),
 
-	// Resource Definition
-	'resources' => array
+// Resource Definition
+'resources' => array
+(
+	'filedrop' 	=> null,
+),
+
+
+// ACL Rules
+'rules' => array
+(
+	'allow' => array
 	(
-		'filedrop' 	=> null,
-	),
-
-
-	// ACL Rules
-	'rules' => array
-	(
-		'allow' => array
-		(
-			'annex' => array(
-				'role'		=> array('admin'),
-				'resource'	=> array('annex'),
-				'privilege'	=> array('index'),
-			)
-		),
-		'deny' => array
-		(
-			// ADD YOUR OWN DENY RULES HERE
+		'annex' => array(
+			'role'		=> array('admin'),
+			'resource'	=> array('annex'),
+			'privilege'	=> array('index'),
 		)
+	),
+	'deny' => array
+	(
+		// ADD YOUR OWN DENY RULES HERE
 	)
+)
+```
 
 ## Module Information
 Name: A clean, one word name, case is not important, but multiple words should be separated with an underscore
@@ -66,74 +68,66 @@ Version: Provide a 3 digit point release. The last point should be for minor upd
 Changelog: This will be used in the feature to automate updates and make it easy to decide which updates are critical vs feature based
 
 ## Validating a User (registration)
-	// create the account
-	$user = Brass::factory('Brass_User');
-	$user->created = time();
-	$user->role = $role;
-	$user->values($post_validation->as_array());
+```php
+// create the account
+$user = Brass::factory('Brass_User');
+$user->created = time();
+$user->role = $role;
+$user->values($post_validation->as_array());
 
-	try
-	{
-	    if ( $user->check() )
-	    {
-	        if ( $user->create() )
-	        {
-	            Authenticate::instance()->complete_login($user, TRUE);
+try
+{
+    if ( $user->check() )
+    {
+        if ( $user->create() )
+        {
+            Authenticate::instance()->complete_login($user, TRUE);
 
-	            if ( $response == 'array' )
-	                return [
-	                    'status' => 'success',
-	                    'message' => 'user created successfully'
-	                ];
-	            else
-	                return TRUE;
-	        }
-	    }
-	}
-	catch (Brass_Validation_Exception $e)
-	{
-	    if ( $response == 'array' )
-	        return [
-	            'status' => 'error',
-	            'message' => 'user creation failed due to user errors',
-	            'errors' => $e->array->errors()
-	        ];
-	    else
-	        return FALSE;
-	}
+            if ( $response == 'array' )
+                return [
+                    'status' => 'success',
+                    'message' => 'user created successfully'
+                ];
+            else
+                return TRUE;
+        }
+    }
+}
+catch (Brass_Validation_Exception $e)
+{
+    if ( $response == 'array' )
+        return [
+            'status' => 'error',
+            'message' => 'user creation failed due to user errors',
+            'errors' => $e->array->errors()
+        ];
+    else
+        return FALSE;
+}
+```
 
-## Using Brass ORM
+	
+This module is released under an [MIT opensource license](http://opensource.org/licenses/MIT)
 
-	// creating a record from the brass_transaction model
-	$transaction = Brass::factory(
-		'brass_transaction',
-		[
-			'owner'  => '516F8FF5673FAAE898000002'
-			'name'   => 'Initial Deposit',
-			'amount' => 1500.00
-		]
-	)->create();
+----
+## The MIT License (MIT)
 
+### Copyright (c) 2013 Clay McIlrath
 
-	// retrieving brass_transactions from the database
-	$transactions = Brass::factory(
-		'brass_transaction',
-		[
-			'owner' => $user->_id
-		]
-	))->load(0);
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-
-
-	// Quickly Inserting data
-	BrassDB::instance()->insert(
-		'brass_cms',
-		[
-	    	'page' => 'home',
-	    	'home' => [
-        	'blog' => [
-            	'header' => 'Latest Blog Post'
-        	]
-    	]
-	);
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

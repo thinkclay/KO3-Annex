@@ -128,12 +128,9 @@ class Controller_Public_Account extends Controller_Public
                 $this->redirect('/account/manage');
             }
         }
-
-        if ( $_POST )
+        elseif ( isset($_REQUEST['username']) )
         {
-            $this->auto_render = FALSE;
-
-            if ( $user = Model_Annex_Account::find_user($_POST['username']) )
+            if ( $user = Model_Annex_Account::find_user($_REQUEST['username']) )
             {
                 $token = Model_Annex_Account::generate_token($user, strtotime('+1 hour'));
                 $url = URL::base('http').'account/reset/'.$token;
@@ -141,20 +138,19 @@ class Controller_Public_Account extends Controller_Public
 
                 Model_Annex_Email::factory()->send('mail.account.forgot', $user->email, $data);
 
-                echo json_encode([
-                    'status'    => 'success',
-                    'message'   => 'Reset instructions have been sent to your email'
-                ]);
+                $this->template->main->content .= '<h2>Your reset link is on the way<h2>';
+                $this->template->main->content .= '<div class="status-box success">We have sent you an email with a reset link.
+                    Go check your inbox, and you can reset your password from that link.</div>';
             }
             else
             {
-                echo json_encode([
-                    'status'    => 'error',
-                    'message'   => 'Failed to find a user with that username or email'
-                ]);
+                $this->template->main->content .= '<h2>Something went wrong!<h2>';
+                $this->template->main->content .= '<div class="status-box warning">We could not find account with that username or email!</div>';
             }
         }
-
-        $this->template->main->content .= Theme::factory('views/forms/account/forgot');
+        else
+        {
+            $this->template->main->content .= Theme::factory('views/forms/account/forgot');
+        }
     }
 }

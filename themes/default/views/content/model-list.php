@@ -1,5 +1,5 @@
 <?php if ( isset($data) ) : ?>
-<h2>Content</h2>
+<div class="wysiwyg" data-cms="cms.model-list.before">{{&cms.model-list.before}}</div>
 <ul>
     <?php foreach ( $data as $d ) : ?>
     <li>

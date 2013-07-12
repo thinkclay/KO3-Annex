@@ -1,6 +1,6 @@
-<br /><br />
-
 <?php if ( isset($data) AND isset($model) ) : ?>
+<div class="wysiwyg" data-cms="cms.model-list-user.before">{{&cms.model-list-user.before}}</div>
+
 <?php foreach ( $data as $row ) : $row = $row->as_array(); ?>
 <table cellspacing="0" cellpadding="0" class="administration">
     <thead>

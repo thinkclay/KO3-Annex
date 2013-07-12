@@ -1,4 +1,6 @@
 <?php if ( isset($data) ) : ?>
+<div class="wysiwyg" data-cms="cms.model-list-user.before">{{&cms.model-list-user.before}}</div>
+
 <table cellspacing="0" cellpadding="0" class="administration sortable">
     <thead>
         <tr>

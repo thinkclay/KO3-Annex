@@ -14,7 +14,7 @@
     </thead>
     <tbody>
     <?php foreach ( $data as $row ) : $row = $row->as_array(); ?>
-        <tr>
+        <tr onclick="alert('<?= $row['_id']; ?>');">
             <?php foreach ( $keys as $key ) : ?>
             <td><?php echo (string) @$row[$key]; ?></td>
             <?php endforeach; ?>

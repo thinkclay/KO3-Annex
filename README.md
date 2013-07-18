@@ -106,7 +106,26 @@ catch (Brass_Validation_Exception $e)
 }
 ```
 
-	
+## Sending System Emails
+Annex has a nice email class for sending out theme-based and editable emails. The factory is your construct taking three parameters:
+  1. A string with the "key" name or identifier - This key is first used to check the database for a custom email template, and if none is found,
+  the key is exploded on dotnotation and searches for a view file in the resulting folder (ie: YOURTHEME/mail/notice/investors/.withdrawal)
+  2. The second string should be a list of emails (as the php mail function would recieve them) or a key identifying your emails as used in your email config file
+  3. An array can be passed to be used in your template as mustache variables (ie: {{username}}, {{amount}}, {{email}})
+
+```php
+Model_Annex_Email::factory()->send(
+  'mail.notice.investors.withdrawal',
+  'cmcilrath@somedomain.com',
+  [
+    'username'  => static::$user->username,
+    'amount'    => $post['amount'],
+    'email'     => static::$user->email
+  ]
+);
+```
+
+
 This module is released under an [MIT opensource license](http://opensource.org/licenses/MIT)
 
 ----

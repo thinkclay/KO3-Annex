@@ -130,6 +130,7 @@ $annex_modules = [
     'accredit'      => ANXMODS.'accredit',  // Custom authentication framework
     'brass'         => ANXMODS.'brass',     // ORM Layer for MongoDb
     'less'          => ANXMODS.'less',      // Less Compiler Module
+    'event'         => ANXMODS.'event',     // Event System
     'annex'         => MODPATH.'annex',     // Annex Extension Loader
 ];
 

@@ -73,6 +73,8 @@ class Controller_Public_Account extends Controller_Public
                         'redirect'  => '/account'
                     ]);
 
+                    Event::instance()->fire('ACCOUNT_LOGIN', $user);
+
                     return;
                 }
                 else

@@ -36,15 +36,15 @@ class Model_Annex_Email extends Model
         if ( $doc = BrassDB::instance()->find_one('brass_emails', ['key' => $key]) )
         {
             $m = new Mustache_Engine;
+            $subject = $doc['subject'];
             $body = $m->render($doc['body'], $data);
-
-            return $this->_send_mail($to, $doc['subject'], $body);
         }
 
         // If we don't have an admin created email template, lets see if we can find a file
         else if ( $view = Theme::factory($file, ['cms' => $data]) )
         {
-            return $this->_send_mail($to, $conf['subject'], $view);
+            $subject = $conf['subject'];
+            $body = $view;
         }
 
         // Otherwise, let's send an email to the admin to get them to come in and create a template
@@ -52,6 +52,12 @@ class Model_Annex_Email extends Model
         {
             throw new Annex_Exception('tell the admin to get a template here!');
         }
+
+        $template = Theme::factory($this->config->get('wrapper'))
+            ->bind('subject', $conf['subject'])
+            ->bind('body', $body);
+
+        return $this->_send_mail($to, $subject, $template);
     }
 
     private function _send_mail($to, $subject, $message)

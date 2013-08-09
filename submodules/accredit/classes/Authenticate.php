@@ -160,11 +160,12 @@ abstract class Authenticate
                 if ( strlen($hash) === 32 AND $username !== NULL )
                 {
                     // load user using username
-                    $user = $this->_load_user($username);
+                    if ( ! $user = $this->_load_user($username) )
+                        return FALSE;
 
                     // validates token vs hash
                     if ( $user->loaded() AND $this->check($hash, $user->{$this->_config['columns']['token']}) )
-                        return $this->complete_login($user,TRUE);
+                        return $this->complete_login($user, TRUE);
                 }
             }
         }

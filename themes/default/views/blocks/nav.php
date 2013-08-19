@@ -13,7 +13,7 @@ if ( isset($selected) )
   <div class="container clearfix">
     <div class="logo">
       <a href="/">
-        <img src="/images/ikaros/logo.png" alt="" />
+        <img src="/images/default/logo.png" alt="" />
       </a>
     </div>
 

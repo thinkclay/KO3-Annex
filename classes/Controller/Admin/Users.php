@@ -15,7 +15,7 @@ class Controller_Admin_Users extends Controller_Admin
      */
     public function action_index()
     {
-        $this->template->main->content = Model_Annex_Content::show_list('user');
+        $this->template->main->content = Model_Annex_Content::show_list('user', 'views/content/model-sort-user');
     }
 
     /**

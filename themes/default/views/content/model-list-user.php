@@ -1,29 +1,42 @@
-<?php if ( isset($data) ) : ?>
+<?php if ( isset($data) AND isset($model) ) : ?>
 <div class="wysiwyg" data-cms="cms.model-list-user.before">{{&cms.model-list-user.before}}</div>
 
-<table cellspacing="0" cellpadding="0" class="administration sortable">
+<?php foreach ( $data as $row ) : $row = $row->as_array(); ?>
+<table cellspacing="0" cellpadding="0" class="administration" width="100%">
     <thead>
         <tr>
-        <?php foreach ( $data[0]->_fields as $key => $val ) : ?>
-        <?php if ( isset($val['editable']) AND $val['editable'] ) : $keys[] = $key; ?>
-            <th><?php echo @$val['label']; ?></th>
-        <?php endif; ?>
-        <?php endforeach; ?>
-            <th>Actions</th>
+            <th colspan="2">
+                <?= $row['first_name'].' '.$row['last_name']; ?>
+                (<a href="/admin/content/view/<?php echo $model; ?>/<?= @$row['_id']; ?>">edit</a>)
+            </th>
         </tr>
     </thead>
     <tbody>
-    <?php foreach ( $data as $row ) : $row = $row->as_array(); ?>
-        <tr onclick="alert('<?= $row['_id']; ?>');">
-            <?php foreach ( $keys as $key ) : ?>
-            <td><?php echo (string) @$row[$key]; ?></td>
-            <?php endforeach; ?>
-            <td>
-                <a href="/admin/become-user/<?php echo $row['_id']; ?>">become</a> |
-                <a href="/admin/user/<?php echo $row['_id']; ?>">edit</a>
-            </td>
+        <tr>
+            <td>Name</td>
+            <td><?= @$row['first_name'].' '.@$row['middle_name'].' '.@$row['last_name']; ?></td>
         </tr>
-    <?php endforeach; ?>
+        <tr>
+            <td>Email</td>
+            <td><?= @$row['email']; ?></td>
+        </tr>
+        <tr>
+            <td>Created</td>
+            <td><?= date('M j, Y', $row['created']); ?></td>
+        </tr>
+        <tr>
+            <td>Last Login</td>
+            <td><?= date('M j, Y', $row['last_login']); ?></td>
+        </tr>
+        <tr>
+            <td>Role</td>
+            <td><?= $row['role']; ?></td>
+        </tr>
+        <tr>
+            <td>Username</td>
+            <td><?= $row['username']; ?></td>
+        </tr>
     </tbody>
 </table>
+<?php endforeach; ?>
 <?php endif; ?>

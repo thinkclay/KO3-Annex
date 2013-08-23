@@ -6,7 +6,7 @@ abstract class Model_Annex_Content extends Model
     /**
      * List entries of passed model type in a table
      */
-    public static function show_list($model)
+    public static function show_list($model, $template = NULL)
     {
         $driver = ucfirst(Kohana::$config->load('annex_core.driver'));
 
@@ -18,10 +18,15 @@ abstract class Model_Annex_Content extends Model
         }
 
         $data = Brass::factory($brass_model)->load(0)->as_array();
-        $view = Theme::factory("views/content/model-list-$model", NULL, TRUE);
         $model_name = preg_replace('/[es|s]$/i', '', $model);
 
-        if ( $view )
+        if ( $template )
+        {
+            return Theme::factory($template)
+                ->bind('model', $model_name)
+                ->bind('data', $data);
+        }
+        else if ( Theme::factory("views/content/model-list-$model", NULL, TRUE) )
         {
             return Theme::factory("views/content/model-list-$model")
                 ->bind('model', $model_name)

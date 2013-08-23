@@ -19,6 +19,23 @@ class Controller_Admin_Content extends Controller_Admin
         $this->template->main->content = Theme::factory('views/content/model-list')->bind('data', $list);
     }
 
+    public function action_overview()
+    {
+        $model = Request::$current->param('model');
+        $left = Model_Annex_Content::show_list($model);
+
+
+        // load all users from the database and list them here in a table
+        $right = Theme::factory('views/forms/form')
+            ->set('class', 'ajax')
+            ->set('elements', Brass::factory('Brass_'.ucfirst($model))->as_form())
+            ->set('method', 'POST');
+
+        $this->template->main->content = Theme::factory('views/container/2col')
+            ->bind('left', $left)
+            ->bind('right', $right);
+    }
+
     /**
      * List all an overview of entries of the model type called in the url
      */

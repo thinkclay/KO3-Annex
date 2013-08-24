@@ -28,6 +28,7 @@ class Controller_Admin_Content extends Controller_Admin
         // load all users from the database and list them here in a table
         $right = Theme::factory('views/forms/form')
             ->set('class', 'ajax')
+            ->set('action', '/admin/content/create/'.$model)
             ->set('elements', Brass::factory('Brass_'.ucfirst($model))->as_form())
             ->set('method', 'POST');
 
@@ -78,7 +79,9 @@ class Controller_Admin_Content extends Controller_Admin
 
             $doc->values($post);
 
-            if ( $doc->check() )
+
+
+            if ( $doc->check() === TRUE )
             {
                 $doc->create();
 
@@ -89,10 +92,7 @@ class Controller_Admin_Content extends Controller_Admin
             }
             else
             {
-                echo json_encode([
-                    'status'    => 'error',
-                    'message'   => 'Form failed to submit, you need to see fill out all the required fields'
-                ]);
+                echo json_encode($doc->check());
             }
         }
         // if there's no post data, we should show the model form

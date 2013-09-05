@@ -21,6 +21,12 @@ class Controller_Public_Account extends Controller_Public
 
         if ( $post )
         {
+            if ( isset($post['username']) )
+                $post['username'] = strtolower($post['username']);
+
+            if ( isset($post['email']) )
+                $post['email'] = strtolower($post['email']);
+
             $user_created = Model_Annex_Account::create($post, 'pending', 'array');
 
             if ( $user_created )
@@ -59,7 +65,7 @@ class Controller_Public_Account extends Controller_Public
 
             if ( $post->check() )
             {
-                $username = $this->request->post('username');
+                $username = strtolower($this->request->post('username'));
                 $password = $this->request->post('password');
                 $remember = $this->request->post('remember') ? $this->request->post('remember') : FALSE;
                 $user = Authenticate::instance()->login($username, $password, $remember);
@@ -124,7 +130,7 @@ class Controller_Public_Account extends Controller_Public
             {
                 $this->template->main->content .= '<div class="status-box warning">Your token has expired, please reset again</div>';
             }
-            else if ( $user = Model_Annex_Account::find_user($data[0]) )
+            else if ( $user = Model_Annex_Account::find_user(strtolower($data[0])) )
             {
                 Authenticate::instance()->complete_login($user, $remember = TRUE);
                 $this->redirect('/account/manage');
@@ -132,6 +138,8 @@ class Controller_Public_Account extends Controller_Public
         }
         elseif ( isset($_REQUEST['username']) )
         {
+            $_REQUEST['username'] = strtolower($_REQUEST['username']);
+
             if ( $user = Model_Annex_Account::find_user($_REQUEST['username']) )
             {
                 $token = Model_Annex_Account::generate_token($user, strtotime('+1 hour'));

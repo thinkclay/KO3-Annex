@@ -26,13 +26,19 @@ class Controller_Private_Account extends Controller_Private
     public function action_manage()
     {
         $role = Request::$current->param('id');
-        $username = $this->request->post('username');
+        $username = strtolower($this->request->post('username'));
         $password = $this->request->post('password');
         $password_confirm = $this->request->post('password_confirm');
-        $email = $this->request->post('email');
+        $email = strtolower($this->request->post('email'));
 
         if ( $post = $this->request->post() )
         {
+            if ( isset($post['username']) )
+                $post['username'] = strtolower($post['username']);
+
+            if ( isset($post['email']) )
+                $post['email'] = strtolower($post['email']);
+
             $this->auto_render = FALSE;
 
             if ( Model_Annex_Account::update($post, static::$user->_id) )

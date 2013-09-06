@@ -186,12 +186,6 @@ class Controller_Admin_Content extends Controller_Admin
         $model = Request::$current->param('model');
         $post = Request::$current->post();
 
-        // $post['controller'] = 'site';
-        // $post['action'] = 'index';
-        // $post['ajax'] = true;
-        // $post['path'] = 'cms_global.footer.copyright';
-        // $post['data'] = 'something cool';
-
         if ( $post['ajax'] )
         {
             $this->auto_render = FALSE;

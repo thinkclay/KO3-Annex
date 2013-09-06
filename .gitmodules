@@ -1,6 +1,0 @@
-[submodule "submodules/brass"]
-	path = submodules/brass
-	url = git@github.com:thinkclay/KO3-Brass.git
-[submodule "submodules/event"]
-	path = submodules/event
-	url = git@github.com:thinkclay/KO3-Event.git

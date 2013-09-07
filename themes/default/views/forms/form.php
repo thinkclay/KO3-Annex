@@ -6,12 +6,13 @@
     method="<?php echo isset($method) ? $method : 'GET'; ?>"
     enctype="multipart/form-data"
 >
-    <fieldset>
-        <?php foreach( $elements as $element ) : ?>
-            <?php echo $element; ?>
-        <?php endforeach; ?>
+    <?php foreach ( $fieldsets as $fieldset_name => $fieldset_data ) : ?>
+      <fieldset id="<?= $fieldset_name; ?>">
+        <?php if ( isset($fieldset_data['legend']) ) : ?><legend><?= $fieldset_data['legend']; ?></legend><?php endif; ?>
+        <div class="fields"><?= $fieldset_data['fields']; ?></div>
+      </fieldset>
+    <?php endforeach; ?>
 
-        <hr />
-        <input type="submit" class="btn" />
-    </fieldset>
+    <hr />
+    <input type="submit" class="btn" />
 </form>

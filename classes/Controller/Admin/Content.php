@@ -29,7 +29,7 @@ class Controller_Admin_Content extends Controller_Admin
         $right = Theme::factory('views/forms/form')
             ->set('class', 'ajax')
             ->set('action', '/admin/content/create/'.$model)
-            ->set('elements', Brass::factory('Brass_'.ucfirst($model))->as_form())
+            ->set('fieldsets', Brass::factory('Brass_'.ucfirst($model))->as_form())
             ->set('method', 'POST');
 
         $this->template->main->content = Theme::factory('views/container/2col')
@@ -101,7 +101,7 @@ class Controller_Admin_Content extends Controller_Admin
             // load all users from the database and list them here in a table
             $this->template->main->content = Theme::factory('views/forms/form')
                 ->set('class', 'ajax')
-                ->set('elements', Brass::factory($model)->as_form())
+                ->set('fieldsets', Brass::factory($model)->as_form())
                 ->set('method', 'POST');
         }
     }
@@ -122,7 +122,7 @@ class Controller_Admin_Content extends Controller_Admin
             {
                 $this->template->main->content = Theme::factory('views/forms/form')
                     ->set('class', 'ajax')
-                    ->set('elements', $doc->as_form())
+                    ->set('fieldsets', $doc->as_form())
                     ->set('method', 'POST');
             }
 

@@ -9,17 +9,17 @@ abstract class Model_Annex_Content extends Model
     public static function show_list($model, $template = NULL)
     {
         $driver = ucfirst(Kohana::$config->load('annex_core.driver'));
-
+        
         $brass_model = 'Brass_'.ucfirst($model);
-
+        
         if ( ! class_exists('Model_'.$brass_model) )
         {
             $brass_model = 'Brass_'.ucfirst(preg_replace('/[s|es]$/i', '', $model));
         }
-
+        
         $data = Brass::factory($brass_model)->load(0)->as_array();
-        $model_name = preg_replace('/[es|s]$/i', '', $model);
-
+        $model_name = Inflector::singular($model);
+        
         if ( $template )
         {
             return Theme::factory($template)

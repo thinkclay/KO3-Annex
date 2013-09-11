@@ -11,7 +11,7 @@
 abstract class Model_Authenticate_User_Brass extends Brass
 {
     protected $_fields = [
-        'username'   => [
+        'email'   => [
             'type' => 'string',
             'required' => TRUE,
             'min_length' => 4,

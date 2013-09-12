@@ -104,7 +104,7 @@ class Model_Annex_Account
 
                     if ( $user->create() )
                     {
-                        Authenticate::instance()->complete_login($user, TRUE);
+                        Authenticate::instance()->login($post['username'], $post['password'], TRUE);
 
                         if ( $response == 'array' )
                             return [

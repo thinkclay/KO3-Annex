@@ -41,13 +41,13 @@ class Controller_Private_Account extends Controller_Private
 
             $this->auto_render = FALSE;
 
-            //todo - find a better place for this, and/or implement general business
-            //logic rules for automatically moving through roles
+            // @todo - find a better place for this, and/or implement general business
+            // logic rules for automatically moving through roles
             $u = static::$user;
-            $roleChanged = false;
-            if (method_exists($u, 'checkRole')) {
-                $roleChanged = $u->checkRole($post);
-            }
+            $role_changed = FALSE;
+
+            if ( method_exists($u, 'check_role') )
+                $role_changed = $u->check_role($post);
 
             if ( Model_Annex_Account::update($post, static::$user->_id) )
             {

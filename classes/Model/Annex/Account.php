@@ -80,14 +80,12 @@ class Model_Annex_Account
 
         // initial validation
         $post_validation = Validation::factory($post)
-            ->rule('username', 'alpha_dash')
             ->rule('username', 'required')
-            ->rule('username', [$user, 'username'])
             ->rule('username', [$user, 'unique_username'])
+            ->rule('email', [$user, 'unique_email'])
             ->rule('password', 'required')
             ->rule('password_confirm', 'required')
             ->rule('password_confirm', 'matches', [':validation', 'password', 'password_confirm']);
-
 
         if ( $post_validation->check() )
         {
@@ -145,9 +143,11 @@ class Model_Annex_Account
     {
         // initial validation
         $post = Validation::factory($post)
-            ->rule('username', 'alpha_dash')
             ->rule('username', 'required')
+            ->rule('username', [$user, 'unique_username'])
+            ->rule('email', [$user, 'unique_email'])
             ->rule('password_confirm', 'matches', [':validation', 'password', 'password_confirm']);
+
         $post_data = $post->as_array();
 
         if ( ! $post_data['password'] )

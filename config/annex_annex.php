@@ -5,7 +5,7 @@ return [
     'module' => [
         'name'      => 'Annex',
         'overview'  => 'Annex Core Framework',
-        'version'   => '0.0.4',
+        'version'   => '0.0.5',
         'url'       =>  [
             'author'    => 'http://thinkclay.com',
         ],
@@ -13,10 +13,11 @@ return [
         // create a point release
         // levels: update, feature, security
         'changelog' => [
-            '0.0.4' => ['update' => 'Updated event submodule']
-            '0.0.3' => ['update' => 'Better authentication, most submodules decoupled']
-            '0.0.2' => ['update' => 'authenticate, acl, and admin panel']
-            '0.0.1' => ['update' => 'Initial Development of the Module'],
+            '0.0.5' => ['security'  => 'Bug fixes and initial unit tests'],
+            '0.0.4' => ['update'    => 'Updated event submodule'],
+            '0.0.3' => ['feature'   => 'Better authentication, most submodules decoupled'],
+            '0.0.2' => ['update'    => 'Authenticate, acl, and admin panel'],
+            '0.0.1' => ['update'    => 'Initial Development of the Module'],
         ],
     ],
 

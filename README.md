@@ -1,7 +1,10 @@
+# Annex: A full blown CMS for Kohana 3.3
+
 Annex is starting out as a module for Kohana that helps unify projects and code.
 The module was created to solve problems with views, and media resources that required
 deep coupling within the application, rather than staying self contained within the module
-which is often more ideal.
+which is often more ideal. The module takes inspiration from rails_admin, with it's autogeneration of form
+fields based on model definition and ease of installation.
 
 # Features
 With annex installed, it will do dependency checks to ensure that the modules and classes
@@ -126,27 +129,5 @@ Model_Annex_Email::factory()->send(
 ```
 
 
-This module is released under an [MIT opensource license](http://opensource.org/licenses/MIT)
-
 ----
-## The MIT License (MIT)
-
-### Copyright (c) 2013 Clay McIlrath
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+This module is released under an [MIT opensource license](http://opensource.org/licenses/MIT)

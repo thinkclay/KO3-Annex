@@ -4,3 +4,6 @@
 [submodule "submodules/event"]
 	path = submodules/event
 	url = https://github.com/thinkclay/KO3-Event.git
+[submodule "submodules/accredit"]
+	path = submodules/accredit
+	url = https://github.com/thinkclay/KO3-Accredit.git

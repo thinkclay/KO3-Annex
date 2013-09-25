@@ -6,7 +6,7 @@
  * @package     Annex
  * @category    Base
  * @author      Clay McIlrath
- **/
+ */
 class Annex_Helper
 {
     public static function get_func_arg_names($funcName = null)

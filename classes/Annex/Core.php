@@ -51,7 +51,11 @@ class Annex_Core
     }
 
     /**
-     * Validate Modules - Checks each module for a config file and outputs
+     * Validate Modules
+     *
+     * Checks each module for a config file and outputs
+     *
+     * @return  null
      */
     private function _validate_modules($modules)
     {
@@ -88,7 +92,11 @@ class Annex_Core
     }
 
     /**
-     * Validate Modules - Checks each module for a config file and outputs
+     * Validate Modules
+     *
+     * Checks each module for a config file and outputs
+     *
+     * @return  null
      */
     private function _validate_themes($themes)
     {
@@ -123,16 +131,20 @@ class Annex_Core
     }
 
     /**
-     * Instantiate ACL
+     * Instantiate Module
+     *
+     * Looks for a module's init and authorization config to setup rules
+     *
+     * @return  null
      */
     private function _instantiate_module($module)
     {
         $private_config = Kohana::$config->load('authorize');
         $module_config = Kohana::$config->load($module.'_annex.authorize');
 
-        if (isset($private_config) AND isset($module_config))
+        if ( isset($private_config) AND isset($module_config) )
         {
-            if (isset($private_config['resources']) AND isset($module_config['resources']))
+            if ( isset($private_config['resources']) AND isset($module_config['resources']) )
             {
                 $private_config->set(
                     'resources',
@@ -140,7 +152,7 @@ class Annex_Core
                 );
             }
 
-            if (isset($private_config['rules']) AND isset($module_config['rules']))
+            if ( isset($private_config['rules']) AND isset($module_config['rules']) )
             {
                 $private_config->set(
                     'rules',
@@ -156,12 +168,21 @@ class Annex_Core
      * @static
      * @param   array   $kohana_modules modules defined in the core and bootstrap
      * @param   array   $annex_modules  modules defined in the annex init
+     * @return  null
      */
     public static function factory($kohana_modules, $annex_modules, $themes)
     {
         return new Annex($kohana_modules, $annex_modules, $themes);
     }
 
+    /**
+     * Render
+     *
+     * Quick dynamic rendering of views
+     *
+     * @todo    Determine if this function is in use
+     * @return  View
+     */
     public static function render($page)
     {
         return View::factory($page)

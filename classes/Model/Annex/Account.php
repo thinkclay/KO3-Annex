@@ -141,11 +141,11 @@ class Model_Annex_Account
 
     public static function update(array $post, $uid)
     {
+        $user = Brass::factory('Brass_User');
+
         // initial validation
         $post = Validation::factory($post)
             ->rule('username', 'required')
-            ->rule('username', [$user, 'unique_username'])
-            ->rule('email', [$user, 'unique_email'])
             ->rule('password_confirm', 'matches', [':validation', 'password', 'password_confirm']);
 
         $post_data = $post->as_array();

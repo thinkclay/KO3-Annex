@@ -3,8 +3,9 @@
 /**
  * Annex Exception Handler
  *
- * @package	Annex
- * @author	Clay McIlrath
+ * @package     Annex
+ * @category    Base
+ * @author	    Clay McIlrath
  */
 class Annex_Exception extends Kohana_Exception
 {

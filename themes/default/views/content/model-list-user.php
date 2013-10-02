@@ -1,12 +1,12 @@
-<?php if ( isset($data) AND isset($model) ) : ?>
+<?php if (isset($data) AND isset($model)) : ?>
 <div class="wysiwyg" data-cms="cms.model-list-user.before">{{&cms.model-list-user.before}}</div>
 
-<?php foreach ( $data as $row ) : $row = $row->as_array(); ?>
+<?php foreach ($data as $row) : $row = $row->as_array(); ?>
 <table cellspacing="0" cellpadding="0" class="administration" width="100%">
     <thead>
         <tr>
             <th colspan="2">
-                <?= $row['first_name'].' '.$row['last_name']; ?>
+                <?= @$row['first_name'].' '.@$row['last_name']; ?>
                 (<a href="/admin/content/view/<?php echo $model; ?>/<?= @$row['_id']; ?>">edit</a>)
             </th>
         </tr>

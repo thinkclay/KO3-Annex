@@ -6,6 +6,7 @@
         <tr>
             <th>Name</th>
             <th>Email</th>
+            <th>Role</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -14,6 +15,7 @@
         <tr id="<?= $row['_id']; ?>">
             <td><?php echo $row['first_name'].' '.$row['middle_name'].' '.$row['last_name']; ?></td>
             <td><?= $row['email']; ?></td>
+            <td><?= $row['role']; ?></td>
             <td>
                 <a href="/admin/become-user/<?php echo @$row['_id']; ?>">become</a> |
                 <a href="/admin/user/<?php echo @$row['_id']; ?>">edit</a>

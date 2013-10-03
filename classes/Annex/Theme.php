@@ -436,7 +436,7 @@ class Annex_Theme
             $file_loaded = Kohana::find_file('themes/default', $path.'/'.$file['filename'], $file['extension']);
         }
 
-        return Less::factory($file_loaded);
+        return '/'.Less::factory($file_loaded);
     }
 
     public static function glob_recursive($pattern, $flags = 0)

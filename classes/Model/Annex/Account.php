@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php defined('SYSPATH') OR die('No direct script access.');
 
 class Model_Annex_Account
 {
@@ -6,26 +6,26 @@ class Model_Annex_Account
     /**
      * Sends an email to the user email provided with a link back to account/complete_registration/$token
      *
-     * @param   BrassObject Brass user object
-     * @param   Role Type
+     * @param   BrassObject     $user   Brass user object
+     * @param   string          $type   Role Type
      * @return  void
      */
     public static function email_verification($user, $type = 'default')
     {
-        if ( $type == 'default' )
+        if ($type == 'default')
         {
-            $token = Encrypt::instance()->encode($user->email . '|' . $user->created);
+            $token = Encrypt::instance()->encode($user->email.'|'.$user->created);
             $subject = 'Registration';
             $to      = $user->email;
-            $headers = 'MIME-Version: 1.0' . "\r\n";
-            $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-            $headers .= 'From: test@localhost' . "\r\n";
+            $headers = 'MIME-Version: 1.0'."\r\n";
+            $headers .= 'Content-type: text/html; charset=iso-8859-1'."\r\n";
+            $headers .= 'From: test@localhost'."\r\n";
             $message = Theme::factory('emails/login/register')->bind('token', $token);
 
-            if ( mail($to, $subject, $message, $headers) )
-                return true;
+            if (mail($to, $subject, $message, $headers))
+                return TRUE;
             else
-                return false;
+                return FALSE;
         }
     }
 
@@ -46,22 +46,21 @@ class Model_Annex_Account
      */
     public static function find_user($username)
     {
-        // var_dump(new MongoId($username)); exit;
         // Check on username first
         $user = Brass::factory('Brass_User', ['username' => $username])->load();
 
-        if ( $user->loaded() )
+        if ($user->loaded())
             return $user;
 
         // Check for email instead
         $user = Brass::factory('Brass_User', ['email' => $username])->load();
 
-        if ( $user->loaded() )
+        if ($user->loaded())
             return $user;
 
         $user = Brass::factory('Brass_User', ['_id' => $username])->load();
 
-        if ( $user->loaded() )
+        if ($user->loaded())
             return $user;
 
         return FALSE;
@@ -83,11 +82,12 @@ class Model_Annex_Account
             ->rule('username', 'required')
             ->rule('username', [$user, 'unique_username'])
             ->rule('email', [$user, 'unique_email'])
+            ->rule('email', 'email')
             ->rule('password', 'required')
             ->rule('password_confirm', 'required')
             ->rule('password_confirm', 'matches', [':validation', 'password', 'password_confirm']);
 
-        if ( $post_validation->check() )
+        if ($post_validation->check())
         {
             // create the account
             $user->created = time();
@@ -96,15 +96,15 @@ class Model_Annex_Account
 
             try
             {
-                if ( $user->check() )
+                if ($user->check())
                 {
                     // $check = static::email_verification($user);
 
-                    if ( $user->create() )
+                    if ($user->create())
                     {
                         Authenticate::instance()->login($post['username'], $post['password'], TRUE);
 
-                        if ( $response == 'array' )
+                        if ($response == 'array')
                             return [
                                 'status' => 'success',
                                 'message' => 'user created successfully'
@@ -116,11 +116,11 @@ class Model_Annex_Account
             }
             catch (Brass_Validation_Exception $e)
             {
-                if ( $response == 'array' )
+                if ($response == 'array')
                     return [
                         'status' => 'error',
                         'message' => 'user creation failed due to user errors',
-                        'errors' => $e->array->errors()
+                        'errors' => $e->array->errors('annex/validation')
                     ];
                 else
                     return FALSE;
@@ -128,11 +128,11 @@ class Model_Annex_Account
         }
         else
         {
-            if ( $response == 'array' )
+            if ($response == 'array')
                 return [
                     'status' => 'error',
                     'message' => 'user creation failed due to form errors',
-                    'errors' => $post_validation->errors()
+                    'errors' => $post_validation->errors('annex/validation')
                 ];
             else
                 return FALSE;
@@ -150,14 +150,16 @@ class Model_Annex_Account
 
         $post_data = $post->as_array();
 
-        if ( ! $post_data['password'] )
+        if ( ! $post_data['password'])
+        {
             unset($post_data['password']);
+        }
 
-        if ( $post->check() )
+        if ($post->check())
         {
             $doc = Brass::factory('Brass_User', ['_id' => $uid])->load();
 
-            if ( $doc->loaded() )
+            if ($doc->loaded())
             {
                 $doc->values($post_data);
                 $doc->update();

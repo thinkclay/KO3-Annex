@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php (defined('SYSPATH')) OR die('No direct script access.');
 
 /**
  * Annex - Public Account Controller
@@ -14,22 +14,24 @@ class Controller_Public_Account extends Controller_Public
      */
     public function action_register()
     {
-        if ( static::$user AND ! static::$user->role == 'admin' )
+        if (static::$user AND ! static::$user->role == 'admin')
             return $this->redirect('/account');
 
-        $post = $this->request->post();
-
-        if ( $post )
+        if ($post = $this->request->post())
         {
-            if ( isset($post['username']) )
+            if (isset($post['username']))
+            {
                 $post['username'] = strtolower($post['username']);
+            }
 
-            if ( isset($post['email']) )
+            if (isset($post['email']))
+            {
                 $post['email'] = strtolower($post['email']);
+            }
 
             $user_created = Model_Annex_Account::create($post, 'pending', 'array');
 
-            if ( $user_created )
+            if ($user_created)
             {
                 $this->redirect('/account');
                 return;
@@ -51,10 +53,10 @@ class Controller_Public_Account extends Controller_Public
     public function action_login()
     {
         // If the user is already logged in, let's redirect them to the configured admin landing page
-        if ( static::$user AND ! $this->authorize->allowed('admin') )
+        if (static::$user AND ! $this->authorize->allowed('admin'))
             return $this->redirect('/account');
 
-        if ( $_POST )
+        if ($_POST)
         {
             $post = Validation::factory($_POST)
                 ->rule('username', 'not_empty')
@@ -63,14 +65,14 @@ class Controller_Public_Account extends Controller_Public
             $this->auto_render = FALSE;
             $this->response->headers('Content-Type', 'application/json');
 
-            if ( $post->check() )
+            if ($post->check())
             {
                 $username = strtolower($this->request->post('username'));
                 $password = $this->request->post('password');
                 $remember = $this->request->post('remember') ? $this->request->post('remember') : FALSE;
                 $user = Authenticate::instance()->login($username, $password, $remember);
 
-                if ( $user )
+                if ($user)
                 {
                     // Redirect to account/index if login passed
                     echo json_encode([
@@ -121,26 +123,26 @@ class Controller_Public_Account extends Controller_Public
         $this->template->main->before = Theme::factory('views/container/hero');
         $this->template->main->content = '';
 
-        if ( $this->request->param('token') )
+        if ($this->request->param('token'))
         {
             $data = explode('-', $this->request->param('token'));
 
             // If the token is expired, show an error and move on
-            if ( $data[2] < time() )
+            if ($data[2] < time())
             {
                 $this->template->main->content .= '<div class="status-box warning">Your token has expired, please reset again</div>';
             }
-            else if ( $user = Model_Annex_Account::find_user(strtolower($data[0])) )
+            elseif ($user = Model_Annex_Account::find_user(strtolower($data[0])))
             {
                 Authenticate::instance()->complete_login($user, $remember = TRUE);
                 $this->redirect('/account/manage');
             }
         }
-        elseif ( isset($_REQUEST['username']) )
+        elseif (isset($_REQUEST['username']))
         {
             $_REQUEST['username'] = strtolower($_REQUEST['username']);
 
-            if ( $user = Model_Annex_Account::find_user($_REQUEST['username']) )
+            if ($user = Model_Annex_Account::find_user($_REQUEST['username']))
             {
                 $token = Model_Annex_Account::generate_token($user, strtotime('+1 hour'));
                 $url = URL::base('http').'account/reset/'.$token;

@@ -15,7 +15,20 @@ class Controller_Admin_Users extends Controller_Admin
      */
     public function action_index()
     {
-        $this->template->main->content = Model_Annex_Content::show_list('user', 'views/content/model-sort-user');
+        $pagination = Model_Annex_Content::pagination('user');
+        $per_page = isset($_GET['per_page']) ? (int) $_GET['per_page'] : 10;
+        $offset = isset($_GET['page']) ? (int) $_GET['page'] * $per_page : 0;
+        $left = Model_Annex_Content::show_list('user', 'views/content/model-sort-user', $offset, $per_page);
+
+        if ($pagination['pages'] > 1)
+        { 
+            $left .= Theme::factory('views/blocks/ui/pagination')
+                ->set('page', isset($_GET['page']) ? $_GET['page'] : 1)
+                ->set('format', "/admin/users/?page=")
+                ->set('data', $pagination);
+        }
+
+        $this->template->main->content = $left;
     }
 
     /**

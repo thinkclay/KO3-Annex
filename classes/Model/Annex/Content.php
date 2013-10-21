@@ -3,41 +3,54 @@
 abstract class Model_Annex_Content extends Model
 {
 
+    public static function pagination($model, $per_page = 50)
+    {
+        $count = BrassDB::instance()->count(strtolower('brass_'.Inflector::plural($model)), []);
+
+        if ($count > $per_page)
+        {
+            $pages = ($count % $per_page) ? round($count / $per_page) + 1 : round($count / $per_page);
+        }
+        else
+        {
+            $pages = 0;
+        } 
+
+        return [
+            'count' => $count, 
+            'pages' => $pages
+        ];
+    }
+
     /**
      * List entries of passed model type in a table
      */
-    public static function show_list($model, $template = NULL)
+    public static function show_list($model, $template = NULL, $offset = 0, $limit = 0)
     {
         $driver = ucfirst(Kohana::$config->load('annex_core.driver'));
         
         $brass_model = 'Brass_'.ucfirst($model);
         
-        if ( ! class_exists('Model_'.$brass_model) )
+        if ( ! class_exists('Model_'.$brass_model))
         {
-            $brass_model = 'Brass_'.ucfirst(preg_replace('/[s|es]$/i', '', $model));
+            $brass_model = 'Brass_'.ucfirst(Inflector::singular($model));
         }
         
-        $data = Brass::factory($brass_model)->load(0)->as_array();
+        $data = Brass::factory($brass_model)->load($limit, ['_id' => -1], $offset)->as_array();
         $model_name = Inflector::singular($model);
         
         if ( $template )
-        {
             return Theme::factory($template)
                 ->bind('model', $model_name)
                 ->bind('data', $data);
-        }
         else if ( Theme::factory("views/content/model-list-$model", NULL, TRUE) )
-        {
             return Theme::factory("views/content/model-list-$model")
                 ->bind('model', $model_name)
                 ->bind('data', $data);
-        }
         else
-        {
             return Theme::factory('views/content/model-list-default')
                 ->bind('model', $model_name)
                 ->bind('data', $data);
-        }
     }
 
     public static function overview()

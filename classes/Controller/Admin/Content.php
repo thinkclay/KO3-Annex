@@ -22,8 +22,18 @@ class Controller_Admin_Content extends Controller_Admin
     public function action_overview()
     {
         $model = Request::$current->param('model');
-        $left = Model_Annex_Content::show_list($model);
+        $pagination = Model_Annex_Content::pagination($model);
+        $per_page = 10;
+        $offset = isset($_GET['page']) ? (int) $_GET['page'] * $per_page : 0;
+        $left = Model_Annex_Content::show_list($model, NULL, $offset, $per_page);
 
+        if ($pagination['pages'] > 1)
+        { 
+            $left .= Theme::factory('views/blocks/ui/pagination')
+                ->set('page', isset($_GET['page']) ? $_GET['page'] : 1)
+                ->set('format', "/admin/content/overview/$model/?page=")
+                ->set('data', $pagination);
+        }
 
         // load all users from the database and list them here in a table
         $right = Theme::factory('views/forms/form')

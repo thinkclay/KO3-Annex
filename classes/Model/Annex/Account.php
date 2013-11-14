@@ -92,6 +92,12 @@ class Model_Annex_Account
             // create the account
             $user->created = time();
             $user->role = $role;
+
+            if ($role == 'investor_lead')
+            {
+                $user->account_id = Model_Annex_Account::generate_account_id();
+            }
+
             $user->values($post_validation->as_array());
 
             try
@@ -171,4 +177,14 @@ class Model_Annex_Account
 
         return FALSE;
     }
+
+    public static function generate_account_id()
+    {
+        $last_account_id = explode('-', Brass::factory('Brass_User')->load(1, ['account_id' => -1], [], [], ['account_id' => ['$exists' => true]])->account_id)[2];
+
+        $account_id = '1000-10-'.($last_account_id + 1);
+
+        return $account_id;
+    }
+
 }

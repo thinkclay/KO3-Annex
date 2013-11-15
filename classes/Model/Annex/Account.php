@@ -102,12 +102,13 @@ class Model_Annex_Account
 
                     if ($user->create())
                     {
-                        Authenticate::instance()->login($post['username'], $post['password'], TRUE);
+                        $account = Authenticate::instance()->login($post['username'], $post['password'], TRUE);
 
                         if ($response == 'array')
                             return [
-                                'status' => 'success',
-                                'message' => 'user created successfully'
+                                'status'  => 'success',
+                                'message' => 'user created successfully',
+                                'user'    => $account
                             ];
                         else
                             return TRUE;

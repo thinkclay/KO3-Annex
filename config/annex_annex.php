@@ -35,6 +35,7 @@ return [
     'optional' => [],
 
     // Themeing Settings
+    'cache'     => false,
     'theme' => [
         'public'    => 'default',
         'private'   => 'default',

@@ -15,6 +15,8 @@ abstract class Controller_Template extends Controller
 
     public $navigation = [];
 
+    public $seo;
+
     /**
      * @var  boolean  auto render template
      **/
@@ -26,6 +28,12 @@ abstract class Controller_Template extends Controller
     public function before()
     {
         parent::before();
+
+        // Page SEO initialization
+        $this->seo = new stdClass();
+        $this->seo->title = "";
+        $this->seo->keywords = "";
+        $this->seo->description = "";
 
         $this->authorize = Authorize::instance();
         static::$user = Authorize::instance()->get_user();
@@ -47,6 +55,7 @@ abstract class Controller_Template extends Controller
     {
         if ($this->auto_render === TRUE)
         {
+            $this->template->bind_global('seo', $this->seo);
             $this->response->body($this->template->render());
         }
 

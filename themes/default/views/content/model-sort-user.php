@@ -4,6 +4,7 @@
 <table cellspacing="0" cellpadding="0" class="sortable">
     <thead>
         <tr>
+            <th>Date Registered</th>
             <th>Name</th>
             <th>Email</th>
             <th>Role</th>
@@ -13,6 +14,7 @@
     <tbody>
         <?php foreach ( $data as $row ) : $row = $row->as_array(); ?>
         <tr id="<?= $row['_id']; ?>">
+            <td><?= date('Y-m-d', $row['created']) ?></td>
             <td><?php echo $row['first_name'].' '.$row['middle_name'].' '.$row['last_name']; ?></td>
             <td><?= $row['email']; ?></td>
             <td><?= $row['role']; ?></td>

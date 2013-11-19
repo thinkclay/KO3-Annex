@@ -26,14 +26,14 @@ abstract class Controller_Public extends Controller_Template
         $dir = strtolower(Request::$current->directory());
         $controller = strtolower(Request::$current->controller());
         $action = strtolower(Request::$current->action());
-
+    
         if ( $this->auto_render )
         {
             // Load our default wrappers to the view, but do it on before so that the controller->action can override
             $this->template->styles = [];
             $this->template->scripts = [];
             $this->template->js_vars = ['controller' => $controller, 'action' => $action];
-
+            
             $this->template->bind_global('user', static::$user);
             $this->template->header = Theme::factory('views/container/header');
             $this->template->main = Theme::factory('views/container/main');

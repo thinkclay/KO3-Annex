@@ -10,10 +10,10 @@ class Annex_Test extends Unittest_TestCase
     public function test_annex_bootstrap()
     {
         // Make sure submodules were initialized
-        $this->assertTrue(file_exists(ANXMODS.'accredit'.DIRECTORY_SEPARATOR.'readme.md'));
-        $this->assertTrue(file_exists(ANXMODS.'brass'.DIRECTORY_SEPARATOR.'readme.md'));
-        $this->assertTrue(file_exists(ANXMODS.'event'.DIRECTORY_SEPARATOR.'readme.md'));
-        $this->assertTrue(file_exists(ANXMODS.'less'.DIRECTORY_SEPARATOR.'readme.md'));
+        $this->assertTrue(is_dir(ANXMODS.'accredit'.DIRECTORY_SEPARATOR.'classes'));
+        $this->assertTrue(is_dir(ANXMODS.'brass'.DIRECTORY_SEPARATOR.'classes'));
+        $this->assertTrue(is_dir(ANXMODS.'event'.DIRECTORY_SEPARATOR.'classes'));
+        $this->assertTrue(is_dir(ANXMODS.'less'.DIRECTORY_SEPARATOR.'classes'));
     }
 
     /**

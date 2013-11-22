@@ -1,0 +1,7 @@
+<phpunit colors="true" bootstrap="../../public/index.php">
+  <testsuites>
+    <testsuite name="Kohana Tests">
+      <file>tests/annex_test.php</file>
+    </testsuite>
+  </testsuites>
+</phpunit>

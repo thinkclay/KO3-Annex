@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+    <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
  * Annex Console - A helper for logging data
@@ -36,8 +36,19 @@ class Annex_Console
     /**
      * Log - Logs the data to the error_log
      */
-    public static function log($data)
+    public static function log($data, $email = NULL)
     {
         error_log(var_export($data, TRUE));
+
+        if ($email)
+        { 
+            Model_Annex_Email::factory()->send(
+                'mail.notice.console',
+                $email,
+                [
+                    'dump'  => var_export($data, TRUE),
+                ]
+            );
+        }
     }
 }

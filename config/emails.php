@@ -8,6 +8,11 @@ return [
 
     // Identify our email templates
     'templates' => [
+        'mail.notice.console' => [
+            'name'          => 'Console Notice',
+            'subject'       => 'Console Notice',
+            'description'   => 'This email gets sent out with Console::log with an email passed'
+        ],
         'mail.exception.generic' => [
             'name'          => 'An Exception was thrown',
             'subject'       => 'An Exception was thrown',

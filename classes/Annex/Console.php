@@ -1,4 +1,4 @@
-    <?php defined('SYSPATH') or die('No direct script access.');
+<?php defined('SYSPATH') or die('No direct script access.');
 
 /**
  * Annex Console - A helper for logging data

@@ -12,7 +12,7 @@ class Annex_Test extends Unittest_TestCase
         // Make sure submodules were initialized
         $this->assertTrue(is_dir(ANXMODS.'accredit'.DIRECTORY_SEPARATOR.'classes'));
         $this->assertTrue(is_dir(ANXMODS.'brass'.DIRECTORY_SEPARATOR.'classes'));
-        $this->assertTrue(is_dir(ANXMODS.'event'.DIRECTORY_SEPARATOR.'classes'));
+        $this->assertTrue(is_dir(ANXMODS.'event'));
         $this->assertTrue(is_dir(ANXMODS.'less'.DIRECTORY_SEPARATOR.'classes'));
     }
 

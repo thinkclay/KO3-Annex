@@ -29,12 +29,6 @@ abstract class Controller_Template extends Controller
     {
         parent::before();
 
-        // Page SEO initialization
-        $this->seo = new stdClass();
-        $this->seo->title = "";
-        $this->seo->keywords = "";
-        $this->seo->description = "";
-
         $this->authorize = Authorize::instance();
         static::$user = Authorize::instance()->get_user();
 

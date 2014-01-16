@@ -14,10 +14,10 @@ abstract class Model_Annex_Content extends Model
         else
         {
             $pages = 0;
-        } 
+        }
 
         return [
-            'count' => $count, 
+            'count' => $count,
             'pages' => $pages
         ];
     }
@@ -28,17 +28,16 @@ abstract class Model_Annex_Content extends Model
     public static function show_list($model, $template = NULL, $offset = 0, $limit = 0)
     {
         $driver = ucfirst(Kohana::$config->load('annex_core.driver'));
-        
-        $brass_model = 'Brass_'.ucfirst($model);
-        
-        if ( ! class_exists('Model_'.$brass_model))
+        $model = ucfirst($model);
+
+        if ( ! class_exists('Model_'.$model))
         {
-            $brass_model = 'Brass_'.ucfirst(Inflector::singular($model));
+            $model = Inflector::singular($model);
         }
-        
-        $data = Brass::factory($brass_model)->load($limit, ['_id' => -1], $offset)->as_array();
+
+        $data = Brass::factory($model)->load($limit, ['_id' => -1], $offset)->as_array();
         $model_name = Inflector::singular($model);
-        
+
         if ( $template )
             return Theme::factory($template)
                 ->bind('model', $model_name)

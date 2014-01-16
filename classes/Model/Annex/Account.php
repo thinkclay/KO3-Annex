@@ -46,19 +46,21 @@ class Model_Annex_Account
      */
     public static function find_user($username)
     {
+        $user_model = Kohana::$config->load('authenticate.user_model');
+
         // Check on username first
-        $user = Brass::factory('Brass_User', ['username' => $username])->load();
+        $user = Brass::factory($user_model, ['username' => $username])->load();
 
         if ($user->loaded())
             return $user;
 
         // Check for email instead
-        $user = Brass::factory('Brass_User', ['email' => $username])->load();
+        $user = Brass::factory($user_model, ['email' => $username])->load();
 
         if ($user->loaded())
             return $user;
 
-        $user = Brass::factory('Brass_User', ['_id' => $username])->load();
+        $user = Brass::factory($user_model, ['_id' => $username])->load();
 
         if ($user->loaded())
             return $user;

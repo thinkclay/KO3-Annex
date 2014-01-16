@@ -38,7 +38,11 @@ class Controller_Admin_Users extends Controller_Admin
      */
     public function action_edit()
     {
-        $user = Model_Annex_Account::find_user($this->request->param('id'));
+        if ( ! $user = Model_Annex_Account::find_user($this->request->param('id')) )
+        {
+            $this->template->main->content = Console::output(['User Not Found'], 'view');
+            return;
+        }
 
         $username = $this->request->post('username');
         $password = $this->request->post('password');

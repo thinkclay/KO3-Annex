@@ -5,7 +5,7 @@ abstract class Model_Annex_Content extends Model
 
     public static function pagination($model, $per_page = 50)
     {
-        $count = BrassDB::instance()->count(strtolower('brass_'.Inflector::plural($model)), []);
+        $count = BrassDB::instance()->count(strtolower(Inflector::plural($model)), []);
 
         if ($count > $per_page)
         {

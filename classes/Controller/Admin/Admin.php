@@ -28,7 +28,7 @@ class Controller_Admin_Admin extends Controller_Admin
      */
     public function action_become_user()
     {
-        $user = Brass::factory('brass_user', ['_id' => $this->request->param('id')])->load();
+        $user = Brass::factory(Kohana::$config->load('authenticate.user_model'), ['_id' => $this->request->param('id')])->load();
 
         Authenticate::instance()->complete_login($user);
     }

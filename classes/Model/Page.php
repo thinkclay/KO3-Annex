@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
 // put all logic and database stuff in here to conform with MVC rules
-class Model_Brass_Page extends Brass
+class Model_Page extends Brass
 {
     protected $_fields = [
         'global' => [
@@ -25,13 +25,13 @@ class Model_Brass_Page extends Brass
 
     public static function cms()
     {
-        $cms = BrassDB::instance()->find_one('brass_pages', [
+        $cms = BrassDB::instance()->find_one('pages', [
             'controller' => strtolower(Request::$current->controller()),
             'action' => strtolower(Request::$current->action())
         ]);
         $cms = (is_array($cms)) ? $cms : [];
 
-        $cms_global = BrassDB::instance()->find_one('brass_pages', ['global' => 'true']);
+        $cms_global = BrassDB::instance()->find_one('pages', ['global' => 'true']);
         $cms_global = (is_array($cms_global)) ? $cms_global : [];
 
         return array_merge($cms, $cms_global);

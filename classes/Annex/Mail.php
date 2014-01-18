@@ -25,7 +25,7 @@ class Annex_Mail
     /**
      * Send Mail
      *
-     * This function will send mail by first looking to see if there is a brass_email template
+     * This function will send mail by first looking to see if there is a email template
      * with the key matching the key set here. If it is found, it will render the mail template
      * as a mustache template and send it to the array of users it should go to
      */
@@ -40,7 +40,7 @@ class Annex_Mail
         $conf = $this->config->get('templates')[$key];
 
         // First try and find an admin generated email template, as it is most current/relevant
-        if ( $doc = BrassDB::instance()->find_one('brass_emails', ['key' => $key]) )
+        if ( $doc = BrassDB::instance()->find_one('emails', ['key' => $key]) )
         {
             $m = new Mustache_Engine;
             $subject = $doc['subject'];

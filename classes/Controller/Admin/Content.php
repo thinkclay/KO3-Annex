@@ -28,7 +28,7 @@ class Controller_Admin_Content extends Controller_Admin
         $left = Model_Annex_Content::show_list($model, NULL, $offset, $per_page);
 
         if ($pagination['pages'] > 1)
-        { 
+        {
             $left .= Theme::factory('views/blocks/ui/pagination')
                 ->set('page', isset($_GET['page']) ? $_GET['page'] : 1)
                 ->set('format', "/admin/content/overview/$model/?page=")
@@ -39,7 +39,7 @@ class Controller_Admin_Content extends Controller_Admin
         $right = Theme::factory('views/forms/form')
             ->set('class', 'ajax')
             ->set('action', '/admin/content/create/'.$model)
-            ->set('fieldsets', Brass::factory('Brass_'.ucfirst($model))->as_form())
+            ->set('fieldsets', Brass::factory(ucfirst($model))->as_form())
             ->set('method', 'POST');
 
         $this->template->main->content = Theme::factory('views/container/2col')
@@ -59,7 +59,7 @@ class Controller_Admin_Content extends Controller_Admin
     public function action_create()
     {
         $driver = ucfirst(Kohana::$config->load('annex_core.driver'));
-        $model = 'Brass_'.ucfirst(Request::$current->param('model'));
+        $model = ucfirst(Request::$current->param('model'));
         $post = $this->request->post();
 
         // If post data is set, we need to save
@@ -118,7 +118,7 @@ class Controller_Admin_Content extends Controller_Admin
 
     public function action_view()
     {
-        $model = 'Brass_'.ucfirst(Request::$current->param('model'));
+        $model = ucfirst(Request::$current->param('model'));
         $id = Request::$current->param('id');
         $post = $this->request->post();
 
@@ -218,7 +218,7 @@ class Controller_Admin_Content extends Controller_Admin
                 unset($post['action']);
 
                 $params = ['global' => 'true'];
-                $existing = BrassDB::instance()->find_one('brass_pages', $params);
+                $existing = BrassDB::instance()->find_one('pages', $params);
             }
             // Must be local to a controller and action
             // in the future this may use ID's too
@@ -227,13 +227,13 @@ class Controller_Admin_Content extends Controller_Admin
                 $post['cms'] = $struct['cms'];
 
                 $params = ['controller' => $post['controller'], 'action' => $post['action']];
-                $existing = BrassDB::instance()->find_one('brass_pages', $params);
+                $existing = BrassDB::instance()->find_one('pages', $params);
             }
 
             // If we found a document, lets update it
             if ( $existing )
             {
-                $updated = BrassDB::instance()->update('brass_pages', $params, ['$set' => [$post['path'] => $post['data']]]);
+                $updated = BrassDB::instance()->update('pages', $params, ['$set' => [$post['path'] => $post['data']]]);
             }
             // Otherwise we need to create it
             else
@@ -242,7 +242,7 @@ class Controller_Admin_Content extends Controller_Admin
                 unset($post['ajax']);
                 unset($post['data']);
 
-                $created = BrassDB::instance()->insert('brass_pages', $post);
+                $created = BrassDB::instance()->insert('pages', $post);
             }
 
             if ( isset($updated) OR isset($created) )

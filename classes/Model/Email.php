@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
 // put all logic and database stuff in here to conform with MVC rules
-class Model_Brass_Email extends Brass
+class Model_Email extends Brass
 {
     protected $_fields = [
         'key' => [

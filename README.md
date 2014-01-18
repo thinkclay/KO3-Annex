@@ -73,7 +73,7 @@ Changelog: This will be used in the feature to automate updates and make it easy
 ## Validating a User (registration)
 ```php
 // create the account
-$user = Brass::factory('Brass_User');
+$user = Brass::factory('User');
 $user->created = time();
 $user->role = $role;
 $user->values($post_validation->as_array());

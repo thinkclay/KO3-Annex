@@ -77,7 +77,7 @@ class Model_Annex_Account
      */
     public static function create(array $post = [], $role = 'pending', $response = 'array')
     {
-        $user = Brass::factory('Brass_User');
+        $user = Brass::factory(Kohana::$confic->load('authenticate.user_model'));
 
         // initial validation
         $post_validation = Validation::factory($post)
@@ -150,7 +150,7 @@ class Model_Annex_Account
 
     public static function update(array $post, $uid)
     {
-        $user = Brass::factory('Brass_User');
+        $user = Brass::factory(Kohana::$config->load('authenticate.user_model'));
 
         // initial validation
         $post = Validation::factory($post)
@@ -166,7 +166,7 @@ class Model_Annex_Account
 
         if ($post->check())
         {
-            $doc = Brass::factory('Brass_User', ['_id' => $uid])->load();
+            $doc = Brass::factory(Kohana::$config->load('authenticate.user_model'), ['_id' => $uid])->load();
 
             if ($doc->loaded())
             {
@@ -183,7 +183,11 @@ class Model_Annex_Account
 
     public static function generate_account_id()
     {
-        $last_account_id = explode('-', Brass::factory('Brass_User')->load(1, ['account_id' => -1], [], [], ['account_id' => ['$exists' => true]])->account_id)[2];
+        $last_account_id = explode(
+            '-',
+            Brass::factory(Kohana::$config->load('authenticate.user_model'))
+                ->load(1, ['account_id' => -1], [], [], ['account_id' => ['$exists' => true]])->account_id
+        )[2];
 
         $account_id = '1000-10-'.($last_account_id + 1);
 

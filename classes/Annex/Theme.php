@@ -419,7 +419,7 @@ class Annex_Theme
         }
 
         $processed_file = Theme::capture($this->_file, $this->_data);
-        $cms = isset($this->_data['cms']) ? $this->_data['cms'] : Model_Brass_Page::cms();
+        $cms = isset($this->_data['cms']) ? $this->_data['cms'] : Model_Page::cms();
         $m = new Mustache_Engine;
 
         return $m->render($processed_file, $cms);

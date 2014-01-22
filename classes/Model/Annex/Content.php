@@ -59,13 +59,22 @@ abstract class Model_Annex_Content extends Model
 
         foreach ( $collections as $collection )
         {
-            if ( preg_match('/^brass/i', $collection) )
+            $model = 'Model';
+
+            foreach ( explode('_', $collection) as $name )
             {
-                $model = preg_replace('/^brass_/i', '', $collection);
-                $model = preg_replace('/[s|es]$/i', '', $model);
-                $list[] = $model;
+                $model .= '_'.ucfirst(Inflector::singular($name));
+
+            }
+
+            if ( class_exists($model) )
+            {
+                $model = preg_replace('/^(brass_|model_)/i', '', $model);
+                $model = preg_replace('/_/', ' ', $model);
+                $list[] = strtolower($model);
             }
         }
+
         sort($list);
 
         return $list;
